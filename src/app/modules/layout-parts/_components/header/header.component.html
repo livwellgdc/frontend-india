@@ -1,0 +1,32 @@
+<header class="header_inr">
+  <a [routerLink]="['/']" class="branding">
+    <img src="./assets/images/logo.svg" alt="" class="logo">
+  </a>
+  <div class="dropdown_menu">
+    <!-- <button mat-icon-button >
+      <mat-icon>notifications</mat-icon>
+    </button> -->
+    <button class="setting_menu" mat-button [matMenuTriggerFor]="menu">
+      <div class="inr_wrap">
+        <img
+          [src]="_storage?.adminDetail?.profilePicture ? _storage?.adminDetail?.profilePicture : 'assets/images/user_placeholder.svg'"
+          alt="">
+        <span class="name"
+          [title]="_storage?.adminDetail?.name?_storage?.adminDetail?.name:''">{{_storage?.adminDetail?.name?_storage?.adminDetail?.name:'...'}}</span>
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </div>
+    </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      <button class="drop-menu" mat-menu-item [routerLink]="['ABS_ADMIN_PROFILE' | absolutePath]">
+        <mat-icon class="icons-color">person</mat-icon> My Profile
+      </button>
+      <button class="drop-menu" mat-menu-item [routerLink]="['ABS_ADMIN_CHANGE_PASSWORD' | absolutePath]">
+        <mat-icon class="icons-color">lock</mat-icon> Change Password
+      </button>
+      <button type="button" class="drop-menu" mat-menu-item (click)="logoutHandler()">
+        <mat-icon class="icons-color">power_settings_new</mat-icon> Logout
+      </button>
+    </mat-menu>
+  </div>
+
+</header>

@@ -1,0 +1,17 @@
+<mat-table-renderer notFound="Interests not added" placeholder="Search by Interest Name" cls="{{permissionClass}}" [heading]="heading"
+  (add)="addInterest($event)" (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  (status)="changeStatus($event)" (sort)="sortByListing($event)" (filter)="submitFilter($event)">
+  <div role="filter">
+    <form [formGroup]="filterForm">
+
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Category</mat-label>
+        <mat-select formControlName="categoryName">
+          <mat-option *ngFor="let category of interestCategories" [value]="category?.value">{{category?.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </form>
+  </div>
+</mat-table-renderer>

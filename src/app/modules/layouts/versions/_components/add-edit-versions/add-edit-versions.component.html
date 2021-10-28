@@ -1,0 +1,65 @@
+<form [formGroup]="versionForm" (ngSubmit)="versionHandler()" class="dialog-box">
+  <button mat-icon-button mat-dialog-close class="float-right mdl-cross-btn">
+    <mat-icon>clear</mat-icon>
+  </button>
+
+  <h1 mat-dialog-title align="center"> {{data?.id==0?'Add':'Edit'}} Version </h1>
+  <mat-dialog-content class="mat-typography">
+    <div class="add_category">
+
+      <div class="row">
+        <div class="col-sm-6">
+          <mat-form-field class="search_filter" appearance="outline">
+            <mat-label>Version Name</mat-label>
+            <input type="text" matInput formControlName="name" [maxlength]="_limit?.MAX_NAME_LENGTH" autocomplete="off"
+              required />
+            <mat-error> {{errMsg?.VERSION_NAME_REQ}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6">
+          <mat-form-field class="search_filter" appearance="outline">
+            <mat-label>Current Version</mat-label>
+            <input type="tel" matInput digitOnlyWithDecimal [howManyDot]="8" [digit]="f['currentVersion'].value"
+              formControlName="currentVersion" [maxlength]="_limit?.CURRENT_VERSION_LENGTH" autocomplete="off"
+              required />
+            <span class="prefix " matPrefix>v</span>
+            <mat-error> {{errMsg?.CURRENT_VERSION_REQ}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6">
+          <mat-form-field class="search_filter" appearance="outline">
+            <mat-label>Select Platform</mat-label>
+            <mat-select formControlName="platform" required>
+              <mat-option *ngFor="let platform of platFormType" [value]="platform?.value">{{platform?.name}}
+              </mat-option>
+            </mat-select>
+            <mat-error>{{errMsg?.PLATFORM_REQ}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6">
+          <mat-form-field class="search_filter" appearance="outline">
+            <mat-label>Version Update Type</mat-label>
+            <mat-select formControlName="updateType" required>
+              <mat-option *ngFor="let updateType of versionUpdateType" [value]="updateType?.value">{{updateType?.name}}
+              </mat-option>
+            </mat-select>
+            <mat-error>{{errMsg?.VERSION_UPDATE_TYPE_REQ}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+          <mat-form-field class="search_filter" appearance="outline">
+            <mat-label> Version Description</mat-label>
+            <textarea type="text" #disc1 matInput [maxlength]="_limit?.DESCRIPTION_MAX"
+              formControlName="description"></textarea>
+            <mat-hint align="end">{{disc1.value.length}} / {{_limit?.DESCRIPTION_MAX}}</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center" class="mdl-custom-btns">
+    <button type="button" class="cat-btn" mat-dialog-close mat-raised-button color="default">Cancel</button>
+    <button type="submit" class="cat-btn" mat-raised-button color="primary">{{data?.id==0?'Add':'Update'}}</button>
+  </mat-dialog-actions>
+</form>

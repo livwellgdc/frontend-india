@@ -1,0 +1,176 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-3 col-xl-2 col-md-3 col-12 panel-header"> Class Details</div>
+          <div class="col-sm-8 col-xl-5 col-md-8 col-12 ">
+            <div class="panel-inner">
+              <div class="col-xl-12">
+                <div class="row">
+                  <div class="col-sm-6 col-md-6 col-12">
+                    <div class="panel-inner-section">
+                      <h6>Total Seats Booked</h6>
+                      <p>{{classDetails?.activeParticipant}}</p>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-6 col-12 ">
+                    <div class="panel-inner-section">
+                      <h6>Total Seats Left</h6>
+                      <p color="primary">{{classDetails?.seatsLeft}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-1 col-xl-5 col-md-1 col-12 form-group btn-section {{permissionClass}}">
+            <button title="Edit Class" mat-icon-button (click)="editHandler()"
+              *ngIf="classDetails?.isEdited && classDetails?.classType=='ADMIN'">
+              <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="row ">
+
+          <div class=""
+            [ngClass]="{'noMedia': classDetails?.media?.length==0,'singleMedia': classDetails?.media?.length==1,'bothMedia': classDetails?.media?.length==2}">
+            <ng-container *ngFor="let media of classDetails?.media">
+              <ng-container [ngSwitch]="media?.type">
+                <ng-container *ngSwitchCase="'IMAGE'">
+                  <div class="cst-img-video">
+                    <figure class="img">
+                      <lv-lazy-image [img]="media?.url">
+                      </lv-lazy-image>
+                    </figure>
+                  </div>
+                </ng-container>
+                <ng-container *ngSwitchCase="'VIDEO'">
+                  <div class="cst-img-video ">
+                    <div class="video-length"><video style="width:100%;height:300px;object-fit:cover" [src]="media?.url"
+                        controls></video></div>
+                  </div>
+                </ng-container>
+                <ng-container *ngSwitchDefault></ng-container>
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <div class="detail-row">
+          <div class="form-group">
+            <label class="el_name">Class Name</label>
+            <label class="el_value">{{classDetails?.name |titlecase}}</label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Class Date</label>
+            <label class="el_value">{{classDetails?.startTime |date:dateType.MEDIUM_DATE }}</label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Start Time</label>
+            <label class="el_value">{{classDetails?.startTime |date:dateType.SHORT_TIME }}</label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">End Time</label>
+            <label class="el_value">{{classDetails?.endTime |date:dateType.SHORT_TIME}}</label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Class Status</label>
+            <label class="el_value status">
+              <span [ngClass]="classDetails?.classStatus">{{classDetails?.classStatus | formatStatus}}</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Status</label>
+            <label class="el_value status">
+              <span [ngClass]="classDetails?.status">{{classDetails?.status | formatStatus}}</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Class Type</label>
+            <label class="el_value">{{classDetails?.type | formatStatus}}</label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Instructor Name</label>
+            <label class="el_value">{{classDetails?.instructorName}}</label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Total Seats</label>
+            <label class="el_value">{{classDetails?.totalParticipant}}</label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Available Seats</label>
+            <label class="el_value">
+              <a class="club-anchor" (click)="openSeatBox()">Click to See Seats</a>
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Seat Map Image</label>
+            <label class="el_value">
+              <a class="club-anchor" (click)="viewSeatMapImage()">Click to See Image</a>
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">City</label>
+            <label class="el_value">{{classDetails?.city |titlecase}}</label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Category</label>
+            <label class="el_value">{{classDetails?.categoryId?.name?.en |titlecase |emptyValue}}</label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Club Name</label>
+            <label class="el_value">
+              <a class="club-anchor" title="View Club Details"
+                (click)="goToDetailPage()">{{classDetails?.clubId?.name |emptyValue}}
+                ({{classDetails?.clubId?.shortName}})</a>
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Access Type</label>
+            <label class="el_value">{{classDetails?.accessType |titlecase}}</label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Studio</label>
+            <label class="el_value">{{classDetails?.studioName | emptyValue}}</label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Class Created By</label>
+            <label class="el_value">{{classDetails?.classType | emptyValue}}</label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Difficulty Level</label>
+            <ng-container *ngIf="classDetails?.difficultyLevel?.length>0;else emptyLevel">
+              <ng-container *ngFor="let level of classDetails?.difficultyLevel; let isLast=last">
+                <label class="el_value difficulity-value">{{level | titlecase}}{{isLast ? '' : ', '}}</label>
+              </ng-container>
+            </ng-container>
+            <ng-template #emptyLevel>
+              <label class="el_value">-</label>
+            </ng-template>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Created Date</label>
+            <label class="el_value">{{classDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+          </div>
+          <div class="form-group">
+            <label class="el_name">Class Description</label>
+            <label class="el_description"
+              (click)="openDescriptionBox('Class Description',classDetails?.description)">{{classDetails?.description |emptyValue}}</label>
+          </div>
+          <div class="form-group" *ngIf="classDetails?.endedReason">
+            <label class="el_name">Reason of Ending Class</label>
+            <label class="el_description"
+              (click)="openDescriptionBox('Reason of Ending Class',classDetails?.endedReason)">{{classDetails?.endedReason}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <lv-booked-class-users [classId]="classId"></lv-booked-class-users>
+  </ng-template>
+</div>

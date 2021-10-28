@@ -1,0 +1,31 @@
+.title{
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 6px 0px;
+  box-shadow: 0px 0px 2px #00000045;
+  border-radius: 8px;
+}
+
+.description{
+  width: 500px;
+  max-height: 500px;
+}
+
+.blockchain{
+  display: flex;
+  flex-wrap: wrap;
+  width: 370px;
+  @media(max-width:576px){
+    width:100%;
+  }
+  .blockchain-value{
+    flex: 0 0 33%;
+    @media(max-width:576px){
+    min-width: 100%;
+  }
+    .el_name{
+      display: block;
+      font-weight: 500;
+    }
+  }
+}

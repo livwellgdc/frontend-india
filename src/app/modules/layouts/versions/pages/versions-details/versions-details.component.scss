@@ -1,0 +1,12 @@
+@import "var";
+@import "mix";
+@import "grid";
+@include details-section;
+@include details-form-section;
+@include el_description;
+
+.panel-wrap {
+  @include panel;
+  @include img(100%, 320px, cover, 0%);
+  margin-bottom: 25px;
+}

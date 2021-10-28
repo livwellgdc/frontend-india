@@ -1,0 +1,4 @@
+<mat-table-renderer notFound="Subscriptions not added" placeholder="Search by Uid or User Name"
+  cls="removeAddButton removeFilter" [heading]="heading" (find)="paginationWithSearch($event,0)"
+  (page)="paginationWithSearch($event,1)" (sort)="sortByListing($event)">
+</mat-table-renderer>

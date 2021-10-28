@@ -1,0 +1,198 @@
+<mat-card class="livwell-video-add">
+  <div class="livwell-video">
+
+    <form [formGroup]="clientClubForm" (ngSubmit)="clientClubHandler()">
+      <div class="form-section">
+        <div class="row">
+          <div class="col-xl-6 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Client Name</mat-label>
+              <input matInput [ngStyle]="{'text-transform':'uppercase'}" [maxlength]="_limit?.MAX_NAME_LENGTH"
+                formControlName="name" autocomplete="off" required>
+              <mat-error>{{errMsg.CLIENT_CLUB_NAME_REQ}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-6 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Points Purchased</mat-label>
+              <input #purchasePoints matInput number [maxlength]="_limit?.MAX_CLIENT_CLUB_POINTS_LENGTH"
+                formControlName="points" autocomplete="off" required>
+              <mat-error *ngIf="f['points'].hasError('required')">{{errMsg.CLIENT_CLUB_POINT}}</mat-error>
+              <mat-error *ngIf="f['points'].hasError('pattern')">{{errMsg.INVALID_CLUB_POINT}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-6 col-md-6 col-12 mb-2">
+            <div class="row">
+              <div class="col-sm-6 col-md-6 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Point Distribution Start Date</mat-label>
+                  <input matInput (click)="picker1.open()" [matDatepicker]="picker1" formControlName="startDate"
+                    placeholder="Point Distribution Start Date" [min]="today" (dateChange)="startDateChange()" readonly>
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                  <mat-error *ngIf="f['startDate'].hasError('required')">{{errMsg.POINT_START_DATE}}</mat-error>
+                  <mat-error *ngIf="f['startDate'].hasError('invalid')">{{errMsg.INVALID_DATE}}</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-6 col-md-6 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Point Distribution End Date</mat-label>
+                  <input matInput (click)="picker2.open()" [matDatepicker]="picker2" formControlName="endDate"
+                    placeholder="Point Distribution End Date" [min]="f['startDate'].value" readonly>
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                  <mat-error *ngIf="f['endDate'].hasError('required')">{{errMsg.POINT_END_DATE}}</mat-error>
+                  <mat-error *ngIf="f['endDate'].hasError('invalid')">{{errMsg.INVALID_DATE}}</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-6 col-md-6 col-12 mb-2">
+            <div class="row">
+              <div class="col-sm-6 col-md-6 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>User's Joined Date</mat-label>
+                  <input matInput (click)="picker3.open()" [matDatepicker]="picker3" formControlName="joinedDate"
+                    placeholder="User's Joined Date" readonly>
+                  <mat-datepicker-toggle matSuffix [for]="picker3" *ngIf="!f['joinedDate'].value">
+                  </mat-datepicker-toggle>
+                  <span class="remove-date" matSuffix *ngIf="f['joinedDate'].value">
+                    <mat-icon title="Remove Joined Date" (click)="removeJoinedDate()">delete</mat-icon>
+                  </span>
+                  <mat-datepicker #picker3></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6 col-md-6 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Points Distribution Frequency</mat-label>
+                  <mat-select formControlName="frequencyType" required>
+                    <mat-option *ngFor="let freq of frequency" [value]="freq?.value">
+                      {{freq?.name}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error>{{errMsg.CLUB_POINTS_FREQUENCY}}</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-6 col-md-6 col-12 " formGroupName="allMembers">
+            <div class="row custom-height">
+              <div class="col-xl-4 col-md-5 col-12">
+                <mat-checkbox color="primary" formControlName="value" (change)="onChangeCheckbox($event)"
+                  class="edit-club-radio">All Members
+                </mat-checkbox>
+              </div>
+              <div class="col-xl-8 col-md-7 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Points Distribution</mat-label>
+                  <input #allMembersPoints matInput number [maxlength]="_limit?.MAX_POINTS_LENGTH"
+                    (input)="onEnterPointsForAllMembers($event)" formControlName="points" autocomplete="off">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-6 col-md-6 col-12 " formGroupName="members">
+            <div class="row custom-height">
+              <div class="col-xl-4 col-md-5 col-12">
+                <mat-radio-group formControlName="value">
+                  <mat-radio-button [value]="errMsg.MEMBERS" color="primary" class="edit-club-radio">Members
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="col-xl-8 col-md-7 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Points Distribution</mat-label>
+                  <input #membersPoints matInput number [maxlength]="_limit?.MAX_POINTS_LENGTH"
+                    (input)="onEnterPointsForDifferentMembers($event)" formControlName="points" autocomplete="off"
+                    required>
+                  <mat-error *ngIf="f['members']['controls'].points.hasError('required')">{{errMsg.DISTRIBUTION_POINT}}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-6 col-md-6 col-12 " formGroupName="nonMembers">
+            <div class="row custom-height">
+              <div class="col-xl-4 col-md-5 col-12">
+                <mat-radio-group formControlName="value">
+                  <mat-radio-button [value]="errMsg.NON_MEMBERS" color="primary" class="edit-club-radio">Non Members
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="col-xl-8 col-md-7 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Points Distribution</mat-label>
+                  <input #nonMembersPoints matInput number [maxlength]="_limit?.MAX_POINTS_LENGTH"
+                    (input)="onEnterPointsForDifferentMembers($event)" formControlName="points" autocomplete="off"
+                    required>
+                  <mat-error *ngIf="f['nonMembers']['controls'].points.hasError('required')">
+                    {{errMsg.DISTRIBUTION_POINT}}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-6 col-md-6 col-12 " formGroupName="centurionMembers">
+            <div class="row custom-height">
+              <div class="col-xl-4 col-lg-5 col-md-5 col-12">
+                <mat-radio-group formControlName="value">
+                  <mat-radio-button [value]="errMsg.CENTURION_MEMBERS" color="primary" class="edit-club-radio">Centurion
+                    Members
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="col-xl-8 col-lg-7 col-md-7 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Points Distribution</mat-label>
+                  <input #centurionMembersPoints matInput number [maxlength]="_limit?.MAX_POINTS_LENGTH"
+                    (input)="onEnterPointsForDifferentMembers($event)" formControlName="points" autocomplete="off"
+                    required>
+                  <mat-error *ngIf="f['centurionMembers']['controls'].points.hasError('required')">
+                    {{errMsg.DISTRIBUTION_POINT}}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-6 col-md-6 col-12 " formGroupName="iconicMembers">
+            <div class="row custom-height">
+              <div class="col-xl-4 col-md-5 col-12">
+                <mat-radio-group formControlName="value">
+                  <mat-radio-button [value]="errMsg.ICONIC_MEMBERS" color="primary" class="edit-club-radio">Iconic Members
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="col-xl-8 col-md-7 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Points Distribution</mat-label>
+                  <input #membersPoints matInput number [maxlength]="_limit?.MAX_POINTS_LENGTH"
+                    (input)="onEnterPointsForDifferentMembers($event)" formControlName="points" autocomplete="off"
+                    required>
+                  <mat-error *ngIf="f['members']['controls'].points.hasError('required')">{{errMsg.DISTRIBUTION_POINT}}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-12">
+            <div class="btn-section">
+              <button type="button" class="cancle-btn" (click)="cancelHandler()">Cancel</button>
+              <button type="submit" class="add-btn">{{clientId?'Update':'Add'}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</mat-card>

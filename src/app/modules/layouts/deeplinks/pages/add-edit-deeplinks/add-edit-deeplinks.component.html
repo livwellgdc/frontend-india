@@ -1,0 +1,31 @@
+<mat-card>
+    <div class="row">
+      <div class="col-xl-12 col-md-12 col-12 ">
+        <form [formGroup]="deeplinkForm" (ngSubmit)="deeplinkHandler()">
+          <div class="row">
+              <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Deeplink Screen Name</mat-label>
+                  <input matInput formControlName="name" autocomplete="off" required>
+                  <mat-error>{{errMsg.NAME_REQ}}</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Deeplink Screen URL</mat-label>
+                  <input matInput formControlName="url" autocomplete="off" required>
+                  <mat-error>{{errMsg.URL_REQ}}</mat-error>
+                </mat-form-field>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col btn-section">
+              <button type="button" class="cancle-btn" (click)="cancelHandler()">Cancel</button>
+              <button type="submit" class="add-btn">{{ deepLinkId? 'Update': 'Add' }}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </mat-card>
+  

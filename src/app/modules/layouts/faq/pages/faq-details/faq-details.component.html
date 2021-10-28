@@ -1,0 +1,50 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-6 col-6 panel-header"> FAQ Details</div>
+          <div class="col-sm-6 col-6 form-group btn-section {{permissionClass}}">
+            <button title="Edit FAQ" mat-icon-button (click)="editHandler()">
+              <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="row align-items-center">
+          <div class="col-12 col-xl-12">
+            <div class="row">
+              <div class="col-xl-12">
+                <label class="el_name-faq"> Display Order</label>
+                <label class="el-value-faq">{{faqDetails?.position |emptyValue}}</label>
+              </div>
+              <div class="col-xl-12">
+                <label class="el_name-faq"> Question (In English)</label>
+                <label class="el-value-faq">{{faqDetails?.question?.en |emptyValue}}</label>
+              </div>
+              <div class="col-xl-12">
+                <label class="el_name-faq"> Question (In Vietnamese)</label>
+                <label class="el-value-faq">{{faqDetails?.question?.vi |emptyValue}}</label>
+              </div>
+              <div class="col-xl-12">
+                <label class="el_name-faq">Answer (In English)</label>
+                <label class="el-value-faq" [innerHTML]="faqDetails?.enAnswer |emptyValue | safe:'html'"></label>
+              </div>
+              <div class="col-xl-12">
+                <label class="el_name-faq">Answer (In Vietnamese)</label>
+                <label class="el-value-faq" [innerHTML]="faqDetails?.viAnswer |emptyValue | safe:'html'"></label>
+              </div>
+              <div class="col-xl-12">
+                <label class="el_name-faq">Created Date</label>
+                <label class="el-value-faq">{{faqDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

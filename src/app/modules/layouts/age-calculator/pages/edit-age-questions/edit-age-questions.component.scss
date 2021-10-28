@@ -1,0 +1,50 @@
+@import "var";
+@import "mix";
+.livwell-video-add {
+  padding-bottom: 0px;
+  padding: 35px;
+}
+.add-btn {
+  @include btn;
+  background: #900968;
+}
+.cancle-btn {
+  @include btn;
+  background: #868285;
+}
+.btn-section {
+  display: flex;
+  margin-bottom: 20px;
+  padding-top: 15px;
+}
+
+span.days-badge {
+  position: relative;
+  top: -7px;
+  font-size: 14px;
+  color: $primary;
+}
+.bed_wrapper{
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #00000042;
+    margin-bottom: 17px;
+    padding-top: 17px;
+}
+.single{
+  flex: 0 0 33%;
+  @media(max-width:576px){
+    flex: 1%;
+  }
+}
+.answer{
+  width: 100% !important;
+}
+.multiple{
+  max-width: 50%;
+  flex: 0 0 50%;
+  @media(max-width:576px){
+    max-width: 100%;
+    flex:1%;
+  }
+}

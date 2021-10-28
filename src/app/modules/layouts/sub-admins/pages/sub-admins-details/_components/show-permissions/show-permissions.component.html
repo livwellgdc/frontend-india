@@ -1,0 +1,53 @@
+<div class="permission_table">
+  <table>
+    <thead>
+      <tr>
+        <th>Features</th>
+        <th colspan="4">Permissions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let permission of data?.permission;">
+        <td>
+          <div class="name">{{ permission?.manageType}}</div>
+        </td>
+        <td class="permison-content">
+          <ng-container *ngIf="
+          permission?.manageType != manageTypeValue.USERS &&
+          permission?.manageType != manageTypeValue.INTERESTS &&
+          permission?.manageType != manageTypeValue.BADGES &&
+          permission?.manageType != manageTypeValue.CMS
+          ">
+            <mat-icon class="success-done" *ngIf="permission?.all">check_circle
+            </mat-icon>
+            <span [ngClass]="{'without-icon':!permission?.all}">All</span>
+          </ng-container>
+        </td>
+        <td class="permison-content">
+          <ng-container>
+            <mat-icon class="success-done" *ngIf="permission?.view">check_circle
+            </mat-icon>
+            <span [ngClass]="{'without-icon':!permission?.view}">View</span>
+          </ng-container>
+        </td>
+        <td class="permison-content">
+          <ng-container *ngIf="permission?.manageType != manageTypeValue.USERS">
+            <mat-icon class="success-done" *ngIf="permission?.addEdit">check_circle
+            </mat-icon>
+            <span [ngClass]="{'without-icon':!permission?.addEdit}">Add / Edit</span>
+          </ng-container>
+        </td>
+        <td class="permison-content">
+          <ng-container *ngIf="
+          permission?.manageType != manageTypeValue.INTERESTS &&
+          permission?.manageType != manageTypeValue.BADGES &&
+          permission?.manageType != manageTypeValue.CMS ">
+            <mat-icon class="success-done" *ngIf="permission?.deleteBlock">check_circle
+            </mat-icon>
+            <span [ngClass]="{'without-icon':!permission?.deleteBlock}">Delete / Block</span>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

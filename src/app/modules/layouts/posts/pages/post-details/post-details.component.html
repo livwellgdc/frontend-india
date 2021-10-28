@@ -1,0 +1,79 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-6 col-6 panel-header"> Post Details</div>
+          <div class="col-sm-6 col-6 form-group btn-section">
+            <button title="Edit Post" class="edit-fab" mat-icon-button color="primary" (click)="editHandler()">
+              <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-3 col-sm-12 col-md-12" *ngIf="postDetails?.media && postDetails?.media?.url">
+            <div class="detail-row">
+              <ng-container [ngSwitch]="postDetails?.media?.type">
+                <ng-container *ngSwitchCase="'IMAGE'">
+                  <figure class="img">
+                    <lv-lazy-image
+                      [img]="postDetails?.media?.url ? postDetails?.media?.url : 'assets/images/image_placeholder.jpg'">
+                    </lv-lazy-image>
+
+                  </figure>
+
+                </ng-container>
+                <ng-container *ngSwitchCase="'VIDEO'">
+                  <div class="video-part">
+                    <video style="width:100%;height:220px;object-fit:cover" [src]="postDetails?.media?.url" controls>
+                    </video>
+                  </div>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                  <figure class="img">
+                    <img [src]="'../../../../../../assets/images/dummy_pdf.jpeg'" />
+                  </figure>
+                  <a class="link" [href]="postDetails?.media?.url" target="_blank">View PDF</a>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+          <div class="col-lg-9 col-sm-12 col-md-12">
+            <div class="detail-row">
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name"> Post Title (In English)</label>
+                <label class="el_value">{{postDetails?.name?.en | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name"> Post Title (In Vietnamese)</label>
+                <label class="el_value">{{postDetails?.name?.vi | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name"> Board</label>
+                <label class="el_value">{{postDetails?.boardId?.name?.en | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Created Date</label>
+                <label class="el_value">{{postDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Description (In English)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Description (In English)',postDetails?.description?.en)">{{postDetails?.description?.en |emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Description (In Vietnamese)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Description (In Vietnamese)',postDetails?.description?.vi)">{{postDetails?.description?.vi |emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

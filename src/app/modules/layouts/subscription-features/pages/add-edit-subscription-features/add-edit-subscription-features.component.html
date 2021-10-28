@@ -1,0 +1,75 @@
+<mat-card>
+  <div class="row">
+    <div class="col-xl-12 col-md-12 col-12 ">
+      <form [formGroup]="subscriptionFeatureForm" (ngSubmit)="subscriptionFeatureHandler()">
+        <div class="row">
+
+          <div class="col-xl-6 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Subscription Feature</mat-label>
+              <mat-select formControlName="feature" required>
+                <mat-option disabled *ngIf="!subscriptionFeaturesList || subscriptionFeaturesList?.length <= 0">
+                  <ng-container>Please add features to configure subscription features</ng-container>
+                </mat-option>
+                <mat-option *ngFor="let featureData of subscriptionFeaturesList" [value]="featureData?.value">
+                  {{ featureData?.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.FEATURE_REQ}}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <ng-container formArrayName="featureConfig">
+          <div class="row"
+            *ngFor="let featureControl of  subscriptionFeatureForm.get('featureConfig')['controls']; let premiumIndex = index;">
+            <ng-container [formGroupName]="premiumIndex">
+              <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Select Subscription Plan</mat-label>
+                  <mat-select formControlName="subscriptionPlanType" required>
+                    <mat-option disabled *ngIf="!subscriptionPlans || subscriptionPlans?.length <= 0">
+                      <ng-container>Please add plans to configure subscription features</ng-container>
+                    </mat-option>
+                    <mat-option *ngFor="let subscriptionPlan of subscriptionPlans" [value]="subscriptionPlan?.value">
+                      {{ subscriptionPlan?.name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error>{{errMsg.PLAN_REQ}}</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Enter Value</mat-label>
+                  <input matInput placeholder="string or boolean value" formControlName="value" autocomplete="off" required>
+                  <mat-error>{{errMsg.VALUE_REQ}}</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Enter Display</mat-label>
+                  <input matInput placeholder="Max 3 challenges" formControlName="display" autocomplete="off" required>
+                  <mat-error>{{errMsg.DISPLAY_REQ}}</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Enter Discription</mat-label>
+                  <input matInput placeholder="Subscribe user can take max 3 challenges" formControlName="description"
+                    autocomplete="off" required>
+                  <mat-error>{{errMsg.DESCRIPTION_REQ}}</mat-error>
+                </mat-form-field>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+        <div class="row">
+          <div class="col btn-section">
+            <button type="button" class="cancle-btn" (click)="cancelHandler()">Cancel</button>
+            <button type="submit" class="add-btn">{{ subscriptionFeatureId? 'Update': 'Add' }}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</mat-card>

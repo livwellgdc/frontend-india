@@ -1,0 +1,19 @@
+<mat-table-renderer notFound="Posts not added" placeholder="Search by Post Title" [heading]="heading"
+  (add)="addPosts($event)" (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  (status)="changeStatus($event)" (sort)="sortByListing($event)" (filter)="submitFilter($event)">
+  <div role="filter">
+    <form [formGroup]="filterForm">
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Board</mat-label>
+        <mat-select formControlName="boardId">
+          <mat-option disabled *ngIf="!boardList || boardList?.length <= 0">
+            <ng-container>Please add boards to create the post</ng-container>
+          </mat-option>
+          <mat-option *ngFor="let board of boardList" [value]="board?._id">
+            {{board?.name?.en |titlecase}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+</mat-table-renderer>

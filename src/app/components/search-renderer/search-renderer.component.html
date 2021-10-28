@@ -1,0 +1,7 @@
+<mat-form-field appearance="outline" class="search_filter">
+  <mat-label>{{placeholder?placeholder:'Search'}}</mat-label>
+  <input type="search" matInput [prevent-keys]="[219,221]" maxlength="100" [formControl]="searchForm" autocomplete="off" />
+  <button type="button" (click)="clearValue()" mat-icon-button class="search-btn" matSuffix>
+    <mat-icon>{{searchForm.value?'close':'search'}}</mat-icon>
+  </button>
+</mat-form-field>

@@ -1,0 +1,75 @@
+<div class="page-title">
+  <div class="row">
+    <div class="col-xl-3  col-12">
+      <div class="header-left">
+        Dashboard Management
+      </div>
+    </div>
+    <div class="col-xl-9  col-12">
+      <form #formRef="ngForm" [formGroup]="filterForm" (ngSubmit)="applyFilter()">
+        <div class="header-right">
+          <mat-form-field appearance="outline">
+            <mat-label>Date From</mat-label>
+            <input matInput (click)="picker1.open()" [matDatepicker]="picker1" formControlName="fromDate"
+              (dateChange)="startDateChange()" [max]="today" readonly>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Date To</mat-label>
+            <input matInput (click)="picker2.open()" [matDatepicker]="picker2" formControlName="toDate"
+              [min]="f['fromDate'].value" [max]="today" readonly>
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+          <ng-container *ngIf="selectedType===dashboardTypes?.CORPORATE">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Corporate</mat-label>
+              <mat-select formControlName="corporateId">
+                <mat-option disabled *ngIf="!corporates || corporates?.length <= 0">
+                  <ng-container>No corporates are added yet</ng-container>
+                </mat-option>
+                <mat-option value=""> All </mat-option>
+                <mat-option *ngFor="let corporate of corporates" [value]="corporate?._id">{{corporate?.name |titlecase}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+          <div class="btn-section">
+            <button mat-button type="submit" class=" add-btn">Apply</button>
+            <button mat-button type="button" class="cancle-btn" (click)="resetFilter()">Reset</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<mat-card class="dasboard-page">
+  <div class="top-btns">
+    <mat-button-toggle-group #group="matButtonToggleGroup" [value]="dashboardTypes?.LIVWELL" class="cst-scroll">
+      <mat-button-toggle [value]="dashboardTypes?.LIVWELL" class="button-secondary active" color="primary"
+        (click)="showLivwellDashboard(dashboardTypes?.LIVWELL)">Livwell
+      </mat-button-toggle>
+      <mat-button-toggle [value]="dashboardTypes?.CORPORATE" class="button-secondary"
+        (click)="showCorporateDashboard(dashboardTypes?.CORPORATE)">
+        Corporate
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-12 col-md-4" *ngFor="let card of cards">
+      <mat-card class="dash_card" (click)="onClickCard(card)"
+        [ngClass]="{'pointer': selectedType == dashboardTypes?.LIVWELL}">
+        <img class="icon" [src]="card?.image" alt="">
+        <mat-card-title>{{card?.name}}</mat-card-title>
+        <mat-card-content>
+          <div class="counts">{{card?.activeCount}}</div>
+        </mat-card-content>
+        <mat-card-actions>
+          {{card?.subname}}: <span> {{card?.totalCount}} </span>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</mat-card>

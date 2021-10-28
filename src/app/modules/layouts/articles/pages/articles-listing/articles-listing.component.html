@@ -1,0 +1,24 @@
+<mat-table-renderer notFound="Articles not added" placeholder="Search by Article Title" cls="{{permissionClass}}"
+  [heading]="heading" (add)="addArticles($event)" (find)="paginationWithSearch($event,0)"
+  (page)="paginationWithSearch($event,1)" (status)="changeStatus($event)" (sort)="sortByListing($event)"
+  (filter)="submitFilter($event)">
+  <div role="filter">
+    <form [formGroup]="filterForm">
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Category</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-option disabled *ngIf="!categoryList || categoryList?.length <= 0">
+            <ng-container>Please add categories to filter the article</ng-container>
+          </mat-option>
+          <mat-option *ngFor="let category of categoryList" [value]="category?._id">{{category?.name?.en |titlecase}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="row">
+        <div class="col">
+          <mat-checkbox color="primary" formControlName="isRecommended">Recommended Articles</mat-checkbox>
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-table-renderer>

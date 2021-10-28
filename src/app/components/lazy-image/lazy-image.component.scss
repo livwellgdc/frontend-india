@@ -1,0 +1,10 @@
+._shadowImage {
+  // -o-object-fit: cover;
+  // object-fit: cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}

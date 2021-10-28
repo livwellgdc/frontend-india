@@ -1,0 +1,147 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-6 col-6 panel-header"> Challenge Details</div>
+          <div class="col-sm-6 col-6 form-group btn-section {{permissionClass}}">
+            <button title="Edit Challenge" mat-icon-button (click)="editHandler()" *ngIf="challengeDetails?.isEdited">
+              <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="row ">
+          <div class="col-12 col-sm-5 col-md-4 col-lg-3 detils-sections-image">
+
+            <div class="detail-image">
+              <figure class="img">
+                <lv-lazy-image [img]="challengeDetails?.image">
+                </lv-lazy-image>
+              </figure>
+            </div>
+
+          </div>
+          <div class="col-12 col-sm-7 col-md-8 col-xl-9">
+
+            <div class="detail-row challenges-details-right">
+              <div class="form-group">
+                <label class="el_name">Challenge Name (In English)</label>
+                <label class="el_value">{{challengeDetails?.name?.en |titlecase |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Challenge Name (In Vietnamese)</label>
+                <label class="el_value">{{challengeDetails?.name?.vi |titlecase |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Sponsor Name</label>
+                <label class="el_value">{{challengeDetails?.sponsorName |titlecase |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Start Date</label>
+                <label class="el_value">{{challengeDetails?.startDate |date:dateType.MEDIUM_DATE}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">End Date</label>
+                <label class="el_value">{{challengeDetails?.endDate | date:dateType.MEDIUM_DATE}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Start Time</label>
+                <label class="el_value">{{challengeDetails?.startDate |date:dateType.SHORT_TIME}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">End Time</label>
+                <label class="el_value">{{challengeDetails?.endDate | date:dateType.SHORT_TIME}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Challenge Category</label>
+                <label class="el_value">{{challengeDetails?.categoryId?.name?.en |titlecase}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Challenge Type</label>
+                <label class="el_value">{{challengeDetails?.type}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Value</label>
+                <label class="el_value">{{challengeDetails?.value?challengeDetails?.value:'0'}}</label>
+              </div>
+              <div class="form-group" *ngIf="challengeDetails?.classCategoryId?.name?.en">
+                <label class="el_name">Class Category</label>
+                <label class="el_value">{{challengeDetails?.classCategoryId?.name?.en |titlecase}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Total Winners</label>
+                <label class="el_value">{{challengeDetails?.totalWinner?challengeDetails?.totalWinner:'0'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Total Participants</label>
+                <label class="el_value">{{challengeDetails?.totalParticipant}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Badge</label>
+                <label class="el_value">{{challengeDetails?.badgeId?.name | emptyValue}}</label>
+              </div>
+
+              <div class="form-group">
+                <label class="el_name">Challenge Points</label>
+                <label class="el_value">{{challengeDetails?.points ? challengeDetails?.points :'0'}}</label>
+              </div>
+              <ng-container *ngIf="challengeDetails?.benefitsCategoryId?.name?.en">
+                <div class="form-group">
+                  <label class="el_name">Livwell Benefit</label>
+                  <label class="el_value">{{challengeDetails?.benefitsCategoryId?.name?.en}}</label>
+                </div>
+                <div class="form-group">
+                  <label class="el_name">Voucher Name</label>
+                  <label class="el_value">{{challengeDetails?.rewardId?.name?.en}}</label>
+                </div>
+              </ng-container>
+              <div class="form-group">
+                <label class="el_name">Challenge Frequency</label>
+                <label class="el_value">{{challengeDetails?.frequencyType=='DAILY'?'Daily':'None'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Challenge Access Type</label>
+                <label class="el_value">{{challengeDetails?.accessType=='ALL'?'All Users':'CFYC Users'}}</label>
+              </div>
+              <div class="form-group" *ngIf="challengeDetails?.joinedDate">
+                <label class="el_name">Joined Date</label>
+                <label class="el_value">{{challengeDetails?.joinedDate | date:dateType.MEDIUM_DATE}}</label>
+              </div>
+              <div class="form-group" *ngIf="challengeDetails?.visibleUpTo">
+                <label class="el_name">Visible Up to (From Joined Date)</label>
+                <label
+                  class="el_value">{{ challengeDetails?.visibleUpTo > 1 ? (challengeDetails?.visibleUpTo +' Days') : (challengeDetails?.visibleUpTo +' Day')}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Status</label>
+                <label class="el_value status">
+                  <span [ngClass]="challengeDetails?.status">{{challengeDetails?.status | formatStatus}}</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Created Date</label>
+                <label
+                  class="el_value">{{challengeDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Challenge Description (In English)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Challenge Description (In English)',challengeDetails?.description?.en)">{{challengeDetails?.description?.en |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Challenge Description (In Vietnamese)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Challenge Description (In Vietnamese)',challengeDetails?.description?.vi)">{{challengeDetails?.description?.vi |emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <lv-challenge-participants [challengeId]="challengeId"></lv-challenge-participants>
+    </div>
+  </ng-template>
+
+</div>

@@ -1,0 +1,31 @@
+<h1 mat-dialog-title class="title">
+  {{data?.isShowMemberShip ?'Memberships ' +'('+data?.membershipArray?.length+')': title }}</h1>
+
+<mat-dialog-content>
+
+  <ng-container *ngIf="data?.isShowMemberShip;else forCouponCodes">
+    <div class="ss-chips">
+      <div *ngFor="let item of data?.membershipArray;let i=index">
+        <div class="mat-chips">
+          <span class="dd-chips" *ngIf="(item | formatMemberShip);else incorrectMembership">
+            {{item | formatMemberShip}}
+          </span>
+          <ng-template #incorrectMembership>-</ng-template>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #forCouponCodes>
+    <ng-container *ngIf="data?.couponCodeArray?.length>0">
+      <div class="ss-chips">
+        <div *ngFor="let item of data?.couponCodeArray;let i=index">
+          <div class="mat-chips">
+            <span class="dd-chips">{{item}}</span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-template>
+
+</mat-dialog-content>

@@ -1,0 +1,32 @@
+<mat-table-renderer notFound="Videos not added" placeholder="Search by Video Title" cls="{{permissionClass}}"
+  [heading]="heading" (add)="addVideos($event)" (find)="paginationWithSearch($event,0)"
+  (page)="paginationWithSearch($event,1)" (status)="changeStatus($event)" (sort)="sortByListing($event)"
+  (filter)="submitFilter($event)">
+  <div role="filter">
+    <form [formGroup]="filterForm">
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Category</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-option disabled *ngIf="!genericCategoryList || genericCategoryList?.length <= 0">
+            <ng-container>Please add class categories to filter the videos</ng-container>
+          </mat-option>
+          <mat-option *ngFor="let category of genericCategoryList" [value]="category?._id">
+            {{category?.name?.en |titlecase}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let sta of status" [value]="sta?.value">{{sta?.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="row">
+        <div class="col">
+          <mat-checkbox color="primary" formControlName="isPremium">Premium Content</mat-checkbox>
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-table-renderer>

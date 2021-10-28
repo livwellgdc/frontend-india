@@ -1,0 +1,39 @@
+@import "var";
+@import "mix";
+.livwell-video-add {
+  padding-bottom: 0px;
+  padding: 35px;
+}
+.add-btn {
+  @include btn;
+  background: #900968;
+}
+.cancle-btn {
+  @include btn;
+  background: #868285;
+}
+.btn-section {
+  display: flex;
+  margin-bottom: 20px;
+}
+.custom-height {
+  line-height: 57px;
+  @media (max-width: 767px) {
+    height: auto;
+    line-height: 37px;
+  }
+}
+
+.remove-date {
+  font-size: 15px;
+  color: $red;
+  cursor: pointer;
+}
+
+::ng-deep {
+  .edit-club-radio {
+    .mat-radio-label-content {
+      font-size: 13px !important;
+    }
+  }
+}

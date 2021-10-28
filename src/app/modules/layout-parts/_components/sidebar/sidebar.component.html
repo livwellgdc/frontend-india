@@ -1,0 +1,386 @@
+<mat-nav-list class="sidebar">
+
+  <a mat-list-item color="primary" [routerLink]="['ABS_DASHBOARD' | absolutePath]" routerLinkActive="active">
+    <mat-icon svgIcon="livwell" class="sidenav-icons"></mat-icon> Dashboard
+  </a>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.USERS)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_USERS' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="users" class="sidenav-icons"></mat-icon> Users
+    </a>
+  </ng-container>
+
+  <!-- <ng-container *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.REPORTS)">
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.REPORTS)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_REPORTS' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="users" class="sidenav-icons"></mat-icon> Reports
+    </a>
+  </ng-container> -->
+
+  <ng-container *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.REPORTS)">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="isExpandedOfferSidebar()">
+        <mat-expansion-panel-header>
+          <span class="expansion">
+            <mat-icon svgIcon="offers" class="sidenav-icons mat-expension-icons"></mat-icon><span class="ml-left">
+              Reports</span>
+          </span>
+        </mat-expansion-panel-header>
+
+        <ng-container>
+          <a mat-list-item color="primary" [routerLink]="['ABS_SELES_REPORTS' | absolutePath]" routerLinkActive="active">
+            <mat-icon svgIcon="story" class="sidenav-icons"></mat-icon> Sales
+          </a>
+        </ng-container>
+        <ng-container>
+          <a mat-list-item color="primary" [routerLink]="['ABS_REFERRER_REPORTS' | absolutePath]" routerLinkActive="active">
+            <mat-icon svgIcon="story" class="sidenav-icons"></mat-icon> Referrer
+          </a>
+        </ng-container>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
+  
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.REFERRAL)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_SELES_TRACKER' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="salestracker" class="sidenav-icons"></mat-icon> Sales Tracker
+    </a>
+  </ng-container>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.CATEGORIES)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_CATEGORY' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="categories" class="sidenav-icons"></mat-icon> Categories
+    </a>
+  </ng-container>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.INTERESTS)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_PROFILE_INTERESTS' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="profile_interest" class="sidenav-icons"></mat-icon> Profile Interests
+    </a>
+  </ng-container>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.CLASSES)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_CLASSES' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="classes" class="sidenav-icons"></mat-icon> Classes
+    </a>
+  </ng-container>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.CHALLENGES)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_CHALLENGES' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="challenges" class="sidenav-icons"></mat-icon> Challenges
+    </a>
+  </ng-container>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.CHARITY)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_CHARITY' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="challenges" class="sidenav-icons"></mat-icon> Charity
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.SPIN_WHEEL)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_SPIN_WHEEL' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="challenges" class="sidenav-icons"></mat-icon> Spin Wheel
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.GROUPS)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_GROUPS' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="sub-admins" class="sidenav-icons"></mat-icon> Groups
+    </a>
+  </ng-container>
+
+  <!-- <ng-container *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.STORIES)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_STORIES' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="story" class="sidenav-icons"></mat-icon> Stories
+    </a>
+  </ng-container> -->
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.STORIES)">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="isExpandedOfferSidebar()">
+        <mat-expansion-panel-header>
+          <span class="expansion">
+            <mat-icon svgIcon="offers" class="sidenav-icons mat-expension-icons"></mat-icon><span class="ml-left">
+              Stories</span>
+          </span>
+        </mat-expansion-panel-header>
+
+        <ng-container>
+          <a mat-list-item color="primary" [routerLink]="['ABS_STORIES' | absolutePath]" routerLinkActive="active">
+            <mat-icon svgIcon="story" class="sidenav-icons"></mat-icon> Story
+          </a>
+        </ng-container>
+        <ng-container>
+          <a mat-list-item color="primary" [routerLink]="['ABS_REELS' | absolutePath]" routerLinkActive="active">
+            <mat-icon svgIcon="story" class="sidenav-icons"></mat-icon> Reels
+          </a>
+        </ng-container>
+        <ng-container>
+          <a mat-list-item color="primary" [routerLink]="['ABS_FITNESS_REELS' | absolutePath]"
+            routerLinkActive="active">
+            <mat-icon svgIcon="story" class="sidenav-icons"></mat-icon> Fitness Reels
+          </a>
+        </ng-container>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
+
+  <ng-container>
+    <a mat-list-item color="primary" [routerLink]="['ABS_QUICK_LINKS' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="story" class="sidenav-icons"></mat-icon> Quick Links
+    </a>
+  </ng-container>
+
+  <ng-container>
+    <a mat-list-item color="primary" [routerLink]="['ABS_DEEP_LINKS' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="story" class="sidenav-icons"></mat-icon> Deep Links
+    </a>
+  </ng-container>
+
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.EVENTS)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_EVENTS' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="event" class="sidenav-icons"></mat-icon> Events
+    </a>
+  </ng-container>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.ARTICLES)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_ARTICLES' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="article" class="sidenav-icons"></mat-icon> Articles
+    </a>
+  </ng-container>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.REWARDS)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_REWARDS' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="trophy" class="sidenav-icons"></mat-icon> Rewards
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="(storage?.adminDetail?.userType=='ADMIN')">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="isExpandedOfferSidebar()">
+        <mat-expansion-panel-header>
+          <span class="expansion">
+            <mat-icon svgIcon="offers" class="sidenav-icons mat-expension-icons"></mat-icon><span class="ml-left">Offer
+              Management</span>
+          </span>
+        </mat-expansion-panel-header>
+
+        <ng-container>
+          <a mat-list-item color="primary" [routerLink]="['ABS_PROMO_MGMT' | absolutePath]" routerLinkActive="active">
+            <mat-icon svgIcon="promo" class="sidenav-icons"></mat-icon> Promo Codes
+          </a>
+        </ng-container>
+
+        <ng-container>
+          <a mat-list-item color="primary" [routerLink]="['ABS_SPECIAL_OFFERS' | absolutePath]"
+            routerLinkActive="active">
+            <mat-icon svgIcon="special-offer" class="sidenav-icons"></mat-icon> Special Offers
+          </a>
+        </ng-container>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.BADGES)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_BADGES' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="badge" class="sidenav-icons"></mat-icon> Badges
+    </a>
+  </ng-container>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.BANNERS)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_BANNERS' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="banners" class="sidenav-icons"></mat-icon> Banners
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="(storage?.adminDetail?.userType=='ADMIN')">
+    <a mat-list-item color="primary" [routerLink]="['ABS_CORPORATES' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="sub-admins" class="sidenav-icons"></mat-icon> Corporates
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="(storage?.adminDetail?.userType=='ADMIN')">
+    <a mat-list-item color="primary" [routerLink]="['ABS_MANAGE_HEALTH_SCORE' | absolutePath]"
+      routerLinkActive="active">
+      <mat-icon svgIcon="content_management" class="sidenav-icons"></mat-icon> Manage Health Score
+    </a>
+  </ng-container>
+
+  <ng-container>
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="isExpandedClubSidebar()">
+        <mat-expansion-panel-header>
+          <span class="expansion">
+            <mat-icon svgIcon="client-master" class="sidenav-icons mat-expension-icons"></mat-icon><span
+              class="ml-left">Club Management</span>
+          </span>
+        </mat-expansion-panel-header>
+
+        <ng-container
+          *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.CLIENTS)">
+          <a mat-list-item color="primary" [routerLink]="['ABS_CLIENT_CLUBS' | absolutePath]" routerLinkActive="active">
+            <mat-icon svgIcon="client-master" class="submenu-icon"></mat-icon> <span class="sub-menu">Clients</span>
+          </a>
+        </ng-container>
+
+        <ng-container
+          *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.CLUBS)">
+          <a mat-list-item color="primary" [routerLink]="['ABS_CLUBS' | absolutePath]" routerLinkActive="active">
+            <mat-icon svgIcon="clubs" class="submenu-icon"></mat-icon> <span class="sub-menu">Clubs</span>
+          </a>
+        </ng-container>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
+
+  <ng-container *ngIf="(storage?.adminDetail?.userType=='ADMIN')">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="isExpandedLwcSidebar()">
+        <mat-expansion-panel-header>
+          <span class="expansion">
+            <mat-icon svgIcon="points" class="sidenav-icons mat-expension-icons"></mat-icon>
+            <span class="ml-left">LWC Distribution</span>
+          </span>
+        </mat-expansion-panel-header>
+
+        <ng-container>
+          <a mat-list-item color="primary" [routerLink]="['ABS_POINTS_DISTRIBUTION' | absolutePath]"
+            routerLinkActive="active">
+            <mat-icon svgIcon="video-ads" class="submenu-icon"></mat-icon> <span class="sub-menu">Video Ads
+              LWC</span>
+          </a>
+        </ng-container>
+
+        <ng-container>
+          <a mat-list-item color="primary" [routerLink]="['ABS_PER_STEP_LWC' | absolutePath]" routerLinkActive="active">
+            <mat-icon svgIcon="video-ads" class="submenu-icon"></mat-icon> <span class="sub-menu">Per Step
+              LWC</span>
+          </a>
+        </ng-container>
+
+        <ng-container>
+          <a mat-list-item color="primary" [routerLink]="['ABS_POINTS_DISTRIBUTION_HISTORY' | absolutePath]"
+            routerLinkActive="active">
+            <mat-icon svgIcon="points-history" class="submenu-icon"></mat-icon> <span class="sub-menu">LWC
+              History</span>
+          </a>
+        </ng-container>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.LIVWELL_VIDEOS)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_LIVWELL_VIDEOS' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="videos" class="sidenav-icons"></mat-icon> Livwell Videos
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="storage?.adminDetail?.userType=='ADMIN'">
+    <a mat-list-item color="primary" [routerLink]="['ABS_VERSIONS' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="versions" class="sidenav-icons"></mat-icon> Versions
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="storage?.adminDetail?.userType=='ADMIN'">
+    <a mat-list-item color="primary" [routerLink]="['ABS_SUB_ADMINS' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="sub-admins" class="sidenav-icons"></mat-icon> Sub Admins
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="(storage?.adminDetail?.userType=='ADMIN')">
+    <a mat-list-item color="primary" [routerLink]="['ABS_AGE_CALCULATOR' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="calculator" class="sidenav-icons"></mat-icon> Age Calculator
+    </a>
+  </ng-container>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN')|| (storage?.adminDetail?.permission | permission: SECTION_ID_OF.MESSAGE_BOARD)">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="isExpandedMssgBoardSidebar()">
+        <mat-expansion-panel-header>
+          <span class="expansion">
+            <mat-icon svgIcon="message_board" class="sidenav-icons mat-expension-icons"></mat-icon>
+            <span class="ml-left">Message Board</span>
+          </span>
+        </mat-expansion-panel-header>
+
+        <ng-container>
+          <a mat-list-item color="primary" [routerLink]="['ABS_BOARDS' | absolutePath]" routerLinkActive="active">
+            <mat-icon svgIcon="boards" class="submenu-icon"></mat-icon> <span class="sub-menu">Boards</span>
+          </a>
+        </ng-container>
+
+        <ng-container>
+          <a mat-list-item color="primary" [routerLink]="['ABS_POSTS' | absolutePath]" routerLinkActive="active">
+            <mat-icon svgIcon="posts" class="submenu-icon"></mat-icon> <span class="sub-menu">Posts</span>
+          </a>
+        </ng-container>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN')|| (storage?.adminDetail?.permission | permission: SECTION_ID_OF.SUBSCRIPTION_FEATURES)">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="isExpandedMssgBoardSidebar()">
+        <mat-expansion-panel-header>
+          <span class="expansion">
+            <mat-icon svgIcon="points-history" class="sidenav-icons mat-expension-icons"></mat-icon>
+            <span class="ml-left">Subscription</span>
+          </span>
+        </mat-expansion-panel-header>
+
+        <ng-container *ngIf="(storage?.adminDetail?.userType=='ADMIN')">
+          <a mat-list-item color="primary" [routerLink]="['ABS_PAYMENTS' | absolutePath]" routerLinkActive="active">
+            <mat-icon svgIcon="points-history" class="sidenav-icons"></mat-icon> Subscriptions
+          </a>
+        </ng-container>
+
+
+        <ng-container
+          *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.SUBSCRIPTION_FEATURES)">
+          <a mat-list-item color="primary" [routerLink]="['ABS_SUBSCRIPTION_FETURES' | absolutePath]"
+            routerLinkActive="active">
+            <mat-icon svgIcon="points-history" class="sidenav-icons"></mat-icon> Features
+          </a>
+        </ng-container>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.FAQ)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_FAQ' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="faq" class="sidenav-icons"></mat-icon> FAQ
+    </a>
+  </ng-container>
+
+  <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.CMS)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_CMS' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="content_management" class="sidenav-icons"></mat-icon> Content Management
+    </a>
+  </ng-container>
+</mat-nav-list>

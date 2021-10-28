@@ -1,0 +1,94 @@
+@import "var";
+.account_wrapper {
+  height: 100%;
+  display: flex;
+  background-color: rgba($primary, 0.3);
+  background-image: url("../../../assets/images/login-bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.img-section {
+  width: 352px;
+  height: 352px;
+  margin-top: 51px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.logo_info {
+  flex: 0 0 50%;
+  position: relative;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .logo {
+    width: 250px;
+    height: 130px;
+    -o-object-fit: cover;
+    object-fit: contain;
+    position: relative;
+  }
+}
+.account_form_wrap {
+  flex: 0 0 50%;
+  align-items: center;
+  justify-items: center;
+  height: 100%;
+  max-width: 500px;
+  overflow: hidden;
+  margin: 0 auto;
+  position: relative;
+  @media (max-width: 767px) and (orientation: landscape) {
+    height: 160%;
+    max-width: 100%;
+    overflow: auto;
+  }
+  .logo-sec-mob {
+    position: absolute;
+    display: none;
+  }
+  .content {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    @media (max-width: 767px) and (orientation: landscape) {
+      width: 75%;
+    }
+  }
+}
+@media (max-width: 767px) {
+  .account_wrapper {
+    height: 100%;
+    display: block;
+  }
+  .logo_info {
+    display: none;
+  }
+  .logo {
+    width: 210px;
+    height: auto;
+  }
+  .account_form_wrap {
+    position: relative;
+    background-color: rgba($primary, 0.3);
+    background-image: url("../../../assets/images/login-bg.png");
+  }
+  .logo-sec-mob {
+    position: absolute;
+    top: 14%;
+    display: block !important;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

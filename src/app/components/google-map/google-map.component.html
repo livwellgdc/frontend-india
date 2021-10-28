@@ -1,0 +1,22 @@
+<mat-dialog-content class="mat-typography">
+  <h3 mat-dialog-title> Select Location from Map
+    <button type="submit" mat-raised-button color="primary" (click)="submitAddress()">Select</button>
+  </h3>
+  <div class="">
+    <mat-form-field appearance="outline">
+      <mat-label> Search Location </mat-label>
+      <input matInput placeholder="search for location"  autocorrect="off" autocapitalize="off" spellcheck="off"
+        type="text" #search [formControl]="searchControl">
+      <div id="map"></div>
+      <button class="clearBtn" *ngIf="this.search.value" matSuffix mat-icon-button aria-label="Clear"
+        (click)="this.search.value=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false">
+    <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+      (dragEnd)="markerDragEnd($event)"></agm-marker>
+  </agm-map>
+</mat-dialog-content>

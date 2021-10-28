@@ -1,0 +1,16 @@
+<mat-table-renderer notFound="Fitness Reels Not Available" (status)="changeStatus($event)"
+  cls="removeSearch removeAddButton" (category) ="categoryHandler($event)" [categoryList] ="categoryList" [heading]="heading"  [addCustomClass]="''" (export)="downloadList($event)" 
+   (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  (sort)="sortByListing($event)" (filter)="submitFilter($event)">
+  <div role="filter">
+    <form [formGroup]="filterForm">
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let sta of status" [value]="sta?.value">{{sta?.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+</mat-table-renderer>

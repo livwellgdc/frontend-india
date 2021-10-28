@@ -1,0 +1,30 @@
+<mat-table-renderer notFound="Clubs not added" placeholder="Search by Club Name or Short Name or Club City"
+  [heading]="heading" listType="Club" cls="{{permissionClass}}" (add)="addClubs($event)"
+   [addCustomClass]="''" [permissionId] = "SECTION_ID_OF.CLUBS"
+  (export)="downloadList($event)" (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  (status)="changeStatus($event)" (sort)="sortByListing($event)" (filter)="submitFilter($event)">
+  <div role="filter">
+    <form [formGroup]="filterForm">
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select City</mat-label>
+        <mat-select formControlName="cityName">
+          <mat-select-search (search)="searchCityByName($event)" placeholder="Search City By Name">
+          </mat-select-search>
+          <mat-option disabled *ngIf="!searchedCity || searchedCity?.length <= 0">
+            <ng-container>
+              {{_common?.isApiCallInProgress?.ofCity ? 'Loading...':'City not found'}}
+            </ng-container>
+          </mat-option>
+          <mat-option *ngFor="let city of searchedCity" [value]="city?.name">{{city?.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let sta of status" [value]="sta?.value">{{sta?.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+</mat-table-renderer>

@@ -1,0 +1,49 @@
+@import "var";
+@import "mix";
+@import "grid";
+@include status;
+@include details-section;
+@include details-form-section;
+@include club-anchor;
+
+.panel-wrap {
+  @include panel;
+  @include img(100%, 320px, cover, 0%);
+  margin-bottom: 25px;
+}
+.btn-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  .add-btn {
+    @include btn;
+    background: #900968;
+  }
+  .cancle-btn {
+    @include btn;
+    background: #afacae;
+  }
+}
+.place-icons {
+  position: relative;
+  top: 7px;
+}
+.qrClass {
+  text-align: center;
+  margin: auto;
+}
+
+.qr-image {
+  width: 100%;
+}
+
+.removeQrCodeDom {
+  display: none;
+}
+
+.shortNameClass {
+  text-align: center;
+  font-weight: bold;
+  position: relative;
+  top: -10px;
+}

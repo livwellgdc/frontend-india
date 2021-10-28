@@ -1,0 +1,6 @@
+<mat-table-renderer placeholder="Search by Uid or User Name" cls="removeAddButton" listType="User" [heading]="heading"
+  [addCustomClass]="''" (export)="downloadList($event)" [permissionId] = "SECTION_ID_OF.USERS" (find)="paginationWithSearch($event,0)"
+  (page)="paginationWithSearch($event,1)" (status)="changeStatus($event)" (filter)="filterApply($event)"
+  (sort)="sortByListing($event)">
+  <lv-user-filter [filter]="filterForm" role="filter"></lv-user-filter>
+</mat-table-renderer>

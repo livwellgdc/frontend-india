@@ -1,0 +1,80 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-6 col-6 panel-header"> Livwell Video Details</div>
+          <div class="col-sm-6 col-6 form-group btn-section {{permissionClass}}">
+            <button title="Edit Video" mat-icon-button (click)="editHandler()">
+              <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="row align-items-center">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+
+            <div class="detail-row ">
+              <div class="form-group">
+                <label class="el_name">Video Title (In English)</label>
+                <label class="el_value">{{videoDetails?.title?.en |titlecase |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Video Title (In Vietnamese)</label>
+                <label class="el_value">{{videoDetails?.title?.vi |titlecase |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Category</label>
+                <label class="el_value">{{videoDetails?.categoryId?.name?.en |titlecase}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Premium Content</label>
+                <label class="el_value">{{videoDetails?.points > 0 ? 'Yes' : 'No'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Points For Deduction</label>
+                <label class="el_value">{{videoDetails?.points ? videoDetails?.points :'0'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Video Status</label>
+                <label class="el_value status">
+                  <span [ngClass]="videoDetails?.status">{{videoDetails?.status | formatStatus}}</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Video Link</label>
+                <label class="el_link">
+                  <a [title]="videoDetails?.videoLink" href="{{videoDetails?.videoLink}}" target="_blank"
+                    class="detail-links">
+                    {{videoDetails?.videoLink}}
+                  </a>
+                  <span class="clipboard"> <button mat-icon-button class="copy-btn-color" title="Copy Link to Clipboard"
+                      (click)="copyLink(videoDetails?.videoLink)" *ngIf="videoDetails?.videoLink">
+                      <mat-icon class="copy-icon">file_copy</mat-icon>
+                    </button></span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Created Date</label>
+                <label class="el_value">{{videoDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Video Description (In English)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Video Description (In English)',videoDetails?.description?.en)">{{videoDetails?.description?.en |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Video Description (In Vietnamese)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Video Description (In Vietnamese)',videoDetails?.description?.vi)">{{videoDetails?.description?.vi |emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+</div>

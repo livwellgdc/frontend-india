@@ -1,0 +1,36 @@
+<mat-table-renderer notFound="Rewards not added" placeholder="Search by Reward Name" cls="{{permissionClass}}"
+  [heading]="heading" [permissionId] = "SECTION_ID_OF.REWARDS" [pageType]="'disableBlockIcon'" addUrboxButton = "true" (add)="addRewards($event)" (find)="paginationWithSearch($event,0)"
+  [addCustomClass]="''" (export)="downloadList($event)" (page)="paginationWithSearch($event,1)"
+  (status)="changeStatus($event)" (checkbox) = "switchBooleanValue($event)" (sort)="sortByListing($event)" (filter)="submitFilter($event)">
+  <div role="filter">
+    <form [formGroup]="filterForm">
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Category</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-option disabled *ngIf="!livwellBenefitList || livwellBenefitList?.length <= 0">
+            <ng-container>Please add livwell benefit to filter the reward</ng-container>
+          </mat-option>
+          <mat-option *ngFor="let benefit of livwellBenefitList" [value]="benefit?._id">{{benefit?.name?.en |titlecase}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Reward Type</mat-label>
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let rType of rewardType" [value]="rType?.value">{{rType?.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let sta of status" [value]="sta?.value">{{sta?.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </form>
+  </div>
+</mat-table-renderer>

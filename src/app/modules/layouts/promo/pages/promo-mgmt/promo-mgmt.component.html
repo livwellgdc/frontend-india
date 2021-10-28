@@ -1,0 +1,29 @@
+<div class="panel">
+  <form [formGroup]="promoCodeForm" (ngSubmit)="submitHandler()">
+    <p class="lead">{{errMsg?.PROMO_NOTE(errMsg.MAX_USER_COUNT)}}</p>
+
+    <mat-form-field class="m0" appearance="outline">
+      <mat-label>Select Reward</mat-label>
+      <mat-select formControlName="rewardId">
+        <mat-option disabled *ngIf="!arrayInfoVariables?.rewardList || arrayInfoVariables?.rewardList?.length <= 0">
+          <ng-container>Please create private reward for promo code</ng-container>
+        </mat-option>
+        <mat-option
+          title="{{reward?.name?.en |titlecase}} (Available {{reward?.totalAvailableCoupons>1?'Coupons':'Coupon'}} - {{reward?.totalAvailableCoupons}})"
+          *ngFor="let reward of arrayInfoVariables?.rewardList" [value]="reward?._id">
+          {{reward?.name?.en |titlecase}} (Available {{reward?.totalAvailableCoupons>1?'Coupons':'Coupon'}} -
+          {{reward?.totalAvailableCoupons}})
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="f['rewardId'].hasError('required')">{{errMsg.REWARD_REQ}}</mat-error>
+    </mat-form-field>
+
+    <lv-load-on-scroll dropdownType="User" [control]="f['userIds']" (loadMore)="loadMoreUsers($event)"
+      [data]="arrayInfoVariables?.userList">
+    </lv-load-on-scroll>
+
+    <div class="form-btn details">
+      <button type="submit" mat-raised-button color="primary">Send</button>
+    </div>
+  </form>
+</div>

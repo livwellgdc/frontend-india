@@ -1,0 +1,36 @@
+@import "var";
+@import "mix";
+@import "grid";
+
+.add-btn {
+  @include btn;
+  background: $primary;
+}
+.cancle-btn {
+  @include btn;
+  background: #868285;
+}
+.btn-section {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.badge-crop-section {
+  width: 30%;
+  margin: 30px auto;
+  @media (max-width: 767px) {
+    width: 100%;
+    margin: 0;
+  }
+}
+.uploab-btn {
+  position: absolute;
+  right: -15px;
+  bottom: -15px;
+}
+.badge-right-section {
+  margin-top: 26px;
+  @media (max-width: 767px) {
+    margin-top: 0px;
+  }
+}

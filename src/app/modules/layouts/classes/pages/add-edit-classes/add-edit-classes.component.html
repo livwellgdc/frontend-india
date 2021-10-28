@@ -1,0 +1,319 @@
+<mat-card class="pageAnimation" [ngClass]="{'activeAnimation': classId &&!classDetails }">
+  <div class="row">
+    <div class="col-xl-6 col-md-6 col-sm-6 col-12">
+      <h4 class="top-section" [hidden]="classId || copyClassId">Add New Class </h4>
+    </div>
+    <div class="col-xl-6 col-md-6 col-sm-6  col-12" [hidden]="classId || copyClassId">
+      <div class="upload-csv-section">
+        <ng-container *ngIf="csvUploadStatus?.data?.failedData?.length>0">
+          <button mat-button color="primary" (click)="openRecentUploadStatus()" class="dummy-csv">Open Recent Upload
+            Status</button>
+        </ng-container>
+        <input #myInputFile type="file" style="display: none" (change)="fileChange($event)" accept=".csv" />
+        <button type="button" class="choose_file" mat-stroked-button (click)="myInputFile.click()"
+          color="primary">Choose & Upload CSV File</button>
+        {{ files[0]?.name }}
+        <p class="bulk-upload">
+          <a class="click_here" [matMenuTriggerFor]="menu">
+            Click here
+          </a>
+          <mat-menu class="csv-btn" #menu="matMenu">
+            <button mat-menu-item class="csv-btn-text" (click)="downloadSampleFile()">as CSV</button>
+          </mat-menu>
+          to download class sample template to perform bulk-upload.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-4 col-lg-4 col-md-4 col-12 custom-hover classes-image">
+      <div class="img image_uploader">
+        <label class="custom-margin span-images">Class Image (Optional)</label>
+        <lv-lazy-image [img]="cropFile?.cropBase64"></lv-lazy-image>
+        <button type="button" mat-mini-fab color="primary" class="uploab-btn" (click)="onSelectFile(1)">
+          <mat-icon>camera_alt</mat-icon>
+        </button>
+        <ng-container *ngIf="f['image'].value">
+          <div class="file-button">
+            <button type="button" class="delete-btn-color" title="Remove File" (click)="removeImageFile()">
+              <mat-icon class="delete-icons">delete</mat-icon>
+            </button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="col-xl-4 col-lg-4 col-md-4 col-12 custom-hover classes-image">
+      <div class="img image_uploader">
+        <label class="custom-margin span-images">Class Banner </label>
+        <lv-lazy-image [img]="cropFile2?.cropBase64"></lv-lazy-image>
+        <button type="button" mat-mini-fab color="primary" class="uploab-btn"
+          (click)="onSelectFile(3,5/5.0001,300,'BANNER')">
+          <mat-icon>camera_alt</mat-icon>
+        </button>
+        <ng-container *ngIf="f['image'].value">
+          <div class="file-button">
+            <button type="button" class="delete-btn-color" title="Remove File" (click)="removeImageFile(1)">
+              <mat-icon class="delete-icons">delete</mat-icon>
+            </button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="col-xl-4 col-lg-4 col-md-4 col-12 mb-2 custom-hover ">
+      <lv-files-upload class="classes-video" [overlayText]="'Choose Video File'" [addCustomCss]="true"
+        (stateChange)="onChangeFilesHandler($event)" [errorMessage]="postMediaError" label="Class Video (Optional)"
+        [accept]="fileFormat" [maxFiles]="classMediaLimits.MAX_POST_MEDIA"
+        [maxVideoFiles]="classMediaLimits.MAX_POST_VIDEOS">
+      </lv-files-upload>
+    </div>
+  </div>
+
+  <form [formGroup]="classForm" (ngSubmit)="classHandler()" class="form-cst-margin">
+
+    <div class="row">
+
+      <div class="col-xl-12 col-lg-12 col-md-12 col-md-12 col-12 ">
+        <div class="row">
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Class Name</mat-label>
+              <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH" formControlName="name" autocomplete="off" required>
+              <mat-error>{{errMsg.CLASS_NAME_REQ}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 ">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Class Type</mat-label>
+              <mat-select formControlName="type" required>
+                <mat-option *ngFor="let class of classType" [value]="class.value">{{class.name}}</mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.CLASS_TYPE}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Instructor Name</mat-label>
+              <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH" formControlName="instructorName" autocomplete="off"
+                required>
+              <mat-error>{{errMsg.CLASS_INSTRUCTOR_NAME}}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row ">
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Date</mat-label>
+              <input matInput (click)="picker.open()" [matDatepicker]="picker" formControlName="startDate"
+                placeholder="Choose Class Date" (dateChange)="classDateChange()" [min]="todayClass" readonly>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="f['startDate'].hasError('required')">{{errMsg.CLASS_START_DATE}}</mat-error>
+              <mat-error *ngIf="f['startDate'].hasError('invalid')">{{errMsg.INVALID_DATE}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Class Start Time</mat-label>
+              <input matInput (dateTimeChange)="classStartTimeChange($event)" formControlName="startTime"
+                [owlDateTimeTrigger]="startTime" [owlDateTime]="startTime" [min]="!classId ? today : ''"
+                [max]="!classId ? maxDate : ''" readonly />
+              <owl-date-time [hour12Timer]="true" pickerType="timer" #startTime>
+              </owl-date-time>
+              <mat-error *ngIf="f['startTime'].hasError('required')">{{errMsg.CLASS_START_TIME}}</mat-error>
+              <mat-error *ngIf="f['startTime'].hasError('invalid')">{{errMsg.INVALID_TIME}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Class End Time</mat-label>
+              <input matInput (dateTimeChange)="classEndTimeChange($event, f['startTime'].value)"
+                formControlName="endTime" [owlDateTimeTrigger]="endTime" [owlDateTime]="endTime" readonly
+                [min]="f['startTime'].value" [max]="!classId ? maxDate : ''" />
+              <owl-date-time [hour12Timer]="true" pickerType="timer" #endTime></owl-date-time>
+              <mat-error *ngIf="f['endTime'].hasError('required')">{{errMsg.CLASS_END_TIME}}</mat-error>
+              <mat-error *ngIf="f['endTime'].hasError('invalid')">{{errMsg.INVALID_TIME}}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row ">
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12" formGroupName="categoryId">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Category</mat-label>
+              <mat-select formControlName="_id" (selectionChange)="categorySelectionHandler($event.value)" required>
+                <mat-option disabled *ngIf="!categoryList || categoryList?.length <= 0">
+                  <ng-container>Please add class categories to create the class</ng-container>
+                </mat-option>
+                <mat-option *ngFor="let category of categoryList" [value]="category?._id">
+                  {{category?.name?.en |titlecase}}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.CLASS_CATEGORY}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Video Conference Link</mat-label>
+              <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH" formControlName="videoConferenceLink"
+                autocomplete="off" required>
+              <mat-error>{{errMsg.VIDEO_CONFERNCE_LINK}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Livwell Points</mat-label>
+              <input matInput number [maxlength]="_limit?.MAX_POINTS_LENGTH" formControlName="points" autocomplete="off"
+                required>
+              <mat-error>{{errMsg.CLASS_POINTS}}</mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <div class="row custom-border">
+
+          <div class="col-xl-2  col-md-2 col-sm-12 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Total Seats</mat-label>
+              <input #increaseSeat matInput number [maxlength]="_limit?.MAX_PARTICIPANTS_LENGTH"
+                formControlName="totalParticipant" autocomplete="off" required>
+              <mat-error class="error-message" *ngIf="f['totalParticipant'].hasError('required')">
+                {{errMsg.CLASS_PARTICIPANTS}}</mat-error>
+              <mat-error class="error-message" *ngIf="f['totalParticipant'].hasError('pattern')">
+                {{errMsg.CLASS_INVALID_PARTICIPANTS}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-3 col-md-3 col-sm-12 col-12" [ngClass]="{'_disabled': !this.f.totalParticipant.valid}">
+            <mat-form-field appearance="outline">
+              <mat-label>Enter Available Seats One By One</mat-label>
+              <input #availableSeat matInput number [maxlength]="_limit?.MAX_PARTICIPANTS_LENGTH"
+                formControlName="availableSeats" autocomplete="off">
+              <mat-hint align="end" class="hint" *ngIf="!this.f.totalParticipant.valid">
+                {{errMsg.TOTAL_SEATS_FIRST}}</mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-1 col-lg-1 col-md-1 col-sm-6 col-6"
+            [ngClass]="{'_disabled': !this.f.totalParticipant.valid}">
+            <button mat-button type="button" color="primary" class="save-seat btn-class" (click)="saveAvailableSeats()">
+              Save Seat</button>
+          </div>
+          <div class="col-xl-1 col-lg-1 col-md-1 col-sm-6 col-6"
+            [ngClass]="{'_disabled': !this.f.totalParticipant.valid}">
+            <button mat-button type="button" color="primary" class="view-seat btn-class" (click)="viewAvailableSeats()">
+              View Seat</button>
+          </div>
+
+          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+            <button mat-button type="button" color="primary" class="upload-seta-map-image btn-class"
+              (click)="onSelectFile(2)">
+              Upload Seat Map Image</button>
+          </div>
+          <div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6" [ngClass]="{'_disabled': !this.f.seatMapImage.value}">
+            <button mat-button type="button" color="primary" class="view-image btn-class" (click)="viewSeatMapImage()">
+              View Image</button>
+          </div>
+
+        </div>
+
+
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Purchase Using</mat-label>
+              <mat-select formControlName="puchaseDenominationType" required>
+                <mat-option *ngFor="let item of classPurchaseType" [value]="item.value">{{item.name}}</mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.PURCHASE_DENOMINATION_TYPE}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Price</mat-label>
+              <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH" formControlName="price" autocomplete="off" required>
+              <mat-error>{{errMsg.PURCHASE_MONEY}}</mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <div class="row ">
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Select City</mat-label>
+              <mat-select formControlName="city" (selectionChange)="CitySelectionHandler($event)" required>
+                <mat-select-search (search)="searchCityByName($event)" placeholder="Search City By Name">
+                </mat-select-search>
+                <mat-option disabled *ngIf="!searchedCity || searchedCity?.length <= 0">
+                  <ng-container>City not found</ng-container>
+                </mat-option>
+                <mat-option *ngFor="let city of searchedCity" [value]="city?.name">{{city?.name}}</mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.CLASS_CITY}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" [ngClass]="{'_disabled': !f['city'].value}"
+            formGroupName="clubId">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Club</mat-label>
+              <mat-select formControlName="_id" (selectionChange)="clubSelectionHandler($event.value)" required>
+                <mat-option *ngFor="let club of clubList" [value]="club?._id">{{club?.name}}
+                  ({{club?.shortName}})</mat-option>
+                <mat-option disabled *ngIf='clubList?.length == 0'>No Club Found</mat-option>
+              </mat-select>
+              <mat-error *ngIf="f['clubId']['controls']._id.hasError('required')">{{errMsg.CLASS_CLUB}}</mat-error>
+              <mat-hint align="end" class="hint" *ngIf="!f.city.value">{{errMsg.CLUB_CITY_SELECT}}</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="row ">
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Studio</mat-label>
+              <mat-select formControlName="studioName" required>
+                <mat-option *ngFor="let studio of classStudio" [value]="studio?.value">{{studio?.name}}</mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.CLASS_STUDIO}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Difficulty Level</mat-label>
+              <mat-select formControlName="difficultyLevel" multiple required>
+                <mat-option *ngFor="let  difficulty of difficultyLevel" [value]="difficulty?.value">{{difficulty?.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.CLASS_DIFFICULTY_LEVEL}}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row ">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label> Class Description</mat-label>
+              <textarea type="text" #disc1 matInput [maxlength]="_limit?.DESCRIPTION_MAX" formControlName="description"
+                required></textarea>
+              <mat-hint align="end">{{disc1.value.length}} / {{_limit?.DESCRIPTION_MAX}}</mat-hint>
+              <mat-error>{{errMsg.CLASS_DESCRIPTION}}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row ">
+          <div class="col btn-section">
+            <button type="button" class="cancle-btn" (click)="cancelHandler()">Cancel</button>
+            <button type="submit" class="add-btn">{{classId? 'Update':(copyClassId ? 'Copy' : 'Add')}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</mat-card>

@@ -1,0 +1,49 @@
+<lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+
+<ng-template #apiHit>
+  <mat-card>
+    <ng-container *ngIf="questionList?.length>0;else noQues">
+      <ng-container *ngFor="let ques of questionList;let i=index;">
+
+        <div class="wrap">
+          <mat-icon class="edit" title="Edit Question" (click)="onClickEdit(ques)">edit</mat-icon>
+          <div class="inner-wrap">
+            <div class="question">
+              {{i+1}}. {{ques?.question?.en |emptyValue}}
+            </div>
+            <div class="answer">
+              <ng-container *ngFor="let ans of ques?.answers">
+                <div class="inner-ans">
+                  <span>{{ans?.position |emptyValue}}</span>
+                  <mat-icon title="{{ans?.description?.en?ans?.description?.en:''}}">info</mat-icon>
+                  <div class="ans">{{ans?.value?.en |emptyValue}}</div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="inner-wrap">
+            <div class="question">
+              {{i+1}}. {{ques?.question?.vi |emptyValue}}
+            </div>
+            <div class="answer">
+              <ng-container *ngFor="let ans of ques?.answers">
+                <div class="inner-ans">
+                  <span>{{ans?.position |emptyValue}}</span>
+                  <mat-icon title="{{ans?.description?.vi?ans?.description?.vi:''}}">info</mat-icon>
+                  <div class="ans">{{ans?.value?.vi |emptyValue}}</div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+      </ng-container>
+    </ng-container>
+
+    <ng-template #noQues>
+      <lv-result-not-found [msg]="'No Questions Found'"></lv-result-not-found>
+    </ng-template>
+
+  </mat-card>
+</ng-template>

@@ -1,0 +1,4 @@
+<mat-table-renderer placeholder="Search by User Name" cls="removeAddButton removeFilter" [heading]="heading"
+  [addCustomClass]="''" (export)="downloadList($event)" (find)="paginationWithSearch($event,0)"
+  (page)="paginationWithSearch($event,1)" (sort)="sortByListing($event)">
+</mat-table-renderer>

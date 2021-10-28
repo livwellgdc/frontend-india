@@ -1,0 +1,49 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-6 col-6 panel-header"> Version Details</div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="row align-items-center">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+
+            <div class="detail-row ">
+              <div class="form-group">
+                <label class="el_name">Version Name</label>
+                <label class="el_value">{{versionDetails?.name |titlecase |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Current Version</label>
+                <label
+                  class="el_value">v{{versionDetails?.currentVersion ? versionDetails?.currentVersion :'0'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Platform</label>
+                <label class="el_value">{{versionDetails?.platform | formatStatus}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Version Update Type</label>
+                <label class="el_value">{{versionDetails?.updateType | formatStatus}}</label>
+              </div>
+
+              <div class="form-group">
+                <label class="el_name">Created Date</label>
+                <label class="el_value">{{versionDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Version Description</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Version Description',versionDetails?.description)">{{versionDetails?.description |emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+</div>

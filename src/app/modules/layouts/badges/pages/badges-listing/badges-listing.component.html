@@ -1,0 +1,14 @@
+<mat-table-renderer notFound="Badges not added" placeholder="Search by Badge Name" cls="{{permissionClass}}" [heading]="heading"
+  (add)="addBadges($event)" (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  (status)="changeStatus($event)" (sort)="sortByListing($event)" (filter)="submitFilter($event)">
+  <div role="filter">
+    <form [formGroup]="filterForm">
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Badge Type</mat-label>
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let type of badgeType" [value]="type.value">{{type.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+</mat-table-renderer>

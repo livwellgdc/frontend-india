@@ -1,0 +1,169 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-6 col-6 panel-header"> Reward Details</div>
+          <div class="col-sm-6 col-6 form-group btn-section {{permissionClass}}">
+            <button title="Edit Reward" class="edit-fab" mat-icon-button color="primary" (click)="editHandler()">
+              <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="row align-items-center">
+          <div class="col-12 col-sm-5 col-md-4 col-lg-3">
+            <figure class="img">
+              <lv-lazy-image
+                [img]="rewardDetails?.image ? rewardDetails?.image : 'assets/images/image_placeholder.jpg'">
+              </lv-lazy-image>
+            </figure>
+          </div>
+          <div class="col-12 col-sm-7 col-md-8 col-lg-9">
+
+            <div class="detail-row">
+              <div class="form-group">
+                <label class="el_name"> Reward Name (In English)</label>
+                <label class="el_value">{{rewardDetails?.name?.en | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Reward Name (In Vietnamese)</label>
+                <label class="el_value">{{rewardDetails?.name?.vi | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Sponsor Name</label>
+                <label class="el_value">{{rewardDetails?.sponsorName | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Partner with Scanner</label>
+                <label class="el_value">{{rewardDetails?.hasScanner?'Yes':'No'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Reward Validity</label>
+                <label class="el_value">{{rewardDetails?.validity | date:dateType.VALIDITY_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Livwell Benefit Category</label>
+                <label class="el_value">{{rewardDetails?.categoryId?.name?.en |titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Special Offer</label>
+                <label class="el_value">{{rewardDetails?.isFeatured ? 'Yes' : 'No'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Reward Privacy</label>
+                <label class="el_value">{{rewardDetails?.privacy | titlecase| emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Reward Type</label>
+                <label class="el_value">{{rewardDetails?.type | titlecase| emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Total Points</label>
+                <label class="el_value">{{rewardDetails?.totalPoints ? rewardDetails?.totalPoints : '0' }}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Discount (In %)</label>
+                <label
+                  class="el_value">{{rewardDetails?.discountPercent ? rewardDetails?.discountPercent : '0' }}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Reward Points</label>
+                <label
+                  class="el_value">{{(rewardDetails?.points || rewardDetails?.points==0) ? rewardDetails?.points : 'N/A'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Code Generation Type</label>
+                <label
+                  class="el_value">{{rewardDetails?.couponCodeType=='MANUAL'?'Manually Generated':'Auto Generated'}}</label>
+              </div>
+              <div class="form-group" *ngIf="rewardDetails?.couponCodes && rewardDetails?.couponCodes?.length>1">
+                <label class="el_name"> Coupon Codes</label>
+                <div class="banner-code">
+                  <label class="el_value reward-coupon"
+                    [ngClass]="{'club-anchor': rewardDetails?.couponCodes?.length>1}"
+                    [title]="rewardDetails?.couponCodes?.length>1 ? 'Click to See More' :''"
+                    (click)="openCodeBox()">{{rewardDetails?.couponCodes[0]}}
+                    <span *ngIf="rewardDetails?.couponCodes?.length>1">...</span>
+                  </label>
+                  <span class="download"> <button mat-icon-button class="download-btn-color" title="Download Codes"
+                      (click)="downloadCouponCodes(rewardDetails?.couponCodes)"
+                      *ngIf="rewardDetails?.couponCodes?.length>0">
+                      <mat-icon class="copy-icon">archive</mat-icon>
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Available Coupon Count</label>
+                <label
+                  class="el_value">{{rewardDetails?.totalAvailableCoupons ? rewardDetails?.totalAvailableCoupons :'0'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Total Quantity</label>
+                <label class="el_value">{{rewardDetails?.totalRedemption ? rewardDetails?.totalRedemption :'0'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Reward Won Count</label>
+                <label class="el_value">{{rewardDetails?.totalUsers ? rewardDetails?.totalUsers :'0'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Coupon Validity</label>
+                <label class="el_value">{{rewardDetails?.redemptionValidity ?
+                     (rewardDetails?.redemptionValidity > 1 ? (rewardDetails?.redemptionValidity +' Days') : (rewardDetails?.redemptionValidity +' Day'))
+                      :'0 Day'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Reward Status</label>
+                <label class="el_value status">
+                  <span [ngClass]="rewardDetails?.status">{{rewardDetails?.status | formatStatus}}</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Reward Link</label>
+                <label class="el_link">
+                  <a [title]="rewardDetails?.sponsorLink" href="{{rewardDetails?.sponsorLink}}" target="_blank"
+                    class="detail-links">
+                    {{rewardDetails?.sponsorLink}}
+                  </a>
+                  <span class="clipboard"> <button mat-icon-button class="copy-btn-color" title="Copy Link to Clipboard"
+                      (click)="copyLink(rewardDetails?.sponsorLink)" *ngIf="rewardDetails?.sponsorLink">
+                      <mat-icon class="copy-icon">file_copy</mat-icon>
+                    </button></span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Created Date</label>
+                <label class="el_value">{{rewardDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group" [hidden]="!rewardDetails?.notes?.en">
+                <label class="el_name">Reward Note (In English)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Reward Note (In English)',rewardDetails?.notes?.en)">{{rewardDetails?.notes?.en |emptyValue}}</label>
+              </div>
+              <div class="form-group" [hidden]="!rewardDetails?.notes?.vi">
+                <label class="el_name">Reward Note (In Vietnamese)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Reward Note (In Vietnamese)',rewardDetails?.notes?.vi)">{{rewardDetails?.notes?.vi |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Reward Description (In English)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Reward Description (In English)',rewardDetails?.description?.en)">{{rewardDetails?.description?.en |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Reward Description (In Vietnamese)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Reward Description (In Vietnamese)',rewardDetails?.description?.vi)">{{rewardDetails?.description?.vi |emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <lv-reward-redeemed-users [rewardId]="rewardId"></lv-reward-redeemed-users>
+  </ng-template>
+</div>

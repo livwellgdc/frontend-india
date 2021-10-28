@@ -1,0 +1,16 @@
+<form [formGroup]="forgotForm" (ngSubmit)="forgotHandler()" class="form mobile-form">
+  <h3>Forgot Password</h3>
+  <p> Please enter your registered Email ID to reset your password. </p>
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input #email matInput type="email" (blur)="trimValues()" [prevent-keys]="[32]"
+      [maxlength]="limit?.MAX_EMAIL_LENGTH" formControlName="email" required />
+    <mat-error *ngIf="f.email.hasError('required')">{{errorMsg?.EMAIL_REQ}}</mat-error>
+    <mat-error *ngIf="f.email.hasError('pattern')">{{errorMsg?.INVALID_EMAIL}}</mat-error>
+  </mat-form-field>
+  <div class="form-btn">
+    <button mat-flat-button color="primary"> Submit </button>
+    <button type="button" class="float-right" mat-button [routerLink]="[ 'ABS_ACCOUNT_LOGIN' | absolutePath ]"> Back to
+      Login </button>
+  </div>
+</form>

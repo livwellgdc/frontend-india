@@ -1,0 +1,69 @@
+<mat-table-renderer notFound="Classes not added" placeholder="Search by Class Name" cls="{{permissionClass}}"
+  [pageType]="'class'" [isButtonGroup]="true" [heading]="heading" (buttonGroupStatus)="getButtunGroupStatus($event)"
+  (add)="addClasses($event)" (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  (status)="changeStatus($event)" (sort)="sortByListing($event)" (filter)="submitFilter($event)">
+  <div role="filter">
+    <form [formGroup]="filterForm">
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Class Created By</mat-label>
+        <mat-select formControlName="classType">
+          <mat-option *ngFor="let createdBy of classCreatedBy" [value]="createdBy.value">{{createdBy.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let sta of status" [value]="sta.value">{{sta.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Class Type</mat-label>
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let class of classType" [value]="class.value">{{class.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Category</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-option disabled *ngIf="!categoryList || categoryList?.length <= 0">
+            <ng-container>Please add class categories to filter the class</ng-container>
+          </mat-option>
+          <mat-option *ngFor="let category of categoryList" [value]="category?._id">{{category?.name?.en |titlecase}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Club</mat-label>
+        <mat-select formControlName="clubId">
+          <mat-select-search (search)="getClubListing($event)" placeholder="Search Club By Name">
+          </mat-select-search>
+          <mat-option disabled *ngIf="!clubList || clubList?.length <= 0">
+            <ng-container *ngIf="isClubCallInProgress">Loading...</ng-container>
+            <ng-container *ngIf="!isClubCallInProgress">Club not found</ng-container>
+          </mat-option>
+          <mat-option *ngFor="let club of clubList" [value]="club._id">{{club.name |titlecase}} ({{club.shortName}})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <input matInput (click)="picker1.open()" [matDatepicker]="picker1" formControlName="startTime"
+          placeholder="Choose Start Date" (dateChange)="classStartDateChange()" readonly>
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <input matInput (click)="picker2.open()" [matDatepicker]="picker2" formControlName="endTime"
+          placeholder="Choose End Date" [min]="f['startTime'].value" readonly>
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+
+    </form>
+  </div>
+</mat-table-renderer>

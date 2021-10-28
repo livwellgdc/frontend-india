@@ -1,0 +1,16 @@
+<form [formGroup]="filter">
+    <mat-form-field appearance="outline">
+        <mat-label>Date From</mat-label>
+        <input matInput [matDatepicker]="picker" (click)="picker.open()" formControlName="fromDate" [max]="today"
+            readonly (dateChange)="selectFromDate($event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Date To</mat-label>
+        <input matInput [matDatepicker]="picker2" (click)="picker2.open()" formControlName="toDate" [max]="today"
+            [min]="f.fromDate.value" readonly>
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+</form>

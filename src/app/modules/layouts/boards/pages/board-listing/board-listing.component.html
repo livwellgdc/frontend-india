@@ -1,0 +1,4 @@
+<mat-table-renderer notFound="Boards not added" placeholder="Search by Board Name" cls="removeFilter"
+  [heading]="heading" (add)="addBoards($event)" (find)="paginationWithSearch($event,0)"
+  (page)="paginationWithSearch($event,1)" (status)="changeStatus($event)" (sort)="sortByListing($event)">
+</mat-table-renderer>

@@ -1,0 +1,4 @@
+<mat-table-renderer notFound="Groups not added" placeholder="Search by Group Name" cls="removeFilter"
+  [heading]="heading" (add)="addGroups($event)" pageType = "group" cls="{{permissionClass}}" (find)="paginationWithSearch($event,0)"
+  (page)="paginationWithSearch($event,1)" (status)="changeStatus($event)" (sort)="sortByListing($event)">
+</mat-table-renderer>

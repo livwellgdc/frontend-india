@@ -1,0 +1,59 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-6 col-6 panel-header"> Badge Details</div>
+          <div class="col-sm-6 col-6 form-group btn-section {{permissionClass}}">
+            <button title="Edit Badge" mat-icon-button (click)="editHandler()">
+              <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <div class="row align-items-center">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-3">
+            <figure class="img">
+              <lv-lazy-image [default]="'1'" [img]="badgeDetails?.image">
+              </lv-lazy-image>
+            </figure>
+          </div>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-9">
+            <div class="detail-row">
+              <div class="form-group">
+                <label class="el_name"> Badge Name</label>
+                <label class="el_value">{{badgeDetails?.name | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Badge Points</label>
+                <label class="el_value">{{badgeDetails?.points?badgeDetails?.points:'0' }}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Badge Type</label>
+                <label class="el_value">{{badgeDetails?.type | formatStatus}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Created Date</label>
+                <label class="el_value">{{badgeDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Badge Description (In English)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Badge Description (In English)',badgeDetails?.description?.en)">{{badgeDetails?.description?.en |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Badge Description (In Vietnamese)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Badge Description (In Vietnamese)',badgeDetails?.description?.vi)">{{badgeDetails?.description?.vi |emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

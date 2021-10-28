@@ -1,0 +1,4 @@
+<mat-table-renderer notFound="FAQ's not added" cls="removeSearch removeFilter {{permissionClass}}" [heading]="heading"
+  (add)="addFaq($event)" (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  (status)="changeStatus($event)" (sort)="sortByListing($event)">
+</mat-table-renderer>

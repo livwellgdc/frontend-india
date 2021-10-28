@@ -1,0 +1,82 @@
+@import "var";
+.overlay {
+  background: #4c4646ab;
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 2000%;
+  z-index: 20;
+  display: none;
+}
+@media (max-width: 1024px) {
+  .overlay {
+    display: block;
+  }
+}
+.mat-nav-list .mat-list-item {
+  border-bottom: 1px solid rgba($primary, 0.05);
+  font-size: 15px;
+  border-left: 4px solid transparent;
+  transition: 0.5s all;
+  .mat-list-item-content{
+    font-size: 14px;
+  }
+  &:hover {
+    background: #0202020d;
+    border-left: 4px solid #900968;
+  }
+  .mat-icon {
+    // background-color: rgba($primary, 0.2);
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    border-radius: 3px;
+    font-size: 23px;
+  }
+  .sidenav-icons {
+    width: 22px;
+    // height: auto;
+    margin-left: 7px;
+    margin-right: 17px;
+  }
+
+  &.active {
+    background-color: rgba($primary, 0.2);
+  }
+}
+::ng-deep {
+  .sidebar .mat-expansion-panel {
+    background: transparent;
+    box-shadow: none !important;
+    border-bottom: 1px solid rgba($primary, 0.05);
+    &.mat-expanded {
+      background: white;
+      border-radius: 0;
+      .mat-expansion-indicator {
+        top: calc(50% - 5px) !important;
+      }
+    }
+  }
+  .mat-expension-icons {
+    position: relative !important;
+    top: 4px !important;
+    width: 22px;
+  }
+  // .mat-expansion-panel-body {
+  //   padding: 0 !important;
+  // }
+  .sub-menu {
+    width: 100%;
+    word-break: break-all;
+  }
+  .submenu-icon {
+    width: 25px !important;
+  }
+  .ml-left {
+    margin-left: 18px;
+    font-size: 14px;
+  }
+}

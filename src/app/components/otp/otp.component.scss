@@ -1,0 +1,19 @@
+input {
+    box-sizing: border-box;
+    width: 24px;
+    height: 46px;
+    border: 1px solid #900968;
+    border-radius: 2px;
+    background-color: #f8f8f8;
+    box-shadow: rgb(144 9 104) 0px 1px 4px 0px inset;
+    margin-right: 6px;
+    font-size: 24px;
+    font-weight: 300;
+    text-align: center;
+}
+
+.form-btn {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }

@@ -1,0 +1,53 @@
+<div class="uploader__header">
+  <span class="uploader__label span-images" *ngIf="label">{{label}}</span>
+  <button mat-button type="button" title="Add Files" [disabled]="disabled" mat-icon-button color="primary"
+    (click)="onAddFileHandler()" *ngIf="hasMultiple">
+    <mat-icon>add_box</mat-icon>
+  </button>
+</div>
+<div [ngClass]="{'customCss': addCustomCss, 'uploader__body':addCustomCss}"
+  [ngClass]="{'livwellvideocss': addLivwellVideoCss }" [ngClass]="{'uploader__body--active': isDropActive}"
+  (drop)="onDropHandler($event)" (dragenter)="onDragEnterHandler($event)" (dragover)="onDragOverHandler($event)"
+  (dragleave)="onDragLeaveHandler($event)">
+  <div [ngClass]="{'customPlaceholder': addCustomCss, 'uploader__placeholder':addCustomCss}"
+    (click)="onAddFileHandler()" *ngIf="data.length === 0">
+    <mat-icon>cloud_upload</mat-icon>
+    <span>{{overlayText}}</span>
+  </div>
+  <div [ngClass]="{'customCss': addCustomCss, 'uploader__preview':addCustomCss}" *ngIf="data.length !== 0">
+    <!-- <button></button> -->
+    <div class="uploader__file" *ngFor="let fileData of data">
+      <ng-container [ngSwitch]="fileData?.type?.split('/')[0]">
+        <img [src]="fileData?.url | safe:'url'" *ngSwitchCase="'image'" />
+        <video id="upload-video" *ngSwitchCase="'video'" #myVideo controls
+          (canplay)="onCanPlayHandler(fileData, $event.currentTarget)">
+          <ng-container>
+            <source [src]="fileData?.url | safe:'url'" type="video/mp4">
+            <source [src]="fileData?.url | safe:'url'" type="video/3gp">
+            <source [src]="fileData?.url | safe:'url'" type="video/flv">
+          </ng-container>
+        </video>
+        <audio id="upload-audio" *ngSwitchCase="'audio'" #myAudio controls>
+          <ng-container>
+            <source [src]="fileData?.url | safe:'url'" type="audio/mp3">
+            <source [src]="fileData?.url | safe:'url'" type="audio/mpeg">
+            <source [src]="fileData?.url | safe:'url'" type="audio/wav">
+          </ng-container>
+        </audio>
+        <ng-container *ngSwitchDefault>
+          <img [src]="'../../../assets/images/dummy_pdf.jpeg'" />
+        </ng-container>
+        <div class="file-button">
+          <!-- <button mat-icon-button (click)="onCreateThumbnailHandler(fileData, $event.currentTarget.parentElement.parentElement)" matTooltip="Create Thumbnail" *ngIf="fileData.type.split('/')[0] === 'video'">
+            <mat-icon>add_photo_alternate</mat-icon>
+          </button> -->
+          <button type="button" mat-icon-button color="warn" *ngIf="!disabled" (click)="onRemoveFileHandler(fileData)"
+            title="Remove File">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </ng-container>
+    </div>
+    <!-- <button></button> -->
+  </div>
+</div>

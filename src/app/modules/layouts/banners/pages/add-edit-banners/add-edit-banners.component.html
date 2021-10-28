@@ -1,0 +1,55 @@
+<mat-card>
+  <div class="row">
+    <div class="col-xl-12 col-md-12 col-12 ">
+      <form [formGroup]="bannerForm" (ngSubmit)="bannerHandler()">
+        <div class="row">
+          <div class="col-md-12 mb-2 ">
+            <div class="article-crop-section">
+              <label class="custom-margin span-images">Banner Image (Required)</label>
+              <div class="img image_uploader" [ngClass]="{'shakeError': f.image.hasError('image')}">
+                <lv-lazy-image [img]="cropFile?.cropBase64"></lv-lazy-image>
+                <button type="button" mat-mini-fab color="primary" class="uploab-btn" (click)="onSelectFile()">
+                  <mat-icon>camera_alt</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Banner Title</mat-label>
+              <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH" formControlName="title" autocomplete="off" required>
+              <mat-error>{{errMsg.BANNER_REQ}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Banner Type</mat-label>
+              <mat-select formControlName="type" required>
+                <mat-option *ngFor="let aType of bannersTypes" [value]="aType?.value">
+                  {{aType?.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.BANNER_TYPE_REQ}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Banner Link</mat-label>
+              <input matInput placeholder="https://banner.web.com" formControlName="bannerLink" required>
+              <mat-error *ngIf="f['bannerLink'].hasError('required')">{{errMsg.BANNER_LINK}}</mat-error>
+              <mat-error *ngIf="f['bannerLink'].hasError('pattern')">{{errMsg.INVALID_BANNER_LINK}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col btn-section">
+            <button type="button" class="cancle-btn" (click)="cancelHandler()">Cancel</button>
+            <button type="submit" class="add-btn">{{bannerId? 'Update':'Add'}}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</mat-card>

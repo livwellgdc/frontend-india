@@ -1,0 +1,15 @@
+@import 'mix';
+
+@include form-btn(center);
+.mat-card>:last-child:not(.mat-card-footer) {
+  margin-top: 20px;
+}
+.label.custom-label {
+  padding: 20px 0px;
+  font-weight: 500;
+}
+.info_single{
+  .value{
+    word-break: break-all;
+  }
+}

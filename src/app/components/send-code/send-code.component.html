@@ -1,0 +1,23 @@
+<div class="mobile-form">
+    <form class="form" [formGroup]="insertForm" (ngSubmit)="sendTFACode()">
+      <h3>Verify Your Identity</h3>
+  
+      <mat-form-field appearance="outline" class="mb-2">
+        <mat-label>Authentication Method</mat-label>
+        <mat-select formControlName="provider" required>
+          <mat-option value="Email">Email</mat-option>
+        </mat-select>
+        <!-- <mat-error class="error-message" *ngIf="f2.provider.hasError('required')">{{errorMsg?.EMAIL_REQ}}</mat-error> -->
+      </mat-form-field>
+      <p *ngIf  = "!isOtpSent">Send a verification code to {{ email }}</p>
+      <p *ngIf  = "isOtpSent">A verification code has been sent to {{email}}. Enter the code to continue and be redirected.</p>
+      
+      <div class="form-btn">
+        <button type="submit" mat-flat-button color="primary"> {{ isOtpSent ? 'Send Again'  : 'Send Code' }} </button>
+      </div>
+
+      <ng-container *ngIf  = "isOtpSent">
+        <lv-otp></lv-otp>
+      </ng-container>
+    </form>
+  </div>

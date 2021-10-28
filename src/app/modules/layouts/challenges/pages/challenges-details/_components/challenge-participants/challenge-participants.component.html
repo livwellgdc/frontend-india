@@ -1,0 +1,30 @@
+<mat-table-renderer [permissionId] = "SECTION_ID_OF.CHALLENGES"
+  placeholder="Search by User Name" cls="removeAddButton" [heading]="heading"
+   [addCustomClass]="''" [permissionId] = "SECTION_ID_OF.CHALLENGES"
+  (export)="downloadList($event)" (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  (filter)="filterApply($event)" (sort)="sortByListing($event)">
+  <div role="filter">
+    <form [formGroup]="filterForm">
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let sta of challengeParticipantsStatus" [value]="sta.value">{{sta.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Date From</mat-label>
+        <input matInput [matDatepicker]="picker" (click)="picker.open()" formControlName="fromDate" [max]="today"
+            readonly >
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Date To</mat-label>
+        <input matInput [matDatepicker]="picker2" (click)="picker2.open()" formControlName="toDate" [max]="today"
+            [min]="f.fromDate.value" readonly>
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+    </form>
+  </div>
+</mat-table-renderer>

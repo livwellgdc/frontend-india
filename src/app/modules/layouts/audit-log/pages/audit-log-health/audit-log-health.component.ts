@@ -1,0 +1,121 @@
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { BreadcrumbService } from 'src/app/components/breadcrumb/breadcrumb.service';
+import { MatTableRendererComponent } from 'src/app/components/mat-table-renderer/mat-table-renderer.component';
+import { TableService } from 'src/app/components/mat-table-renderer/table.service';
+import { BC_AUDIT_LOG_FILTER_STATUS } from 'src/app/constants/breadcrumb-routes';
+import { Pagination } from 'src/app/constants/paginator';
+import { CommonService } from 'src/app/services/common/common.service';
+import { AuditLogService } from '../services/audit-log.service';
+
+@Component({
+  selector: 'lv-audit-log-health',
+  templateUrl: './audit-log-health.component.html',
+  styleUrls: ['./audit-log-health.component.scss']
+})
+export class AuditLogHealthComponent extends Pagination implements OnInit, OnDestroy {
+
+  public readonly heading = [ 
+    { heading: 'Steps', key: 'steps', align: 'center' },
+    { heading: 'Distance', key: 'distance', type: 'number', align: 'center' },
+    { heading: 'Cal', key: 'calories', type: 'number', align: 'center' },
+    { heading: 'LWC', key: 'points', align: 'center' },
+    { heading: 'Date', key: 'date', type: 'date', align: 'center' },
+    { heading: 'S_Time', key: 'syncTime', type: "time" },
+    { heading: 'ES_Time', key: 'endSyncTime', type: "time" },
+    { heading: 'App', key: 'defaultHealthApplication', align: 'center' }
+  ];
+  private subscriptions: Subscription[] = [];
+  private tempListSubscription = null; // for discarding api calls on change tabs
+  private userId: string;
+  public filterForm: FormGroup;
+  @ViewChild(MatTableRendererComponent, null) private tableRef: MatTableRendererComponent;
+
+
+  constructor(
+    private _bc: BreadcrumbService,
+    private _table: TableService,
+    private _auditLog: AuditLogService,
+    private _actRoute: ActivatedRoute,
+    private _common: CommonService,
+    private _fb: FormBuilder
+  ) { super() }
+
+  ngOnInit() {
+    this.createForm();
+    this.manageQueryParams();
+  }
+
+  
+  createForm() {
+    this.filterForm = this._fb.group({
+      challangeStatus: ['']
+    })
+  }
+
+
+  manageQueryParams() {
+    
+    this.subscriptions.push(
+      this._actRoute.params.subscribe(q => {
+        this.userId = q.userId;
+        this._bc.setBreadcrumb(BC_AUDIT_LOG_FILTER_STATUS('Health'));
+        this.getAuditLogListing();
+      })
+    );
+  }
+
+  getAuditLogListing() {
+
+    if (this.tempListSubscription) {
+      this.tempListSubscription.unsubscribe();
+      this.finallyGetAudiltLog();
+    } else {
+      this.finallyGetAudiltLog();
+    }
+  }
+
+  finallyGetAudiltLog() {
+    let queryObj = {
+      auditLogType:  this.API_EVENT.healthHistory,
+      userId: this.userId,
+      ...this.validPageOptions
+    };
+
+    this.tempListSubscription = this._auditLog.getAuditLogs(queryObj).subscribe(response => {
+      this.tempListSubscription = null;
+      this._table.tableRender(response);
+    }, () => {
+      this.tempListSubscription = null;
+      this._table.tableRender({ data: [] });
+    });
+  }
+
+  paginationWithSearch(ev: any, id: number) {
+    switch (id) {
+      case 0:
+        this.resetPages();
+        this.search = ev;
+        if (this.tableRef.paginator) {
+          this.tableRef.paginator.firstPage();
+        }
+        break;
+      default:
+        this.pageOptionsOnChange = ev;
+        break;
+    }
+    this.getAuditLogListing();
+  }
+
+  /**
+ * @UNSUBSCRIPTION Unsubscribe all subscriptions to avoid memory leak
+ */
+  ngOnDestroy() {
+    if (this.subscriptions.length > 0) {
+      this._common.unsubscribe(this.subscriptions);
+    }
+  }
+
+}

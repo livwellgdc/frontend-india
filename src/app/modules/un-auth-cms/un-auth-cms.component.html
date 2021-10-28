@@ -1,0 +1,33 @@
+<div class="main-wrapper">
+  <ng-container *ngIf="pageInfoObj?.isFaqReqPage;else notFaq">
+    <div class="page_content" *ngIf="faqList?.length>0">
+      <div class="form-wrapper">
+        <mat-accordion>
+          <ng-container *ngFor="let faq of faqList">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <span title="{{faq?.question}}">{{faq?.question}}</span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="expansion_content">
+                <p [innerHTML]="faq?.answer | safe:'html'">
+                </p>
+              </div>
+            </mat-expansion-panel>
+          </ng-container>
+        </mat-accordion>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #notFaq>
+    <div *ngIf="contentInfo" class="page_content form-wrapper" [innerHTML]="contentInfo | safe:'html'">
+    </div>
+  </ng-template>
+
+  <!-- <lv-data-loader [hidden]="!(pageInfoObj?.isApiCallInProgress)"></lv-data-loader> -->
+  <lv-result-not-found [msg]="pageInfoObj?.pageContentNotFound"
+    *ngIf="(!contentInfo && faqList?.length==0) && !(pageInfoObj?.isApiCallInProgress)">
+  </lv-result-not-found>
+</div>

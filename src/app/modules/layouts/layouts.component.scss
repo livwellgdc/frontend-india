@@ -1,0 +1,47 @@
+@import 'mix';
+.mat-toolbar {
+    padding: 0;
+    z-index: 999;
+}
+.mat-sidenav{
+    width: 280px;
+    z-index: 99;
+}
+
+.mat-sidenav-content {
+    padding: 15px;
+}
+.mat-sidenav-container{
+    height: calc(100% - 64px);
+    background-color: rgba($primary, 0.05);
+    @media (max-width: 599px) {
+        height: calc(100% - 56px);
+    }
+}
+
+.header{
+    // height: 64px;
+    .menu-toggle{
+        width: 56px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        cursor: pointer;
+        border-right: 1px solid rgba(#ffffff, 0.1);
+        .mat-icon{
+            height: 30px;
+            width: 30px;
+            font-size: 30px;
+        }
+        @media (max-width:576px) {
+            width: 56px;
+            min-width: 56px;
+            margin-right: 5px;;
+        }
+    }
+    lv-header{
+        flex: 1;
+    }
+}

@@ -1,0 +1,97 @@
+<div class="panel-wrap">
+    <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+    <ng-template #apiHit>
+        <div class="panel">
+            <div class="col-xl-12">
+                <div class="row">
+                    <div class="col-sm-6 col-6 panel-header"> Charity Details</div>
+                    <div class="col-sm-6 col-6 form-group btn-section {{permissionClass}}">
+                        <button title="Edit Event" mat-icon-button (click)="editHandler()">
+                            <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row ">
+                    <div class="col-12 col-sm-5 col-md-4 col-lg-3 detils-sections-image">
+                        <div class="detail-image">
+                            <figure class="img">
+                                <lv-lazy-image [img]="charityDetails?.logo">
+                                </lv-lazy-image>
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-7 col-md-8 col-lg-9">
+
+                        <div class="detail-row">
+                            <div class="form-group">
+                                <label class="el_name">Charity Name </label>
+                                <label class="el_value">{{charityDetails?.name |titlecase |emptyValue}}</label>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="el_name">Charity Status</label>
+                                <label class="el_value status">
+                                    <span [ngClass]="charityDetails?.status">{{charityDetails?.status |
+                                        formatStatus}}</span>
+                                </label>
+                            </div>
+
+                            <!-- <div class="form-group">
+                  <label class="el_name">Category</label>
+                  <label class="el_value">{{charityDetails?.categoryId?.name?.en |titlecase}}</label>
+                </div> -->
+
+                            <div class="form-group">
+                                <label class="el_name">Website Link</label>
+
+                                <label class="el_link">
+                                    <a [title]="charityDetails?.websiteLink" href="{{charityDetails?.websiteLink}}"
+                                        target="_blank" class="detail-links">
+                                        {{charityDetails?.websiteLink}}
+                                    </a>
+                                    <span class="clipboard"> <button mat-icon-button class="copy-btn-color"
+                                            title="Copy Link to Clipboard"
+                                            (click)="copyLink(charityDetails?.websiteLink)"
+                                            *ngIf="charityDetails?.websiteLink">
+                                            <mat-icon class="copy-icon">file_copy</mat-icon>
+                                        </button></span>
+                                </label>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="el_name">Created Date</label>
+                                <label class="el_value">{{charityDetails?.created | date:dateType.DATE_WITH_TIME |
+                                    emptyValue}}</label>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="el_name">Charity Description (In English)</label>
+                                <label class="el_description"
+                                    (click)="openDescriptionBox('Event Description (In English)',charityDetails?.description?.en)">{{charityDetails?.description?.en
+                                    |emptyValue}}</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="el_name">Charity Description (In Vietnamese)</label>
+                                <label class="el_description"
+                                    (click)="openDescriptionBox('Event Description (In Vietnamese)',charityDetails?.description?.vi)">{{charityDetails?.description?.vi
+                                    |emptyValue}}</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="el_name">Charity Location</label>
+                                <label class="el_value location">
+                                    <mat-icon color="primary" class="place-icons" *ngIf="charityDetails?.location">place
+                                    </mat-icon>
+                                    {{charityDetails?.location?.address |emptyValue}}
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+</div>

@@ -1,0 +1,137 @@
+<mat-card>
+    <div class="row">
+      <div class="col-xl-12 col-md-12 col-12 ">
+        <form [formGroup]="storyForm" (ngSubmit)="storyHandler()">
+          <div class="row">
+            <div class="col-xl-12 col-12 mb-2 ">
+              <div class="article-crop-section">
+                <label class="custom-margin span-images">Story Image (Required)</label>
+                <div class="img image_uploader" [ngClass]="{'shakeError': f.image.hasError('image')}">
+                  <lv-lazy-image [img]="cropFile?.cropBase64"></lv-lazy-image>
+                  <button type="button" mat-mini-fab color="primary" class="uploab-btn" (click)="onSelectFile()">
+                    <mat-icon>camera_alt</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <ng-container formGroupName="name">
+              <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Story Name (In English)</mat-label>
+                  <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH" formControlName="en" autocomplete="off" required>
+                  <mat-error>{{errMsg.STORY_NAME_REQ}}</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Story Name (In Vietnamese)</mat-label>
+                  <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH_VI" formControlName="vi" autocomplete="off"
+                    required>
+                  <mat-error>{{errMsg.STORY_NAME_REQ}}</mat-error>
+                </mat-form-field>
+              </div>
+            </ng-container>
+
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Story Start Date</mat-label>
+                <input matInput (click)="picker1.open()" [matDatepicker]="picker1" formControlName="startDate"
+                  placeholder="Choose Date" (dateChange)="storyStartDateChange()" [min]="todayStory" readonly>
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+                <mat-error *ngIf="f['startDate'].hasError('required')">{{errMsg.STORY_START_DATE}}</mat-error>
+                <mat-error *ngIf="f['startDate'].hasError('invalid')">{{errMsg.INVALID_DATE}}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Story Start Time</mat-label>
+                <input matInput (dateTimeChange)="storyStartTimeChange($event)" formControlName="startTime"
+                  [owlDateTimeTrigger]="startTime" [owlDateTime]="startTime" [min]="!storyId ? today : ''" readonly />
+                <owl-date-time [hour12Timer]="true" pickerType="timer" #startTime></owl-date-time>
+                <mat-error>{{errMsg.STORY_START_TIME}}</mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Story Expiry Date</mat-label>
+                <input matInput (click)="picker2.open()" [matDatepicker]="picker2" formControlName="expiryDate"
+                  placeholder="Choose Date" [min]="f['startDate'].value" readonly>
+                <mat-datepicker-toggle matSuffix [for]="picker2" class="date1"></mat-datepicker-toggle>
+                <mat-datepicker #picker2 class="date2"></mat-datepicker>
+                <mat-error *ngIf="f['expiryDate'].hasError('required')">{{errMsg.STORY_END_DATE}}</mat-error>
+                <mat-error *ngIf="f['expiryDate'].hasError('invalid')">{{errMsg.INVALID_DATE}}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Story Expiry Time</mat-label>
+                <input matInput formControlName="expiryTime" [owlDateTimeTrigger]="expiryTime" [owlDateTime]="expiryTime"
+                  readonly />
+                <owl-date-time [hour12Timer]="true" pickerType="timer" #expiryTime></owl-date-time>
+                <mat-error *ngIf="f['expiryTime'].hasError('required')">{{errMsg.STORY_END_TIME}}</mat-error>
+                <mat-error *ngIf="f['expiryTime'].hasError('invalid')">{{errMsg.INVALID_TIME}}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Story Dispaly Duration</mat-label>
+                <mat-select formControlName="displayDurationTime" required>
+                  <mat-option *ngFor="let duration of storyDisplayDuration" [value]="duration?.value">
+                    {{duration?.name}}
+                  </mat-option>
+                </mat-select>
+                <mat-error>{{errMsg.STORY_DURATION_TIME}}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Story Access Type</mat-label>
+                <mat-select formControlName="accessType" required>
+                  <mat-option *ngFor="let aType of storyAccessType" [value]="aType?.value">
+                    {{aType?.name}}
+                  </mat-option>
+                </mat-select>
+                <mat-error>{{errMsg.STORY_ACCESS_TYPE}}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Link Access Type</mat-label>
+                <mat-select formControlName="linkAccessType" required>
+                  <mat-option *ngFor="let aType of linkAccessTypes" [value]="aType?.value">
+                    {{aType?.name}}
+                  </mat-option>
+                </mat-select>
+                <mat-error>{{errMsg.STORY_LINK_ACCESS_TYPE}}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <ng-container>
+              <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Access Link</mat-label>
+                  <input matInput formControlName="accessLink" autocomplete="off" required>
+                  <mat-error>{{errMsg.STORY_LINK_EXTERNAL}}</mat-error>
+                </mat-form-field>
+              </div>
+            </ng-container>
+            
+          </div>
+          <div class="row">
+            <div class="col btn-section">
+              <button type="button" class="cancle-btn" (click)="cancelHandler()">Cancel</button>
+              <button type="submit" class="add-btn">{{ storyId? 'Update': 'Add' }}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </mat-card>
+  

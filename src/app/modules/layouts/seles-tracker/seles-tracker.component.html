@@ -1,0 +1,132 @@
+<div class ="{{permissionClass}}">
+
+    <div class="page-title">
+        <div class="row">
+            <div class="col-xl-12 col-md-12 col-12 ">
+                <form [formGroup]="couponForm">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="row">
+                                <div class="col-xl-8 col-12 reward-right-section">
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-12 reward-radio">
+                                            <mat-radio-group formControlName="couponCodeType"
+                                                (change)="onChangeCodeType($event.value)">
+                                                <mat-radio-button *ngFor="let code of codeType" [value]="code.value"
+                                                    color="primary">{{code.name}}
+                                                </mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+
+                                        <div class="col-xl-3 col-lg-3 col-md-3 col-12"
+                                            *ngIf="f.couponCodeType.value=='AUTO_GENERATE'">
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Enter Quantity</mat-label>
+                                                <input matInput number [maxLength]="_limit.MAX_CODE_QUANTITY_LENGTH"
+                                                    formControlName="totalRedemption" (input)="autoGenerateCouponCode()"
+                                                    autocomplete="off">
+                                                <mat-error class="error-message"
+                                                    *ngIf="f['totalRedemption'].hasError('required')">
+                                                    {{errMsg.REDEMPTION_REQ}}
+                                                </mat-error>
+                                                <mat-error class="error-message"
+                                                    *ngIf="f['totalRedemption'].hasError('pattern')">
+                                                    {{errMsg.INVALID_REDEMPTION}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <ng-container *ngIf="f.couponCodeType.value=='MANUAL'">
+
+                                            <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                                                <input #csvReader type="file" style="display: none"
+                                                    (change)="fileChange($event)" accept=".csv" />
+                                                <button mat-button type="button" color="primary" (click)="csvReader.click()"
+                                                    color="primary">Choose
+                                                    CSV File
+                                                    <mat-icon class="icon-font"
+                                                        title="Note - Duplicate codes will automatically remove">
+                                                        info</mat-icon>
+                                                </button>
+                                                <span class="fileNameCss"
+                                                    title="{{codesArray?.fileName}}">{{ codesArray?.fileName }}</span>
+                                            </div>
+                                        </ng-container>
+                                        <!-- <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                                            <button type="button" (click) = "autoGenerateCouponCode()" class="add-btn"> Generate </button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-title">
+        <div class="row">
+            <div class="col-xl-12 col-md-12 col-12 ">
+                <form [formGroup]="assignReferralForm" (ngSubmit)="assingCodeHandler()">
+                    <div class="row" >
+                        <div class="col-xl-12" formArrayName="data">
+                            <div class="row" *ngFor="let eachdata of data.controls; let i = index" [formGroupName]="i">
+                                <div class="col-xl-12 col-12 reward-right-section" >
+                                    <div class="row" >
+                                        <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Enter Name</mat-label>
+                                                <input matInput  formControlName="referreName" autocomplete="off">
+                                                <mat-error class="error-message" *ngIf="eachdata['controls'].referreName.hasError('required')">
+                                                    {{errMsg.REFERRER_NAME_REQ}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>LWC Credit</mat-label>
+                                                <input matInput number formControlName="lwcCredit" autocomplete="off">
+                                                <mat-error class="error-message" *ngIf="eachdata['controls']['lwcCredit'].hasError('required')">
+                                                    {{errMsg.LWC_CREDIT_REQ}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Limit</mat-label>
+                                                <input matInput  formControlName="limit" autocomplete="off">
+                                                <mat-error class="error-message" *ngIf="eachdata['controls']['limit'].hasError('required')">
+                                                    {{ errMsg.LIMIT_REQ }}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div> 
+
+                                        <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                                            <mat-form-field appearance="outline" >
+                                                <mat-label>Select Refer Code</mat-label>
+                                                <mat-select formControlName="referralCode">
+                                                <mat-option *ngFor="let refcode of codesArray?.autoGeneratedCodes" [value]="refcode">
+                                                    {{ refcode }}
+                                                </mat-option>
+                                                </mat-select>
+                                                <mat-error>{{errMsg.REFER_CODE_REQ}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                                            <button type="submit" class="add-btn"> Assign </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<lv-tabs class="cms_tabs" tabName="userDetailTabs" tabName = "selesTrackerTabs"></lv-tabs>
+<lv-assigned-codes-list></lv-assigned-codes-list>

@@ -1,0 +1,95 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-6 col-6 panel-header"> Client Details</div>
+          <div class="col-sm-6 col-6 form-group btn-section {{permissionClass}}">
+            <button title="Edit Client" mat-icon-button (click)="editHandler()">
+              <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="row align-items-center">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+
+            <div class="detail-row">
+              <div class="form-group">
+                <label class="el_name">Client Name</label>
+                <label class="el_value">{{clientClubDetails?.name |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Points Purchase</label>
+                <label class="el_value">{{clientClubDetails?.points ? clientClubDetails?.points : 0 }}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Remaining Points</label>
+                <label class="el_value"
+                  [ngClass]="{'green': clientClubDetails?.pointsRemaining > 0, 'red': clientClubDetails?.pointsRemaining==0}">{{clientClubDetails?.pointsRemaining ? clientClubDetails?.pointsRemaining : 0 }}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Points Distribution Frequency</label>
+                <label
+                  class="el_value">{{clientClubDetails?.frequencyType == 'ONCE' ? 'Once' : 'Once per Month'}}</label>
+              </div>
+              <div class="form-group" *ngIf="clientClubDetails?.joinedDate">
+                <label class="el_name">User's Joined Date</label>
+                <label
+                  class="el_value">{{clientClubDetails?.joinedDate | date:dateType.MEDIUM_DATE | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Points Distribution Start Date</label>
+                <label
+                  class="el_value">{{clientClubDetails?.startDate | date:dateType.VALIDITY_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Points Distribution End Date</label>
+                <label
+                  class="el_value">{{clientClubDetails?.endDate | date:dateType.VALIDITY_TIME | emptyValue}}</label>
+              </div>
+              <ng-container *ngIf="clientClubDetails?.allMembers?.points>0;else differentPoints">
+                <div class="form-group">
+                  <label class="el_name">All Members Points Distribution</label>
+                  <label class="el_value">{{clientClubDetails?.members?.points }}</label>
+                </div>
+              </ng-container>
+              <ng-template #differentPoints>
+                <div class="form-group">
+                  <label class="el_name">Members Points Distribution</label>
+                  <label
+                    class="el_value">{{clientClubDetails?.members?.points ? clientClubDetails?.members?.points : 0 }}</label>
+                </div>
+                <div class="form-group">
+                  <label class="el_name">Non Members Points Distribution</label>
+                  <label
+                    class="el_value">{{clientClubDetails?.nonMembers?.points ? clientClubDetails?.nonMembers?.points : 0 }}</label>
+                </div>
+                <div class="form-group">
+                  <label class="el_name">Centurion Members Points Distribution</label>
+                  <label
+                    class="el_value">{{clientClubDetails?.centurionMembers?.points ? clientClubDetails?.centurionMembers?.points : 0 }}</label>
+                </div>
+              </ng-template>
+              <div class="form-group">
+                <label class="el_name">Points Distribution Status</label>
+                <label class="el_value status">
+                  <span [ngClass]="clientClubDetails?.status">{{clientClubDetails?.status | formatStatus}}</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Created Date</label>
+                <label
+                  class="el_value">{{clientClubDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <lv-points-distribution-history [clientId]="clientId"></lv-points-distribution-history>
+    </div>
+  </ng-template>
+
+</div>

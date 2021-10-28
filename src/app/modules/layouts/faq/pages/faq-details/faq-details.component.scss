@@ -1,0 +1,35 @@
+@import 'var';
+@import 'mix';
+@import 'grid';
+
+@include status;
+@include details-form-section;
+/* Comment */
+
+.panel-wrap {
+    @include panel;
+    @include img(180px, 180px, cover, 0%);
+    margin-bottom: 25px;
+    .img {
+        margin: 0 auto;
+    }
+}
+
+.btn-section {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.el_name-faq{
+  width: 100%;
+    font-weight: 900;
+    padding-bottom: 7px;
+    
+}
+.el-value-faq{
+  padding-bottom: 10px;
+  text-align: justify;
+}

@@ -1,0 +1,40 @@
+<div class="image-croper">
+  <button class="close" mat-icon-button (click)="cancel()">
+    <mat-icon>clear</mat-icon>
+  </button>
+  <button type="button" class="upload_btn " mat-flat-button color="primary">
+    Select Image
+    <input type="file" accept="image/*" (change)="fileChangeEvent($event)" />
+  </button>
+  (Image Dimension should be atleast:
+  <ng-container [ngSwitch]="true">
+    <ng-container
+      *ngSwitchCase="(data?.type=='CLASS') || (data?.type=='CHALLENGE') || (data?.type=='EVENT') ||( data?.type=='REWARD')">
+      400 X 300</ng-container>
+    <ng-container *ngSwitchCase="(data?.type=='BANNER')">300 X 200</ng-container>
+    <ng-container *ngSwitchCase="(data?.type=='STORIES')">1080 X 1920</ng-container>
+    <ng-container *ngSwitchDefault>300 X 300</ng-container>
+  </ng-container>
+  px)
+  <mat-dialog-content>
+    <div class="modal_body">
+      <div class="crop_wrap">
+        <div class="image_preview" [ngClass]="data.class ? data.class : ''">
+          <ng-container>
+            <img [src]="croppedImage" />
+          </ng-container>
+        </div>
+
+        <div class="cropper_area">
+          <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+            [aspectRatio]="aspectRatio" [resizeToWidth]="resizeToWidth" [cropperMinWidth]="resizeToWidth" format="png"
+            (imageCropped)="imageCropped($event)"></image-cropper>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <div class="form-btn">
+    <button type="submit" (click)="cancel()" mat-stroked-button color="default">Cancel</button>
+    <button type="submit" (click)="cropped()" mat-flat-button color="primary">Crop</button>
+  </div>
+</div>

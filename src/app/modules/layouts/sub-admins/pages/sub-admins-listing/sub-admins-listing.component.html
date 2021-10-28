@@ -1,0 +1,15 @@
+<mat-table-renderer notFound="Sub-Admins not added" placeholder="Search by Sub Admin Name" listType="User" [heading]="heading"
+  (find)="paginationWithSearch($event,0)" (add)="addSubAdmins($event)" (page)="paginationWithSearch($event,1)"
+  (status)="changeStatus($event)" (filter)="submitFilter($event)" (sort)="sortByListing($event)">
+  <div role="filter">
+    <form [formGroup]="filterForm">
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let sta of status" [value]="sta?.value">{{sta?.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+</mat-table-renderer>

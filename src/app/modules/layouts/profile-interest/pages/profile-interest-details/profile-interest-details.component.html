@@ -1,0 +1,32 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+      <div class="panel-header">Profile Interest Details</div>
+      <div class="panel-body">
+        <div class="row align-items-center">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="detail-row">
+              <div class="form-group">
+                <label class="el_name"> Interest Name (In English)</label>
+                <label class="el_value">{{interestDetails?.name?.en | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Interest Name (In Vietnamese)</label>
+                <label class="el_value">{{interestDetails?.name?.vi | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Category</label>
+                <label class="el_value">{{interestDetails?.categoryName|formatStatus| emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Created Date</label>
+                <label class="el_value">{{interestDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

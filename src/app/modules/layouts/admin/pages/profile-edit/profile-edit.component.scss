@@ -1,0 +1,12 @@
+@import 'mix';
+@include form-btn(left);
+@include form-btn(center);
+.custom-width
+{
+  max-width:600px;
+  margin:0px auto;
+}
+.custom-padding
+{
+  padding-top: 23px;
+}

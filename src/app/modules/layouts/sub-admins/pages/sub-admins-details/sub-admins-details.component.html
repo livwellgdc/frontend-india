@@ -1,0 +1,43 @@
+<lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+<ng-template #apiHit>
+  <div class="panel-wrap">
+    <div class="inner-panel">
+      <div class="sub-admin-header">
+        <div class="col-xl-12 ">
+          <div class="row">
+            <div class="col-sm-6 col-9 panel-header"> Sub Admin Details</div>
+            <div class="col-sm-6 col-3 icons-section">
+              <button title="Edit Details" class="edit-icons" mat-icon-button (click)="editHandler()">
+                <mat-icon color="primary">edit</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="details-body">
+        <div class="details-row">
+          <div class="form-group">
+            <label class="name">Name -</label>
+            <label class="value">{{subAdminDetails?.name |titlecase |emptyValue}}</label>
+          </div>
+          <div class="form-group">
+            <label class="name">Email -</label>
+            <label class="value">{{subAdminDetails?.email |emptyValue}}</label>
+          </div>
+          <div class="form-group">
+            <label class="name">Permissions -</label>
+            <label class="value">
+              <a class="club-anchor" (click)="openPermissionBox()">Click to see all permissions</a>
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="name">Created At -</label>
+            <label class="value">{{subAdminDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+          </div>
+        </div>
+      </div>
+      <h2 style="font-weight: bold;">Log History -</h2>
+      <lv-sub-admin-activities [subAdminId]="subAdminId"></lv-sub-admin-activities>
+    </div>
+  </div>
+</ng-template>

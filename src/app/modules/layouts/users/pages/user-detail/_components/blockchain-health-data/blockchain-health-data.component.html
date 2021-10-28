@@ -1,0 +1,25 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel margin">
+      <div class="row align-items-center">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="detail-row">
+            <div class="form-group">
+              <label class="el_name"> Total Steps</label>
+              <label class="el_value">{{healthData?.totalSteps ? healthData?.totalSteps :'0' }}</label>
+            </div>
+            <div class="form-group">
+              <label class="el_name"> Points Earned</label>
+              <label class="el_value">{{healthData?.pointsEarned ? healthData?.pointsEarned :'0'}}</label>
+            </div>
+            <div class="form-group">
+              <label class="el_name">Points Remaining</label>
+              <label class="el_value">{{healthData?.pointsRemaining ? healthData?.pointsRemaining :'0'}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

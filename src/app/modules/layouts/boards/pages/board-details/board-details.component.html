@@ -1,0 +1,63 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-6 col-6 panel-header"> Board Details</div>
+          <div class="col-sm-6 col-6 form-group btn-section">
+            <button title="Edit Board" class="edit-fab" mat-icon-button color="primary" (click)="editHandler()">
+              <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-3 col-sm-12 col-md-12">
+            <div class="detail-row">
+              <figure class="img">
+                <lv-lazy-image
+                  [img]="boardDetails?.image ? boardDetails?.image : 'assets/images/image_placeholder.jpg'">
+                </lv-lazy-image>
+              </figure>
+            </div>
+          </div>
+          <div class="col-lg-9 col-sm-12 col-md-12">
+            <div class="detail-row">
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name"> Board Name (In English)</label>
+                <label class="el_value">{{boardDetails?.name?.en | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name"> Board Name (In Vietnamese)</label>
+                <label class="el_value">{{boardDetails?.name?.vi | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Status</label>
+                <label class="el_value status">
+                  <span [ngClass]="boardDetails?.status">{{boardDetails?.status | formatStatus}}</span>
+                </label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Created Date</label>
+                <label class="el_value">{{boardDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Description (In English)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Description (In English)',boardDetails?.description?.en)">{{boardDetails?.description?.en |emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Description (In Vietnamese)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Description (In Vietnamese)',boardDetails?.description?.vi)">{{boardDetails?.description?.vi |emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

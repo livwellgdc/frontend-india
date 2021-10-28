@@ -1,0 +1,20 @@
+<mat-table-renderer notFound="Corporates not added" placeholder="Search by Corporate Name" [heading]="heading"
+  (add)="addCorporate($event)" (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  (status)="changeStatus($event)" (sort)="sortByListing($event)" (filter)="submitFilter($event)">
+  <div role="filter">
+    <form [formGroup]="filterForm">
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Company Type</mat-label>
+        <mat-select formControlName="companyType">
+          <mat-option *ngFor="let type of staticArrays?.companyTypes" [value]="type.value">{{type.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Corporate Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let sta of staticArrays?.corporateStatus" [value]="sta.value">{{sta.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+</mat-table-renderer>

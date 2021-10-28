@@ -1,0 +1,41 @@
+<mat-table-renderer notFound="Events not added" placeholder="Search by Event Name" [isButtonGroup]="true"
+  [isShowEndedButton]="false" cls="{{permissionClass}}" [heading]="heading"
+  (buttonGroupStatus)="getButtunGroupStatus($event)" (add)="addEvents($event)" (find)="paginationWithSearch($event,0)"
+  (page)="paginationWithSearch($event,1)" (status)="changeStatus($event)" (sort)="sortByListing($event)"
+  (filter)="submitFilter($event)">
+  <div role="filter">
+    <form [formGroup]="filterForm">
+
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Category</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-option disabled *ngIf="!categoryList || categoryList?.length <= 0">
+            <ng-container>Please add event categories to filter the event</ng-container>
+          </mat-option>
+          <mat-option *ngFor="let category of categoryList" [value]="category?._id">{{category?.name?.en |titlecase}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <input matInput (click)="picker1.open()" [matDatepicker]="picker1" formControlName="startTime"
+          placeholder="Choose Start Date" (dateChange)="eventStartDateChange()" readonly>
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <input matInput (click)="picker2.open()" [matDatepicker]="picker2" formControlName="endTime"
+          placeholder="Choose End Date" [min]="f['startTime'].value" readonly>
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+      <div class="row">
+        <div class="col">
+          <mat-checkbox color="primary" formControlName="isFeatured">Featured Events</mat-checkbox>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</mat-table-renderer>

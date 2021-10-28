@@ -1,0 +1,12 @@
+
+<div class="filter__header mat-elevation-z1 fill--primary">
+  <button mat-icon-button (click)="applyForm(null)">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span class="filter__title"> Filter List </span>
+</div>
+<ng-content></ng-content>
+<div class="filter__actions">
+  <button mat-raised-button color="default"  (click)="applyForm(false)">Reset</button>
+  <button mat-raised-button color="primary" (click)="applyForm(true)">Apply</button>
+</div>

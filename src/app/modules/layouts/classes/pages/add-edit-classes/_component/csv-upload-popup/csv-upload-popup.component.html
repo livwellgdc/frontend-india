@@ -1,0 +1,74 @@
+<div class="dialog-box">
+  <button mat-icon-button mat-dialog-close class="mdl-cross-btn">
+    <mat-icon>clear</mat-icon>
+  </button>
+  <mat-dialog-content class="mat-typography">
+    <h1 mat-dialog-title class="csv-heading"><span class="inner-csv">Csv Upload Status</span></h1>
+    <div class="row" *ngIf="csvStatus?.successData > 0 && csvStatus?.failedData?.length != 0">
+      <p class="sucess-data"> {{csvStatus?.successData}} Records Uploaded Successfully.<mat-icon class="success-done">
+          check_circle</mat-icon>
+      </p>
+    </div>
+    <ng-container *ngIf="csvStatus?.failedData?.length > 0;else uploaded">
+      <div class="outer-table">
+        <table class="csv-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Class Name</th>
+              <th>Date</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Class Type</th>
+              <th>City</th>
+              <th>Club Name</th>
+              <th>Studio Name</th>
+              <th>Total Seats</th>
+              <th>Category Name</th>
+              <th>Instructor Name</th>
+              <th>Livwell Points</th>
+              <th>Difficulty Level</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Purchase Denomination Type</th>
+              <th>Video Conference Link</th>
+              <th>Reason
+                <mat-icon class="csv-cross"> highlight_off</mat-icon>
+              </th>
+            </tr>
+          </thead>
+          <tr *ngFor="let rowData of csvStatus?.failedData;let i=index;" class="table-body">
+            <td>{{i+1}}</td>
+            <td>{{rowData?.name | emptyValue}}</td>
+            <td>{{rowData?.date | date:dateType?.MEDIUM_DATE | emptyValue}}</td>
+            <td>{{rowData?.startTime | emptyValue}}</td>
+            <td>{{rowData?.endTime | emptyValue}}</td>
+            <td>{{rowData?.type | emptyValue}}</td>
+            <td>{{rowData?.city | emptyValue}}</td>
+            <td>{{rowData?.clubName | emptyValue}}</td>
+            <td>{{rowData?.studioName | emptyValue}}</td>
+            <td>{{rowData?.totalParticipant | emptyValue}}</td>
+            <td>{{rowData?.categoryName | emptyValue}}</td>
+            <td>{{rowData?.instructorName | emptyValue}}</td>
+            <td>{{rowData?.points | emptyValue}}</td>
+            <td>{{rowData?.difficultyLevel | emptyValue}}</td>
+            <td class="descritption-list">{{rowData?.description | emptyValue}}</td>
+            <td >{{rowData?.price | emptyValue}}</td>
+            <td >{{rowData?.puchaseDenominationType | emptyValue}}</td>
+            <td >{{rowData?.videoConferenceLink | emptyValue}}</td>
+            <td>{{rowData?.reason | emptyValue}}</td>
+          </tr>
+        </table>
+      </div>
+    </ng-container>
+
+    <ng-template #uploaded>
+      <div class="row">
+        <p class="sucess-data"> All Records Uploaded Successfully.<mat-icon class="success-done">check_circle
+          </mat-icon>
+        </p>
+      </div>
+    </ng-template>
+
+  </mat-dialog-content>
+</div>

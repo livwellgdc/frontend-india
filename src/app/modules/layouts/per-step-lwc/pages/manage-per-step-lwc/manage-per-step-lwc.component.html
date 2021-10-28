@@ -1,0 +1,18 @@
+<div class="panel">
+  <form [formGroup]="pointsDistributionForm" (ngSubmit)="updatePointsHandler()">
+
+    <p class="lead">You can set the LWC for the Steps(For Premium Users)</p>
+    <mat-form-field class="m0" appearance="outline">
+      <input [ngClass]="{ hasError: f['lwcPerStep'].touched && !f['lwcPerStep'].valid }" type="tel" matInput
+        digitOnlyWithDecimal [digit]="f['lwcPerStep'].value" [maxlength]="_limit.MAX_LWC_POINTS"
+        formControlName="lwcPerStep" autocomplete="off" required />
+      <span class="lwc" matSuffix>LWC</span>
+    </mat-form-field>
+    <span class="equal-sign">
+      {{pointsDistributionForm.value.lwcPerStep ? pointsDistributionForm.value.lwcPerStep : 0}} LWC / Steps
+    </span>
+    <div class="form-btn details">
+      <button type="submit" mat-raised-button color="primary">Update LWC</button>
+    </div>
+  </form>
+</div>

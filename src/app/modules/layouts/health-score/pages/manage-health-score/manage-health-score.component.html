@@ -1,0 +1,58 @@
+<div class="panel">
+  <form [formGroup]="healthScoreForm" (ngSubmit)="updateScoreCriteriaHandler()">
+
+    <p class="lead">Set Weightage Criteria for the Corporate Health Score</p>
+
+    <ng-container formGroupName="chs">
+
+      <mat-form-field class="m0" appearance="outline">
+        <mat-label>Steps Weightage</mat-label>
+        <input [ngClass]="{ hasError: f.chs['steps'].touched && !f.chs['steps'].valid }" number matInput
+          [max]="_limit?.MAX_DISCOUNT_VALUE" [maxlength]="_limit.MAX_DISCOUNT" formControlName="steps"
+          (input)="calculateTotalScore()" autocomplete="off" required />
+        <span class="lwc" matSuffix>%</span>
+      </mat-form-field>
+
+      <mat-form-field class="m0" appearance="outline">
+        <mat-label>Kms Weightage</mat-label>
+        <input [ngClass]="{ hasError: f.chs['kms'].touched && !f.chs['kms'].valid }" number matInput
+          [max]="_limit?.MAX_DISCOUNT_VALUE" [maxlength]="_limit.MAX_DISCOUNT" formControlName="kms" autocomplete="off"
+          (input)="calculateTotalScore()" required />
+        <span class="lwc" matSuffix>%</span>
+      </mat-form-field>
+
+      <mat-form-field class="m0" appearance="outline">
+        <mat-label>Challenge Taken Weightage</mat-label>
+        <input [ngClass]="{ hasError: f.chs['challenges'].touched && !f.chs['challenges'].valid }" number matInput
+          [max]="_limit?.MAX_DISCOUNT_VALUE" [maxlength]="_limit.MAX_DISCOUNT" formControlName="challenges"
+          (input)="calculateTotalScore()" autocomplete="off" required />
+        <span class="lwc" matSuffix>%</span>
+      </mat-form-field>
+
+      <mat-form-field class="m0" appearance="outline">
+        <mat-label>BMI Weightage</mat-label>
+        <input [ngClass]="{ hasError: f.chs['bmi'].touched && !f.chs['bmi'].valid }" number matInput
+          [max]="_limit?.MAX_DISCOUNT_VALUE" [maxlength]="_limit.MAX_DISCOUNT" formControlName="bmi" autocomplete="off"
+          (input)="calculateTotalScore()" required />
+        <span class="lwc" matSuffix>%</span>
+      </mat-form-field>
+
+      <mat-form-field class="m0" appearance="outline">
+        <mat-label>Points Weightage</mat-label>
+        <input [ngClass]="{ hasError: f.chs['points'].touched && !f.chs['points'].valid }" number matInput
+          [max]="_limit?.MAX_DISCOUNT_VALUE" [maxlength]="_limit.MAX_DISCOUNT" formControlName="points"
+          (input)="calculateTotalScore()" autocomplete="off" required />
+        <span class="lwc" matSuffix>%</span>
+      </mat-form-field>
+
+    </ng-container>
+
+    <span class="equal-sign">
+      Total Health Score: {{totalScore}}%
+    </span>
+    <div class="form-btn details">
+      <button type="submit" mat-raised-button color="primary">Update Score Criteria</button>
+    </div>
+
+  </form>
+</div>

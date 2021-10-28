@@ -1,0 +1,115 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-6 col-6 panel-header"> Offer Details</div>
+          <div class="col-sm-6 col-6 form-group btn-section">
+            <button title="Edit Offer" mat-icon-button (click)="editHandler()">
+              <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="row align-items-center">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+
+            <div class="detail-row">
+              <div class="form-group">
+                <label class="el_name">Offer Name</label>
+                <label class="el_value">{{offerDetails?.name |titlecase |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Offer Type</label>
+                <label class="el_value">{{offerDetails?.type |titlecase |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Discount %</label>
+                <label class="el_value">{{offerDetails?.discountPercent ? offerDetails?.discountPercent : '0' }}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Generated Offers</label>
+                <div class="banner-code">
+                  <label class="el_value reward-coupon"
+                    [ngClass]="{'club-anchor': offerDetails?.discountCodes?.length>1}"
+                    [title]="offerDetails?.discountCodes?.length>1 ? 'Click to See More' :''"
+                    (click)="openCodeBox(offerDetails?.discountCodes)">{{offerDetails?.discountCodes[0]}}
+                    <span *ngIf="offerDetails?.discountCodes?.length>1">...</span>
+                  </label>
+                  <span class="download"> <button mat-icon-button class="download-btn-color" title="Download Codes"
+                      (click)="downloadCouponCodes(offerDetails?.discountCodes,'special_offers')"
+                      *ngIf="offerDetails?.discountCodes?.length>0">
+                      <mat-icon class="copy-icon">archive</mat-icon>
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Total Quantity</label>
+                <label class="el_value">{{offerDetails.type == offer_types_obj.LIVWELL ? offerDetails.limit : offerDetails?.discountCodes?.length}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Available Offer Count</label>
+                <label
+                  class="el_value">{{offerDetails?.totalAvailableCoupons ? offerDetails?.totalAvailableCoupons :'0'}}</label>
+              </div>
+              <div class="form-group" *ngIf="offerDetails?.availableCoupons?.length">
+                <label class="el_name"> Available Offers</label>
+                <div class="banner-code">
+                  <label class="el_value reward-coupon"
+                    [ngClass]="{'club-anchor': offerDetails?.availableCoupons?.length>1}"
+                    [title]="offerDetails?.availableCoupons?.length>1 ? 'Click to See More' :''"
+                    (click)="openCodeBox(offerDetails?.availableCoupons)">{{offerDetails?.availableCoupons[0]}}
+                    <span *ngIf="offerDetails?.availableCoupons?.length>1">...</span>
+                  </label>
+                  <span class="download"> <button mat-icon-button class="download-btn-color" title="Download Codes"
+                      (click)="downloadCouponCodes(offerDetails?.availableCoupons,'available_offers')"
+                      *ngIf="offerDetails?.availableCoupons?.length>0">
+                      <mat-icon class="copy-icon">archive</mat-icon>
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Offer Validity</label>
+                <label class="el_value">{{offerDetails?.validity | date:dateType.VALIDITY_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Status</label>
+                <label class="el_value status">
+                  <span [ngClass]="offerDetails?.status">{{offerDetails?.status | formatStatus}}</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Used Offers</label>
+                <div class="banner-code" *ngIf="offerDetails?.usedCoupons?.length;else notYetUsed">
+                  <label class="el_value reward-coupon" [ngClass]="{'club-anchor': offerDetails?.usedCoupons?.length>1}"
+                    [title]="offerDetails?.usedCoupons?.length>1 ? 'Click to See More' :''"
+                    (click)="openCodeBox(offerDetails?.usedCoupons)">{{offerDetails?.usedCoupons[0]}}
+                    <span *ngIf="offerDetails?.usedCoupons?.length>1">...</span>
+                  </label>
+                  <span class="download"> <button mat-icon-button class="download-btn-color" title="Download Codes"
+                      (click)="downloadCouponCodes(offerDetails?.usedCoupons,'used_offers')"
+                      *ngIf="offerDetails?.usedCoupons?.length>0">
+                      <mat-icon class="copy-icon">archive</mat-icon>
+                    </button>
+                  </span>
+                </div>
+                <ng-template #notYetUsed>
+                  <label class="el_value">Not Yet Used</label>
+                </ng-template>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Created Date</label>
+                <label class="el_value">{{offerDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+</div>

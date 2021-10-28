@@ -1,0 +1,12 @@
+<mat-form-field appearance="outline">
+  <mat-label>Country Code</mat-label>
+  <mat-select #matSelect [formControl]="control" required>
+    <mat-select-search (search)="searchCountries($event)" placeholder="Search Country By Name"></mat-select-search>
+    <mat-select-trigger>
+      {{control?.value}}
+    </mat-select-trigger>
+    <mat-option *ngFor="let code of searchCountry;let index" [value]="code?.dial_code">{{code?.name}}<span
+        class="_countryCode">{{code?.dial_code}}</span></mat-option>
+    <mat-option *ngIf="searchCountry?.length<=0">Country not found..</mat-option>
+  </mat-select>
+</mat-form-field>

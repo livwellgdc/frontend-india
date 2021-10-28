@@ -1,0 +1,54 @@
+@import 'var';
+:host {
+    position: fixed;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 410px;
+    z-index: 99;
+    box-shadow: 5px 5px 25px 0 rgba(46,61,73,.2);
+     background:#fff;
+     padding:30px;
+     z-index:1000;
+    overflow: auto;
+}
+@media(max-width:767px){
+    :host{
+        width: 100%;
+    }
+}
+@media(max-width:480px){
+    :host{
+        padding: 15px;
+    }
+}
+
+.filter__header {
+    height: 63px;
+    display: flex;
+    align-items: center;
+    color: white;
+    background-color: $primary;
+    margin: -30px;
+    margin-bottom: 20px;
+    @media (max-width:480px) {
+        margin: -15px;
+        margin-bottom: 20px;
+    }
+    button {
+        margin: 0 7px;
+    }
+}
+.filter__title {
+    font-size: 19px;
+    font-weight: 500;
+}
+.filter__actions {
+  display: flex;
+  justify-content: center;
+  margin: 0 -10px;
+  button{
+    margin: 0 10px;
+  }
+}

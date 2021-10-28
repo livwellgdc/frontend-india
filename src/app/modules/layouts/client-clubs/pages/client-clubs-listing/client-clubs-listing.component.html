@@ -1,0 +1,5 @@
+<mat-table-renderer notFound="Clients not added" placeholder="Search by Club Name"
+  cls="removeFilter {{permissionClass}}" [heading]="heading" listType="Club" (add)="addClientClubs($event)"
+  (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)" (status)="changeStatus($event)"
+  (sort)="sortByListing($event)">
+</mat-table-renderer>

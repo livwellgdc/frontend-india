@@ -1,0 +1,41 @@
+<form [formGroup]="profileInterestForm" (ngSubmit)="profileInterestHandler()" class="dialog-box">
+  <button mat-icon-button mat-dialog-close class="float-right mdl-cross-btn">
+    <mat-icon>clear</mat-icon>
+  </button>
+
+  <h1 mat-dialog-title align="center"> {{data?.id==0?'Add':'Edit'}} Profile Interest </h1>
+  <mat-dialog-content class="mat-typography">
+    <div class="add_category">
+
+      <ng-container formGroupName="name">
+        <mat-form-field class="search_filter" appearance="outline">
+          <mat-label>Profile Interest Name (In English)</mat-label>
+          <input type="text" matInput formControlName="en" [maxlength]="_limit?.MAX_INTEREST_LENGTH" autocomplete="off"
+            required />
+          <mat-error> {{errMsg?.INTEREST_NAME_REQ}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="search_filter" appearance="outline">
+          <mat-label>Profile Interest Name (In Vietnamese)</mat-label>
+          <input type="text" matInput formControlName="vi" [maxlength]="_limit?.MAX_INTEREST_LENGTH_VI"
+            autocomplete="off" required />
+          <mat-error> {{errMsg?.INTEREST_NAME_REQ}} </mat-error>
+        </mat-form-field>
+      </ng-container>
+
+
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Category</mat-label>
+        <mat-select formControlName="categoryName" required>
+          <mat-option *ngFor="let category of interestCategories" [value]="category?.value">{{category?.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error>{{errMsg?.INTEREST_CATEGORY}}</mat-error>
+      </mat-form-field>
+
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center" class="mdl-custom-btns">
+    <button type="button" class="cat-btn" mat-dialog-close mat-raised-button color="default">Cancel</button>
+    <button type="submit" class="cat-btn" mat-raised-button color="primary">{{data?.id==0?'Add':'Update'}}</button>
+  </mat-dialog-actions>
+</form>

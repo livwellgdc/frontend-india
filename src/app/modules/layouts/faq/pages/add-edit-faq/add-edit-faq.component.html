@@ -1,0 +1,71 @@
+<div class="panel">
+  <form [formGroup]="faqForm" (ngSubmit)="registerFaqHandler()">
+    <div class="row">
+
+      <ng-container formGroupName="question">
+        <div class="col-sm-12">
+          <h4 class="label">Question (In English)</h4>
+          <mat-form-field appearance="outline">
+            <input matInput #ques1 [maxlength]="_limit?.MAX_QUESTION_LENGTH" formControlName="en" autocomplete="off"
+              required />
+            <mat-hint align="end">{{ques1.value.length}} / {{_limit?.MAX_QUESTION_LENGTH}}</mat-hint>
+            <mat-error>{{errMsg.QUESTION_REQ}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+          <h4 class="label">Question (In Vietnamese)</h4>
+          <mat-form-field appearance="outline">
+            <input matInput #ques2 [maxlength]="_limit?.MAX_QUESTION_LENGTH" formControlName="vi" autocomplete="off"
+              required />
+            <mat-hint align="end">{{ques2.value.length}} / {{_limit?.MAX_QUESTION_LENGTH}}</mat-hint>
+            <mat-error>{{errMsg.QUESTION_REQ}}</mat-error>
+          </mat-form-field>
+        </div>
+      </ng-container>
+
+      <div class="col-sm-12">
+        <h4 class="label">Display Order</h4>
+        <mat-form-field appearance="outline">
+          <input matInput number [maxlength]="_limit?.MAX_DISPLAY_ORDER_LENGTH" formControlName="position"
+            autocomplete="off" required>
+          <mat-error *ngIf="f['position'].hasError('required')">{{errMsg.ORDER_REQ}}</mat-error>
+          <mat-error *ngIf="f['position'].hasError('pattern')">{{errMsg.INVALID_ORDER}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="text_editor">
+          <span class="editor_header">
+            <h4 class="label">Answer (In English)</h4>
+          </span>
+          <quill-editor formControlName="enAnswer"></quill-editor>
+          <div id="ql-editor1" hidden [innerHTML]="f.enAnswer.value | safe:'html'"></div>
+          <span class="mat-error" *ngIf="f['enAnswer'].errors && (f['enAnswer'].touched || f['enAnswer'].dirty)">
+            <label *ngIf="f['enAnswer'].errors.required" class="error-msg">{{errMsg.ANSWER_REQ}}</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="text_editor">
+          <span class="editor_header">
+            <h4 class="label">Answer (In Vietnamese)</h4>
+          </span>
+          <quill-editor formControlName="viAnswer"></quill-editor>
+          <div id="ql-editor2" hidden [innerHTML]="f.viAnswer.value | safe:'html'"></div>
+          <span class="mat-error" *ngIf="f['viAnswer'].errors && (f['viAnswer'].touched || f['viAnswer'].dirty)">
+            <label *ngIf="f['viAnswer'].errors.required" class="error-msg">{{errMsg.ANSWER_REQ}}</label>
+          </span>
+        </div>
+      </div>
+
+    </div>
+    <div class="form-btn details">
+      <button class="add-faq-btn" type="button" mat-raised-button color="default"
+        (click)="cancelHandler()">Cancel</button>
+      <button type="submit" mat-raised-button color="primary">
+        {{ faqId ? "Update" : "Add" }}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,12 @@
+@import "var";
+@import "mix";
+@import "grid";
+
+@include status;
+@include details-form-section;
+/* Comment */
+
+.panel-wrap {
+  @include panel;
+  margin-bottom: 25px;
+}

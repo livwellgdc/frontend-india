@@ -1,0 +1,100 @@
+<mat-card class="livwell-video-add">
+  <div class="livwell-video">
+
+    <form [formGroup]="ageLogicForm" (ngSubmit)="ageLogicHandler()">
+      <div class="form-section">
+        <div class="row">
+          <ng-container formGroupName="question">
+            <div class="col-xl-6 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Qusetion (In English)</mat-label>
+                <input matInput [maxlength]="_limit?.MAX_AGE_QUES_LENGTH" formControlName="en" autocomplete="off"
+                  required>
+                <mat-error>{{errMsg.QUES_REQ}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-6 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Qusetion (In Vietnamese)</mat-label>
+                <input matInput [maxlength]="_limit?.MAX_AGE_QUES_LENGTH_VI" formControlName="vi" autocomplete="off"
+                  required>
+                <mat-error>{{errMsg.QUES_REQ}}</mat-error>
+              </mat-form-field>
+            </div>
+          </ng-container>
+
+          <div formArrayName="answers" class="answer">
+            <div class="bed_wrapper" *ngFor="let ans of answers.controls; let i = index" [formGroupName]="i">
+              <ng-container formGroupName="value">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-12 _disabled"
+                  [ngClass]="{'multiple': questionDetails.type !== 'SINGLE','single': questionDetails.type == 'SINGLE'}">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Answer Option (In English)</mat-label>
+                    <input matInput [maxlength]="_limit?.MAX_AGE_ANS_LENGTH" formControlName="en" autocomplete="off"
+                      required readonly>
+                    <mat-error>{{errMsg.ANS_REQ}}</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-12 _disabled"
+                  [ngClass]="{'multiple': questionDetails.type !== 'SINGLE','single': questionDetails.type == 'SINGLE'}">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Answer Option (In Vietnamese)</mat-label>
+                    <input matInput [maxlength]="_limit?.MAX_AGE_ANS_LENGTH_VI" formControlName="vi" autocomplete="off"
+                      required readonly>
+                    <mat-error>{{errMsg.ANS_REQ}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+              <div class="col-xl-4 col-lg-4 col-md-6 col-12 _disabled" *ngIf="questionDetails.type == 'SINGLE'">
+                <mat-form-field appearance="outline">
+                  <mat-label>Answer Percentage</mat-label>
+                  <input matInput number isPercentage="true" formControlName="percentage"
+                    [max]="_limit?.MAX_DISCOUNT_VALUE" [maxlength]="_limit?.MAX_PERCENTAGE_WITH_NEGATIVE"
+                    autocomplete="off" readonly>
+                  <span class="days-badge" matSuffix>%</span>
+                  <mat-error *ngIf="ans['controls']['percentage'].hasError('required')">{{errMsg.PERCENTAGE_REQ}}
+                  </mat-error>
+                  <mat-error *ngIf="ans['controls']['percentage'].hasError('pattern')">
+                    {{errMsg.INVALID_PERCENTAGE}}
+                  </mat-error>
+                  <mat-error *ngIf="ans['controls']['percentage'].hasError('max')">{{errMsg.MAX_PERCENTAGE}}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <ng-container formGroupName="description">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label> Answer Description (In English)</mat-label>
+                    <textarea type="text" #disc1 matInput [maxlength]="_limit?.DESCRIPTION_MAX"
+                      formControlName="en"></textarea>
+                    <mat-hint align="end">{{disc1.value.length}} / {{_limit?.DESCRIPTION_MAX}}</mat-hint>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label> Answer Description (In Vietnamese)</mat-label>
+                    <textarea type="text" #disc2 matInput [maxlength]="_limit?.DESCRIPTION_MAX_VI"
+                      formControlName="vi"></textarea>
+                    <mat-hint align="end">{{disc2.value.length}} / {{_limit?.DESCRIPTION_MAX_VI}}</mat-hint>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+
+            </div>
+          </div>
+
+
+
+          <div class="col-xl-12">
+            <div class="btn-section">
+              <button type="button" class="cancle-btn" (click)="cancelHandler()">Cancel</button>
+              <button type="submit" class="add-btn">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</mat-card>

@@ -1,0 +1,14 @@
+<div class="container-fluid" style="margin-top: 20px;">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <!-- <h4>Enter your OTP </h4> -->
+    <div class="row">
+        <div class="form-group col-sm-2" *ngFor="let input of formInput;  index as i">
+          <input #formRow type="text" formControlName="{{input}}" class="form-control" maxlength="1"
+            (keyup)="keyUpEvent($event, i)">
+        </div>
+    </div>
+    <div class="form-btn ">
+      <button [disabled] = "!form.valid" type="submit" mat-flat-button color="primary"> Validate </button>
+    </div>
+  </form>
+</div>

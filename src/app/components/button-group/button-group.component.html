@@ -1,0 +1,29 @@
+<div class="row">
+
+    <div class="col-sm-4 col-xl-4 col-lg-4 col-md-4 col-4 mat-toogle-custom">
+        <div *ngIf = "isSearchBoxVisible">
+            <lv-search-renderer  style="width: 100%;" [placeholder]="placeholder" (lvSearch)="searchTable($event)">
+            </lv-search-renderer>
+        </div>
+    </div>
+    <div class="col-sm-8 col-xl-8 col-lg-8 col-md-8 col-8 mat-toogle-custom">
+        <ng-container>
+            <mat-button-toggle-group #group="matButtonToggleGroup" [value]="ButtonGroupRouteStatus" class="cst-scroll">
+                <mat-button-toggle *ngFor="let each_elem of button_list" [value]="each_elem.b_value"
+                    class="outer-btn active" color="primary" (click)="onClickButtonGroup(each_elem.b_value)">
+                    {{ each_elem.b_name}}
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+        </ng-container>
+        <div class="filter_btn" *ngIf = "isFilterButtonVisible">
+            <button mat-fab color="primary" title="Filter" class="filterBtn custom-gap" (click)="tableFilter(true)">
+                <mat-icon> filter_list </mat-icon>
+            </button>
+        </div>
+    </div>
+</div>
+
+<lv-filter [@openClose]="isOpen ? 'open' : 'closed'" (apply)="applyFilter($event)">
+    <ng-content select="[role=filter]"></ng-content>
+    <!--binding-->
+</lv-filter>

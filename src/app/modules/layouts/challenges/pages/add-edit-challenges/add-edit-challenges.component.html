@@ -1,0 +1,319 @@
+<mat-card>
+  <div class="row">
+    <div class="col-xl-12 col-md-12 col-12 ">
+      <form [formGroup]="challengeForm" (ngSubmit)="challengeHandler()">
+        <div class="row">
+          <div class="col-xl-12 col-12 mb-2 ">
+            <div class="article-crop-section">
+              <label class="custom-margin span-images">Challenge Image (Required)</label>
+              <div class="img image_uploader" [ngClass]="{'shakeError': f.image.hasError('image')}">
+                <lv-lazy-image [img]="cropFile?.cropBase64"></lv-lazy-image>
+                <button type="button" mat-mini-fab color="primary" class="uploab-btn" (click)="onSelectFile()">
+                  <mat-icon>camera_alt</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+          <ng-container formGroupName="name">
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Challenge Name (In English)</mat-label>
+                <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH" formControlName="en" autocomplete="off" required>
+                <mat-error>{{errMsg.CHALLENGE_NAME_REQ}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Challenge Name (In Vietnamese)</mat-label>
+                <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH_VI" formControlName="vi" autocomplete="off"
+                  required>
+                <mat-error>{{errMsg.CHALLENGE_NAME_REQ}}</mat-error>
+              </mat-form-field>
+            </div>
+          </ng-container>
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Sponsor Name</mat-label>
+              <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH" formControlName="sponsorName" autocomplete="off">
+            </mat-form-field>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12" formGroupName="categoryId">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Challenge Category</mat-label>
+              <mat-select formControlName="_id" (selectionChange)="categorySelectionHandler($event.value)" required>
+                <mat-option disabled *ngIf="!categoryList || categoryList?.length <= 0">
+                  <ng-container>
+                    {{isApiCallInProgress?.ofCategory ? 'Loading...':'Please add challenge categories to create the challenge'}}
+                  </ng-container>
+                </mat-option>
+                <mat-option *ngFor="let category of categoryList" [value]="category?._id">
+                  {{category?.name?.en |titlecase}}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.CHALLENGE_CATEGORY}}</mat-error>
+            </mat-form-field>
+          </div>
+          <ng-container *ngIf = "seelctedCategoryDetails?.type == challengeCategoryTypes?.CHALLENGE || seelctedCategoryDetails?.type == challengeCategoryTypes?.GROUP">
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12" *ngIf = "seelctedCategoryDetails.hasDonations">
+              <mat-form-field appearance="outline">
+                <mat-label>Entry Fees</mat-label>
+                <input matInput formControlName="entryFee" autocomplete="off" required>
+                <mat-error>{{errMsg.CHALLENGE_CHARITY_ENTRY_FEES}}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Challenge Start Date</mat-label>
+                <input matInput (click)="picker1.open()" [matDatepicker]="picker1" formControlName="startDate"
+                  placeholder="Choose Date" (dateChange)="challengeStartDateChange()" [min]="todayChallenge" readonly>
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+                <mat-error *ngIf="f['startDate'].hasError('required')">{{errMsg.CHALLENGE_START_DATE}}</mat-error>
+                <mat-error *ngIf="f['startDate'].hasError('invalid')">{{errMsg.INVALID_DATE}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Challenge Start Time</mat-label>
+                <input matInput (dateTimeChange)="challengeStartTimeChange($event)" formControlName="startTime"
+                  [owlDateTimeTrigger]="startTime" [owlDateTime]="startTime" [min]="!challengeId ? today : ''" readonly />
+                <owl-date-time [hour12Timer]="true" pickerType="timer" #startTime></owl-date-time>
+                <mat-error>{{errMsg.CHALLENGE_START_TIME}}</mat-error>
+              </mat-form-field>
+            </div>
+          
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Challenge End Date</mat-label>
+              <input matInput (click)="picker2.open()" [matDatepicker]="picker2" formControlName="endDate"
+                placeholder="Choose Date" [min]="f['startDate']?.value" readonly>
+              <mat-datepicker-toggle matSuffix [for]="picker2" class="date1"></mat-datepicker-toggle>
+              <mat-datepicker #picker2 class="date2"></mat-datepicker>
+              <mat-error *ngIf="f['endDate'].hasError('required')">{{errMsg.CHALLENGE_END_DATE}}</mat-error>
+              <mat-error *ngIf="f['endDate'].hasError('invalid')">{{errMsg.INVALID_DATE}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Challenge End Time</mat-label>
+              <input matInput formControlName="endTime" [owlDateTimeTrigger]="endTime" [owlDateTime]="endTime"
+                readonly />
+              <owl-date-time [hour12Timer]="true" pickerType="timer" #endTime></owl-date-time>
+              <mat-error *ngIf="f['endTime'].hasError('required')">{{errMsg.CHALLENGE_END_TIME}}</mat-error>
+              <mat-error *ngIf="f['endTime'].hasError('invalid')">{{errMsg.INVALID_TIME}}</mat-error>
+            </mat-form-field>
+          </div>
+        </ng-container>
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12" *ngIf = "seelctedCategoryDetails?.type != challengeCategoryTypes?.GROUP">
+            <mat-form-field appearance="outline">
+              <mat-label>Maximum Winners</mat-label>
+              <input matInput number [maxlength]="_limit?.MAX_PARTICIPANTS_LENGTH" formControlName="totalWinner"
+                autocomplete="off" required>
+              <mat-error *ngIf="f['totalWinner'].hasError('required')">{{errMsg.CHALLENGE_WINNERS}}</mat-error>
+              <mat-error *ngIf="f['totalWinner'].hasError('pattern')">{{errMsg.CHALLENGE_INVALID_WINNERS}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Challenge Type</mat-label>
+              <mat-select formControlName="type" (selectionChange)="challengeTypeSelectionHandler($event.value)"
+                required>
+                <mat-option *ngFor="let cType of challengeType" [value]="cType?.value">
+                  {{cType?.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.CHALLENGE_TYPE}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-2 col-lg-2 col-md-3 col-6" [ngClass]="{'_disabled': f['type'].value==''}">
+            <mat-form-field appearance="outline">
+              <mat-label>Challenge Type Value</mat-label>
+              <input matInput number [maxlength]="_limit?.MAX_STEP_LENGTH" formControlName="value" autocomplete="off"
+                required>
+              <span class="km-badge" *ngIf="f['type'].value=='KILOMETRES'" matSuffix>Km</span>
+              <mat-hint class="hint" align="end" *ngIf="!f['type'].value">
+                {{ errMsg.SELECT_CHALLENGE_TYPE_FIRST }}</mat-hint>
+              <mat-error class="error-message" *ngIf="f['value'].hasError('required')">{{errMsg.CHALLENGE_TYPE_VALUE}}
+              </mat-error>
+              <mat-error class="error-message" *ngIf="f['value'].hasError('pattern')">
+                {{errMsg.CHALLENGE_INVALID_TYPE_VALUE}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-2 col-lg-2 col-md-3 col-6"
+            [ngClass]="{'_disabled':f['type'].value!=='CLASS_BOOKING' && f['type'].value!=='CLASS_COMPLETED'}"
+            formGroupName="classCategoryId">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Class Category</mat-label>
+              <mat-select formControlName="_id" (selectionChange)="classCategorySelectionHandler($event.value)">
+                <mat-option disabled *ngIf="!classCategoryList || classCategoryList?.length <= 0">
+                  <ng-container>
+                    {{isApiCallInProgress?.ofCategory ? 'Loading...':'Please add class categories to create the challenge'}}
+                  </ng-container>
+                </mat-option>
+                <mat-option value="">
+                  None
+                </mat-option>
+                <mat-option *ngFor="let classCat of classCategoryList" [value]="classCat?._id">
+                  {{classCat?.name?.en |titlecase}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <!-- <div class="col-xl-4 col-lg-4 col-md-6 col-12" *ngIf = "seelctedCategoryDetails?.type == challengeCategoryTypes?.CHALLENGE">
+            <mat-form-field appearance="outline">
+              <mat-label>Challenge Frequency</mat-label>
+              <mat-select formControlName="frequencyType">
+                <mat-option *ngFor="let fType of frequency" [value]="fType?.value">
+                  {{fType?.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div> -->
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Challenge Access Type</mat-label>
+              <mat-select formControlName="accessType" required>
+                <mat-option *ngFor="let aType of challengeAccessType" [value]="aType?.value">
+                  {{aType?.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.CHALLENGE_ACCESS_TYPE}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- <ng-container *ngIf = "seelctedCategoryDetails?.type != challengeCategoryTypes?.GROUP"> -->
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>User's Joined Date</mat-label>
+                <input matInput (click)="picker3.open()" (dateChange)="onChangeJoinedDate()" [matDatepicker]="picker3"
+                  formControlName="joinedDate" placeholder="Choose Date" readonly>
+                <mat-datepicker-toggle matSuffix [for]="picker3" *ngIf="!f['joinedDate'].value"></mat-datepicker-toggle>
+                <span class="remove-date" matSuffix *ngIf="f['joinedDate'].value">
+                  <mat-icon title="Remove Joined Date" (click)="removeJoinedDate()">delete</mat-icon>
+                </span>
+                <mat-datepicker #picker3 class="date2"></mat-datepicker>
+                <mat-error *ngIf="f['joinedDate'].hasError('required')">{{errMsg.JOINED_DATE}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Visible Up to (From Joined Date)(In Days)</mat-label>
+                <input matInput number formControlName="visibleUpTo" [maxlength]="_limit?.MAX_DAYS"
+                  (input)="removeVisibility()" (blur)="removeVisibility()" autocomplete="off">
+                <span class="km-badge" matSuffix>{{f['visibleUpTo'].value>1?'Days':'Day'}}</span>
+                <mat-error *ngIf="f['visibleUpTo'].hasError('required')">{{errMsg.VISIBILITY_UP_TO}}
+                </mat-error>
+                <mat-error *ngIf="f['visibleUpTo'].hasError('pattern')">{{errMsg.INVALID_VISIBILITY_UP_TO}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12" formGroupName="badgeId">
+              <mat-form-field appearance="outline">
+                <mat-label>Select Badge</mat-label>
+                <mat-select formControlName="_id" (selectionChange)="badgeSelectionHandler($event.value)" required>
+                  <mat-option disabled *ngIf="!badgeList || badgeList?.length <= 0">
+                    <ng-container>
+                      {{isApiCallInProgress?.ofBadge ? 'Loading...':'Please add badges to create the challenge'}}
+                    </ng-container>
+                  </mat-option>
+                  <mat-option *ngFor="let badge of badgeList" [value]="badge?._id" #matOption>
+                    {{badge?.name |titlecase}}
+                    <!-- <span [hidden]="matOption.selected">({{badge?.points}}Points)</span> -->
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="f['badgeId']['controls']._id.hasError('required')">
+                  {{errMsg.CHALLENGE_BADGE}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12" [ngClass]="{'_disabled': !f['badgeId']['controls']._id.value}">
+              <mat-form-field appearance="outline">
+                <mat-label>Enter Points</mat-label>
+                <input matInput number [maxlength]="_limit?.MAX_POINTS_LENGTH" formControlName="points" autocomplete="off"
+                  required>
+                <mat-hint align="end" class="hint" *ngIf="!f['badgeId']['controls']._id.value">
+                  {{ errMsg.CHALLENGE_BADGE_FIRST }}
+                </mat-hint>
+                <mat-error>{{errMsg.CHALLENGE_POINT}}</mat-error>
+              </mat-form-field>
+            </div>
+  
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12" formGroupName="benefitsCategoryId">
+              <mat-form-field appearance="outline">
+                <mat-label>Select Livwell Benefits</mat-label>
+                <mat-select formControlName="_id" (selectionChange)="benefitSelectionHandler($event.value)">
+                  <mat-option disabled *ngIf="!benefitCategoryList || benefitCategoryList?.length <= 0">
+                    <ng-container>
+                      {{isApiCallInProgress?.ofCategory ? 'Loading...':'Please add livwell benefit categories to create the challenge'}}
+                    </ng-container>
+                  </mat-option>
+                  <mat-option value="">
+                    None
+                  </mat-option>
+                  <mat-option *ngFor="let benefit of benefitCategoryList" [value]="benefit?._id">
+                    {{benefit?.name?.en |titlecase}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+  
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12" formGroupName="rewardId"
+              [ngClass]="{'_disabled': !f['benefitsCategoryId']['controls']._id.value}">
+              <mat-form-field appearance="outline">
+                <mat-label>Select Voucher</mat-label>
+                <mat-select formControlName="_id" (selectionChange)="rewardSelectionHandler($event.value)">
+                  <mat-option disabled *ngIf="!rewardList || rewardList?.length <= 0">
+                    <ng-container>
+                      Please add reward to create the challenge
+                    </ng-container>
+                  </mat-option>
+                  <mat-option *ngFor="let reward of rewardList" [value]="reward?._id">
+                    {{reward?.name?.en |titlecase}}
+                  </mat-option>
+                </mat-select>
+                <mat-hint align="end" class="hint" *ngIf="!f['benefitsCategoryId']['controls']._id.value">
+                  {{errMsg.SELECT_BENEFIT_FIRST}}
+                </mat-hint>
+                <mat-error *ngIf="f['rewardId']['controls']._id.hasError('required')">
+                  {{errMsg.CHALLENGE_VOUCHER}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          <!-- </ng-container> -->
+         
+
+          <ng-container formGroupName="description">
+            <div class="col-xl-8 col-lg-12 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label> Challenge Description (In English)</mat-label>
+                <textarea type="text" #disc1 matInput formControlName="en" [maxlength]="_limit?.DESCRIPTION_MAX"
+                  required></textarea>
+                <mat-hint align="end">{{disc1.value.length}} / {{_limit?.DESCRIPTION_MAX}}
+                </mat-hint>
+                <mat-error>{{errMsg.CHALLENGE_DESCRIPTION}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label> Challenge Description (In Vietnamese)</mat-label>
+                <textarea type="text" #disc2 matInput formControlName="vi" [maxlength]="_limit?.DESCRIPTION_MAX_VI"
+                  required></textarea>
+                <mat-hint align="end">{{disc2.value.length}} / {{_limit?.DESCRIPTION_MAX_VI}}
+                </mat-hint>
+                <mat-error>{{errMsg.CHALLENGE_DESCRIPTION}}</mat-error>
+              </mat-form-field>
+            </div>
+          </ng-container>
+        </div>
+        <div class="row">
+          <div class="col btn-section">
+            <button type="button" class="cancle-btn" (click)="cancelHandler()">Cancel</button>
+            <button type="submit" class="add-btn">{{challengeId? 'Update':(copyChallengeId ? 'Copy' : 'Add')}}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</mat-card>

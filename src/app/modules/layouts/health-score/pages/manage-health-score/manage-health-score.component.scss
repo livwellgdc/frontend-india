@@ -1,0 +1,34 @@
+@import "var";
+
+.panel {
+  text-align: center;
+  max-width: 500px;
+  margin: auto;
+  background-color: white;
+  padding: 45px;
+  font-weight: bold;
+}
+.hasError {
+  &.form-control {
+    border-color: #f44336;
+  }
+}
+
+span.lwc {
+  position: relative;
+  top: -7px;
+  font-size: 14px;
+  color: $primary;
+}
+.equal-sign {
+  background: #4bdf4978;
+  padding: 10px;
+  border-radius: 28px;
+}
+.form-btn {
+  margin-top: 27px;
+}
+
+.info-icon {
+  color: red;
+}

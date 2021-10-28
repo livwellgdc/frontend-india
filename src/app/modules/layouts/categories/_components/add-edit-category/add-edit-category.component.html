@@ -1,0 +1,100 @@
+<form [formGroup]="categoryForm" (ngSubmit)="categoryHandler()" class="dialog-box">
+  <button mat-icon-button mat-dialog-close class="float-right mdl-cross-btn">
+    <mat-icon>clear</mat-icon>
+  </button>
+
+  <h1 mat-dialog-title align="center"> {{data?.id==0?'Add':'Edit'}} Category </h1>
+  <mat-dialog-content class="mat-typography">
+    <div class="add_category">
+      <div class="img image_uploader" [ngClass]="{'shakeError': f.image.hasError('image')}">
+        <lv-lazy-image [img]="cropFile?.cropBase64"></lv-lazy-image>
+        <button type="button" mat-mini-fab color="primary" class="uploab-btn" (click)="onSelectFile()">
+          <mat-icon>camera_alt</mat-icon>
+        </button>
+      </div>
+
+      <ng-container formGroupName="name">
+        <mat-form-field class="search_filter" appearance="outline">
+          <mat-label>Category Name (In English)</mat-label>
+          <input type="text" matInput formControlName="en" [maxlength]="limit?.MAX_NAME_LENGTH" autocomplete="off"
+            required />
+          <mat-error>{{errMsg?.CATEGORY_NAME_REQ}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="search_filter" appearance="outline">
+          <mat-label>Category Name (In Vietnamese)</mat-label>
+          <input type="text" matInput formControlName="vi" [maxlength]="limit?.MAX_NAME_LENGTH_VI" autocomplete="off"
+            required />
+          <mat-error>{{errMsg?.CATEGORY_NAME_REQ}}</mat-error>
+        </mat-form-field>
+      </ng-container>
+
+      <ng-container *ngIf="data.categoryType == 'CHALLENGE'">
+        <mat-form-field class="search_filter" appearance="outline" >
+          <mat-label>Challenge Category Type</mat-label>
+          <mat-select formControlName="type" required (selectionChange)="categoryTypeHandler($event.value)">
+            <mat-option *ngFor="let cType of challengeCategoryTypes" [value]="cType?.value">
+              {{cType?.name}} 
+            </mat-option>
+          </mat-select>
+          <mat-error>{{errMsg.CHALLENGE_CATEGORY_TYPE}}</mat-error>
+        </mat-form-field>
+
+        <ng-container *ngIf ="f.type.value != challengeCategoryTypesObj.GROUP">
+          <section class="donation-checkbox">
+            <mat-checkbox  color="primary" (change) = "onDonationCheck()" formControlName="hasDonations">Donation</mat-checkbox>
+          </section>
+        </ng-container>
+
+        <ng-container *ngIf = "f?.hasDonations?.value">
+          <div formGroupName="charityId">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Charity</mat-label>
+              <mat-select formControlName="_id" (selectionChange)="charitySelectionHandler($event.value)" required>
+                <mat-option disabled *ngIf="!charityList || charityList?.length <= 0">
+                  <ng-container>
+                    {{isApiCallInProgress?.ofCategory ? 'Loading...':'Please add charity to create the category'}}
+                  </ng-container>
+                </mat-option>
+                <mat-option *ngFor="let charity of charityList" [value]="charity?._id">
+                  {{charity?.name |titlecase}}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.CHALLENGE_CHARITY}}</mat-error>
+            </mat-form-field>
+          </div>
+
+            <mat-form-field appearance="outline" *ngIf = "challengeCategoryTypesObj.SERIES == f.type.value">
+              <mat-label>Entry Fee</mat-label>
+              <input type="number" matInput formControlName="entryFee" required autocomplete="off">
+              <mat-error>{{errMsg.CHALLENGE_CHARITY_ENTRY_FEES}}</mat-error>
+            </mat-form-field>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="data.categoryType == categoryTypes.CHALLENGE 
+        || data.categoryType == categoryTypes.LIVWELL_BENEFITS 
+        || data.categoryType == categoryTypes.GENERIC_CATEGORIES">
+        <mat-form-field class="search_filter" appearance="outline">
+          <mat-label>Category Access Type</mat-label>
+          <mat-select formControlName="accessType" required>
+            <mat-option *ngFor="let aType of categoryAccessType" [value]="aType?.value">
+              {{aType?.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error>{{errMsg.CATEGORY_ACCESS_TYPE}}</mat-error>
+        </mat-form-field>
+      </ng-container>
+
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label> Description</mat-label>
+        <textarea type="text" #disc matInput [maxlength]="limit?.DESCRIPTION_MAX"
+          formControlName="description"></textarea>
+        <mat-hint align="end">{{disc.value.length}} / {{limit?.DESCRIPTION_MAX}}</mat-hint>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center" class="mdl-custom-btns">
+    <button type="button" class="cat-btn" mat-dialog-close mat-raised-button color="default">Cancel</button>
+    <button type="submit" class="cat-btn" mat-raised-button color="primary">{{data?.id==0?'Add':'Update'}}</button>
+  </mat-dialog-actions>
+</form>

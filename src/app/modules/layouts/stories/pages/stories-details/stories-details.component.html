@@ -1,0 +1,66 @@
+<div class="panel-wrap">
+    <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+    <ng-template #apiHit>
+      <div class="panel">
+        <div class="col-xl-12">
+          <div class="row">
+            <div class="col-sm-6 col-6 panel-header"> Story Details</div>
+            <div class="col-sm-6 col-6 form-group btn-section {{permissionClass}}">
+              <button title="Edit Challenge" mat-icon-button (click)="editHandler()" *ngIf="storyDetails?.isEdited">
+                <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="row ">
+            <div class="col-12 col-sm-5 col-md-4 col-lg-3 detils-sections-image">
+  
+              <div class="detail-image">
+                <figure class="img">
+                  <lv-lazy-image [img]="storyDetails?.image">
+                  </lv-lazy-image>
+                </figure>
+              </div>
+  
+            </div>
+            <div class="col-12 col-sm-7 col-md-8 col-xl-9">
+  
+              <div class="detail-row challenges-details-right">
+                <div class="form-group">
+                  <label class="el_name">Story Name (In English)</label>
+                  <label class="el_value">{{storyDetails?.name?.en |titlecase |emptyValue}}</label>
+                </div>
+                <div class="form-group">
+                  <label class="el_name">Story Name (In Vietnamese)</label>
+                  <label class="el_value">{{storyDetails?.name?.vi |titlecase |emptyValue}}</label>
+                </div>
+                <div class="form-group">
+                  <label class="el_name">Start Date</label>
+                  <label class="el_value">{{storyDetails?.startDate |date:dateType.MEDIUM_DATE}}</label>
+                </div>
+                <div class="form-group">
+                  <label class="el_name">Expiry Date</label>
+                  <label class="el_value">{{storyDetails?.expiryDate | date:dateType.MEDIUM_DATE}}</label>
+                </div>
+                <div class="form-group">
+                  <label class="el_name">Start Time</label>
+                  <label class="el_value">{{storyDetails?.startDate |date:dateType.SHORT_TIME}}</label>
+                </div>
+                <div class="form-group">
+                  <label class="el_name">Expiry Time</label>
+                  <label class="el_value">{{storyDetails?.expiryDate | date:dateType.SHORT_TIME}}</label>
+                </div>
+                <div class="form-group">
+                  <label class="el_name">Display Duration Time</label>
+                  <label class="el_value">{{storyDetails?.displayDurationTime}} SEC</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  
+  </div>
+  

@@ -1,0 +1,18 @@
+<mat-dialog-content class="mat-typography">
+  <h1 mat-dialog-title>Reason for {{data?.label}}</h1>
+  <button mat-icon-button mat-dialog-close class="enter-reason-close">
+    <mat-icon>clear</mat-icon>
+  </button>
+  <div class="modal_message">
+    <mat-form-field appearance="outline">
+      <mat-label>Please enter brief details for {{data?.placeholder}}</mat-label>
+      <textarea #details matInput [(ngModel)]="text" [maxlength]="_reason?.REASON_LIMIT"
+        style="height: 120px"></textarea>
+      <mat-hint align="end">{{ details.value.length }} / {{ _reason?.REASON_LIMIT }}</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="form-btn">
+    <button type="submit" class="cancle-btn" mat-dialog-close mat-raised-button color="default">Cancel</button>
+    <button type="submit" mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+  </div>
+</mat-dialog-content>

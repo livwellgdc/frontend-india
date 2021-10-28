@@ -1,0 +1,125 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-6 col-6 panel-header"> Event Details</div>
+          <div class="col-sm-6 col-6 form-group btn-section {{permissionClass}}">
+            <button title="Edit Event" mat-icon-button (click)="editHandler()">
+              <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="row ">
+          <div class="col-12 col-sm-5 col-md-4 col-lg-3 detils-sections-image">
+            <div class="detail-image">
+              <figure class="img">
+                <lv-lazy-image [img]="eventDetails?.image">
+                </lv-lazy-image>
+              </figure>
+            </div>
+          </div>
+          <div class="col-12 col-sm-7 col-md-8 col-lg-9">
+
+            <div class="detail-row">
+              <div class="form-group">
+                <label class="el_name">Event Name (In English)</label>
+                <label class="el_value">{{eventDetails?.name?.en |titlecase |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Event Name (In Vietnamese)</label>
+                <label class="el_value">{{eventDetails?.name?.vi |titlecase |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Sponsor Name</label>
+                <label class="el_value">{{eventDetails?.sponsorName |titlecase |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Event Start Date</label>
+                <label class="el_value">{{eventDetails?.startTime |date:dateType.MEDIUM_DATE }}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Event End Date</label>
+                <label class="el_value">{{eventDetails?.endTime |date:dateType.MEDIUM_DATE }}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Event Start Time</label>
+                <label class="el_value">{{eventDetails?.startTime |date:dateType.SHORT_TIME }}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Event End Time</label>
+                <label class="el_value">{{eventDetails?.endTime |date:dateType.SHORT_TIME}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Event Status</label>
+                <label class="el_value status">
+                  <span [ngClass]="eventDetails?.eventStatus">{{eventDetails?.eventStatus | formatStatus}}</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Category</label>
+                <label class="el_value">{{eventDetails?.categoryId?.name?.en |titlecase}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Featured Event</label>
+                <label class="el_value">{{eventDetails?.isFeatured ? 'Yes' : 'No'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Website Link</label>
+
+                <label class="el_link">
+                  <a [title]="eventDetails?.websiteLink" href="{{eventDetails?.websiteLink}}" target="_blank"
+                    class="detail-links">
+                    {{eventDetails?.websiteLink}}
+                  </a>
+                  <span class="clipboard"> <button mat-icon-button class="copy-btn-color" title="Copy Link to Clipboard"
+                      (click)="copyLink(eventDetails?.websiteLink)" *ngIf="eventDetails?.websiteLink">
+                      <mat-icon class="copy-icon">file_copy</mat-icon>
+                    </button></span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Enrolment Link</label>
+                <label class="el_link">
+                  <a [title]="eventDetails?.enrolmentLink" href="{{eventDetails?.enrolmentLink}}" target="_blank"
+                    class="detail-links">
+                    {{eventDetails?.enrolmentLink}}
+                  </a>
+                  <span class="clipboard"> <button mat-icon-button class="copy-btn-color" title="Copy Link to Clipboard"
+                      (click)="copyLink(eventDetails?.websiteLink)" *ngIf="eventDetails?.websiteLink">
+                      <mat-icon class="copy-icon">file_copy</mat-icon>
+                    </button></span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Created Date</label>
+                <label class="el_value">{{eventDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Event Location</label>
+                <label class="el_value location">
+                  <mat-icon color="primary" class="place-icons" *ngIf="eventDetails?.location">place</mat-icon>
+                  {{eventDetails?.location?.address |emptyValue}}
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Event Description (In English)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Event Description (In English)',eventDetails?.description?.en)">{{eventDetails?.description?.en |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Event Description (In Vietnamese)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Event Description (In Vietnamese)',eventDetails?.description?.vi)">{{eventDetails?.description?.vi |emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+</div>

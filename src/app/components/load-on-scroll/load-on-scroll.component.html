@@ -1,0 +1,11 @@
+<mat-form-field appearance="outline">
+  <mat-label>Select {{dropdownType}}</mat-label>
+  <mat-select #select [formControl]="control" (openedChange)="registerPanelScrollEvent($event)" multiple>
+    <mat-select-search (search)="searchData($event)" placeholder="Search {{dropdownType}} By Name or Mobile No.">
+    </mat-select-search>
+    <mat-option *ngFor="let data of data" [value]="data?._id" (click)="onSelectionChange(data)">
+      {{data?.fullName |titlecase}} ( +{{data?.countryCode}} {{data?.mobileNo}} )
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="control.hasError('required')">{{errMsg.USER_REQ}}</mat-error>
+</mat-form-field>

@@ -1,0 +1,77 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-6 col-6 panel-header"> Group Details</div>
+          <div class="col-sm-6 col-6 form-group btn-section">
+            <button title="Edit Group" mat-icon-button (click)="editHandler()">
+              <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <div class="row align-items-center">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-3">
+            <figure class="img">
+              <lv-lazy-image [default]="'1'" [img]="groupDetails?.image">
+              </lv-lazy-image>
+            </figure>
+          </div>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-9">
+            <div class="detail-row">
+              <div class="form-group">
+                <label class="el_name"> Group Name (In English)</label>
+                <label class="el_value">{{groupDetails?.name?.en | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Group Name (In Vietnamese)</label>
+                <label class="el_value">{{groupDetails?.name?.vi | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Short Name</label>
+                <label class="el_value">{{groupDetails?.shortName |emptyValue }}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Group Limit to Join</label>
+                <label class="el_value">{{groupDetails?.userLimit ? groupDetails?.userLimit :'0'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Group Privacy</label>
+                <label class="el_value">{{groupDetails?.privacy=='PUBLIC'?'Public':'Corporate'}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Joined Participants</label>
+                <label
+                  class="el_value">{{groupDetails?.totalParticipant ? groupDetails?.totalParticipant :'0' }}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Total Steps</label>
+                <label class="el_value">{{groupDetails?.totalSteps ? groupDetails?.totalSteps :'0' }}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Group Description (In English)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Group Description (In English)',groupDetails?.description?.en)">{{groupDetails?.description?.en |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Group Description (In Vietnamese)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Group Description (In Vietnamese)',groupDetails?.description?.vi)">{{groupDetails?.description?.vi |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Created Date</label>
+                <label class="el_value">{{groupDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <lv-group-participants [squadId]="squadId"></lv-group-participants>
+  </ng-template>
+</div>

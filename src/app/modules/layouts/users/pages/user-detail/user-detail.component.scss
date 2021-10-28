@@ -1,0 +1,44 @@
+@import 'var';
+@import 'mix';
+@import 'grid';
+
+@include status;
+@include details-form-section;
+@include el_description;
+
+/* Comment */
+
+.panel-wrap {
+    @include panel;
+    @include img(180px, 180px, cover, 0%);
+    margin-bottom: 25px;
+    .img {
+        margin: 0 auto;
+    }
+
+}
+.detail-row
+{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+.detail-row> .form-group {
+    flex: 0 0 33%;
+    @media(max-width:767px){
+        min-width:100%;
+    }
+}
+.blockchain-section{
+    text-align: end;
+    position: relative;
+    top: 10px;
+    @media(max-width:450px){
+    top: 7px;
+    left: -50px;
+    }
+    @media(max-width:320px){
+        left:-56px;
+    }
+}

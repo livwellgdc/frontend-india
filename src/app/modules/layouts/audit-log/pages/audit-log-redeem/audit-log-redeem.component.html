@@ -1,0 +1,17 @@
+<lv-button-group (filter)="submitFilter($event)" [isFilterButtonVisible]="true">
+
+  <div role="filter">
+    <form [formGroup]="filterForm">
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Point Reward Type</mat-label>
+        <mat-select formControlName="pointRewardType">
+          <mat-option *ngFor="let sta of status" [value]="sta.value">{{sta.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+</lv-button-group>
+
+<mat-table-renderer notFound="AuditLog not found" cls="removeSearch removeAddButton removeFilter" [heading]="heading"
+  (page)="paginationWithSearch($event,1)">
+</mat-table-renderer>

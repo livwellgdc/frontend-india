@@ -1,0 +1,33 @@
+<!-- <button class="mat_close" (click)="closePopup()"></button> -->
+<h1 mat-dialog-title>{{data?.title}}</h1>
+
+<mat-dialog-content>
+
+  <div class="modal_message">
+    <p>{{data?.message}} </p>
+  </div>
+
+  <div class="note" *ngIf="data?.listType=='Club'">
+    Warning: After performing this action, You may get loss data which is associated with this club.
+  </div>
+  <div role="filter" *ngIf = "data?.reasons?.length">
+    <form [formGroup]="filterForm">
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Note</mat-label>
+        <mat-select formControlName="notes" required>
+          <mat-option *ngFor="let sta of data?.reasons" [value]="sta?.value">{{sta?.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" *ngIf = "f.notes.value == 'Others'" >
+        <input matInput [maxlength]="20" formControlName="others" autocomplete="off" required>
+        <mat-error>Others required</mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-stroked-button color="default" (click)="onNoClick()"> {{data?.btn2 ? data?.btn2:'No'}} </button>
+  <button mat-raised-button color="primary" (click)="confirm()"> {{data?.btn1 ? data?.btn1:'Yes'}} </button>
+</mat-dialog-actions>

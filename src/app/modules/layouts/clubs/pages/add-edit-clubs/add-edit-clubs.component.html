@@ -1,0 +1,108 @@
+<mat-card class="livwell-video-add">
+  <div class="livwell-video">
+
+    <form [formGroup]="clubForm" (ngSubmit)="clubHandler()">
+      <div class="form-section">
+        <div class="row">
+          <div class="col-xl-6 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Club Name</mat-label>
+              <input matInput [ngStyle]="{'text-transform':'uppercase'}" [maxlength]="_limit?.MAX_NAME_LENGTH"
+                formControlName="name" autocomplete="off" required>
+              <mat-error>{{errMsg.CLUB_NAME_REQ}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-6 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Club Short Name</mat-label>
+              <input matInput [ngStyle]="{'text-transform':'uppercase'}" [maxlength]="_limit?.MAX_SHORT_NAME_LENGTH"
+                [minlength]="_limit?.MIN_SHORT_NAME_LENGTH" formControlName="shortName" (blur)="setQrCode()"
+                autocomplete="off" required>
+              <mat-error *ngIf="f['shortName'].hasError('required')">{{errMsg.CLUB_SHORT_NAME_REQ}}</mat-error>
+              <mat-error *ngIf="f['shortName'].hasError('minlength')">{{errMsg.MIN_SHORT_NAME_REQ}}</mat-error>
+              <mat-error *ngIf="f['shortName'].hasError('pattern') && !f['shortName'].hasError('minlength')">
+                {{errMsg.INVALID_SHORT_NAME_NO}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-6 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Club Contact No.</mat-label>
+              <input matInput number [maxlength]="_limit?.MAX_MOBILE_LENGTH" (blur)="setQrCode()"
+                [minlength]="_limit?.MIN_MOBILE_LENGTH" formControlName="mobileNo" autocomplete="off" required>
+              <mat-error *ngIf="f['mobileNo'].hasError('required')">{{errMsg.CLUB_MOB_NO}}</mat-error>
+              <mat-error *ngIf="f['mobileNo'].hasError('minlength')">{{errMsg.MIN_MOB_NO}}</mat-error>
+              <mat-error *ngIf="f['mobileNo'].hasError('pattern') && !f['mobileNo'].hasError('minlength')">
+                {{errMsg.INVALID_CLUB_MOB_NO}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-6 col-md-6 col-12 no-event _disabled">
+            <mat-form-field appearance="outline">
+              <mat-label>QR Code</mat-label>
+              <input matInput [maxLength]="_limit.MAX_QR_CODE_LENGTH" formControlName="qrCode" (blur)="setQrCode()"
+                autocomplete="off" readonly>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-6 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Select City</mat-label>
+              <mat-select formControlName="cityName" required>
+                <mat-select-search (search)="searchCityByName($event)" placeholder="Search City By Name">
+                </mat-select-search>
+                <mat-option disabled *ngIf="!searchedCity || searchedCity?.length <= 0">
+                  <ng-container>
+                    {{_common?.isApiCallInProgress?.ofCity ? 'Loading...':'City not found'}}
+                  </ng-container>
+                </mat-option>
+                <mat-option *ngFor="let city of searchedCity" [value]="city?.name">{{city?.name}}</mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.CITY_REQ}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-6 col-md-6 col-12" formGroupName="clientId">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Client</mat-label>
+              <mat-select formControlName="_id" (selectionChange)="clientClubSelectionHandler($event.value)" required>
+                <mat-option disabled *ngIf="!clientClubs || clientClubs?.length <= 0">
+                  <ng-container>
+                    {{_common?.isApiCallInProgress?.ofClub ? 'Loading...':'Please add clients to create the clubs'}}
+                  </ng-container>
+                </mat-option>
+                <mat-option *ngFor="let club of clientClubs" [value]="club?._id">
+                  {{club?.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.SELECT_CLIENT_CLUB}}</mat-error>
+            </mat-form-field>
+          </div>
+
+
+          <!-- <div class="col-xl-6 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Enter Address</mat-label>
+              <input matInput [maxlength]="_limit?.NOTE_MAX" formControlName="optionalAddress" autocomplete="off">
+            </mat-form-field>
+          </div> -->
+
+          <div class="col-xl-6 col-md-6 col-12">
+            <mat-form-field appearance="outline" (click)="openGoogleMap()">
+              <mat-label> Select Address </mat-label>
+              <input matInput placeholder="Select Location" formControlName="address" readonly />
+              <mat-icon matSuffix color="primary">place</mat-icon>
+              <mat-error>{{errMsg.CLUB_LOCATION}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-12">
+            <div class="btn-section">
+              <button type="button" class="cancle-btn" (click)="cancelHandler()">Cancel</button>
+              <button type="submit" class="add-btn">{{clubId?'Update':'Add'}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</mat-card>

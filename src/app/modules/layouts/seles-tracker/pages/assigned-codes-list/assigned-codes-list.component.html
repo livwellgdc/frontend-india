@@ -1,0 +1,5 @@
+<mat-table-renderer placeholder="Search by Name" 
+cls="removeAddButton removeFilter" [heading]="heading"
+  (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  >
+</mat-table-renderer>

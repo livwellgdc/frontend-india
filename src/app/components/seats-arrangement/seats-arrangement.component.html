@@ -1,0 +1,26 @@
+<div class="seat-arangment">
+<div class="mat_close" (click)="closePopup()" *ngIf="data?.isSeatRemovalOption">
+  <mat-icon class="cross">clear</mat-icon>
+</div>
+
+<h1 mat-dialog-title class="title">Available Seats</h1>
+
+<mat-dialog-content>
+
+  <ng-container *ngIf="data?.seatArray?.length>0;else noSeats">
+    <div class="seats-array">
+      <div *ngFor="let item of data?.seatArray;let i=index" class="seats-inner">
+        <div class="single-seats">{{item}}</div>
+        <ng-container *ngIf="data?.isSeatRemovalOption">
+          <mat-icon class="chip-clear" title="Remove Seat" (click)="removeSeat(i)">clear</mat-icon>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noSeats>
+    <lv-result-not-found [msg]="'Please add available seats'"></lv-result-not-found>
+  </ng-template>
+
+</mat-dialog-content>
+</div>

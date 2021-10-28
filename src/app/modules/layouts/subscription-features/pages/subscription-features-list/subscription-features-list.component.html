@@ -1,0 +1,5 @@
+<mat-table-renderer notFound="Subscription Feature not added" placeholder="Search by Feature" (status)="changeStatus($event)"
+  cls="{{permissionClass}} removeFilter" [heading]="heading" (add)="addFeature($event)"
+   (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  (sort)="sortByListing($event)">
+</mat-table-renderer>

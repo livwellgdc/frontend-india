@@ -1,0 +1,101 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-6 col-6 panel-header"> User Details
+            <span *ngIf="userDetails?.uid">(Uid - {{userDetails?.uid}})</span>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="row align-items-center">
+          <div class="col-12 col-sm-5 col-md-4 col-lg-3">
+            <figure class="img">
+              <lv-lazy-image
+                [img]="userDetails?.profilePicture ? userDetails?.profilePicture : (userDetails?.gender=='MALE'?'assets/images/u_placeholder.jpg':'assets/images/female.jpg')">
+              </lv-lazy-image>
+            </figure>
+          </div>
+          <div class="col-12 col-sm-7 col-md-8 col-lg-9">
+
+            <div class="detail-row">
+              <div class="form-group">
+                <label class="el_name"> Name</label>
+                <label class="el_value">{{userDetails?.fullName | titlecase |emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Email</label>
+                <label class="el_value">{{userDetails?.email | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Mobile Number</label>
+                <label class="el_value">{{userDetails?.mobileNo}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Gender</label>
+                <label class="el_value">{{userDetails?.gender | titlecase}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Date of Birth</label>
+                <label class="el_value">{{userDetails?.dob | date:dateType.MEDIUM_DATE | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Registration Date</label>
+                <label class="el_value">{{userDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">CFYC Joined Date</label>
+                <label class="el_value">{{userDetails?.flgJoinedDate | date:dateType.MEDIUM_DATE | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">BMI</label>
+                <label class="el_value">{{userDetails?.bmi?.value | emptyValue}}
+                  <span [hidden]="!userDetails?.bmi?.category">({{userDetails?.bmi?.category |titlecase}})</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Height (Cms)</label>
+                <label class="el_value">{{userDetails?.height?.value | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Weight ({{userDetails?.weight?.type=='KGS'? 'Kgs' : 'Lbs'}})</label>
+                <label class="el_value">{{userDetails?.weight?.value | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Livwell Points Earned</label>
+                <label class="el_value">{{userDetails?.pointsEarned }}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Badge Earned</label>
+                <label class="el_value">{{userDetails?.badgeEarned}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Reward Earned</label>
+                <label class="el_value">{{userDetails?.rewardEarned}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Default Health Application</label>
+                <label class="el_value">{{userDetails?.defaultHealthApplication | formatStatus}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Status</label>
+                <label class="el_value status">
+                  <span [ngClass]="userDetails?.status">{{userDetails?.status | formatStatus:'User'}}</span>
+                </label>
+              </div>
+              <div *ngIf = "isPermission">
+                <button mat-raised-button  (click) = "onShowActivity(userId)">Show Activity</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <lv-tabs class="cms_tabs" [userId]="userId" tabName="userDetailTabs"></lv-tabs>
+      <router-outlet></router-outlet>
+
+    </div>
+  </ng-template>
+</div>

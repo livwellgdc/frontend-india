@@ -1,0 +1,320 @@
+<mat-card>
+  <div class="row">
+    <div class="col-xl-12 col-md-12 col-12 ">
+      <form [formGroup]="rewardForm" (ngSubmit)="rewardHandler()">
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="row">
+              <div class="col-xl-4 col-12 mb-2 ">
+                <div class="reward-crop-section">
+                  <div class="img image_uploader-reward" [ngClass]="{'shakeError': f.image.hasError('image')}">
+                    <lv-lazy-image [img]="cropFile?.cropBase64"></lv-lazy-image>
+                    <button type="button" mat-mini-fab color="primary" class="uploab-btn" (click)="onSelectFile()">
+                      <mat-icon>camera_alt</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-8 col-12 reward-right-section">
+                <div class="row">
+                  <ng-container formGroupName="name">
+                    <div class="col-xl-6 col-lg-4 col-md-6 col-12">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Reward Name (In English)</mat-label>
+                        <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH" formControlName="en" autocomplete="off"
+                          required>
+                        <mat-error>{{errMsg.REWARD_NAME_REQ}}</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-xl-6 col-lg-4 col-md-6 col-12">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Reward Name (In Vietnamese)</mat-label>
+                        <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH_VI" formControlName="vi" autocomplete="off"
+                          required>
+                        <mat-error>{{errMsg.REWARD_NAME_REQ}}</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </ng-container>
+                  <div class="col-xl-6 col-lg-4 col-md-6 col-12" [ngClass]="{'_disabled': rewardDetails?.isDisabled}">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Sponsor Name</mat-label>
+                      <input matInput [readonly]="rewardDetails?.isDisabled" [minlength]="_limit?.MIN_NAME_LENGTH"
+                        [maxlength]="_limit?.MAX_NAME_LENGTH" formControlName="sponsorName" autocomplete="off"
+                        (blur)="trimValues()" (input)="autoGenerateCouponCode()" required>
+                      <mat-error *ngIf="f['sponsorName'].hasError('required')">{{errMsg.SPONSOR_NAME_REQ}}</mat-error>
+                      <mat-error *ngIf="f['sponsorName'].hasError('minlength')">{{errMsg.SPONSOR_NAME_MIN_LENGTH}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-xl-6 col-lg-4 col-md-6 col-12" formGroupName="categoryId"
+                    [ngClass]="{'_disabled': rewardDetails?.isDisabled}">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Select Livwell Benefits</mat-label>
+                      <mat-select formControlName="_id" (selectionChange)="livwellBenefitSelectionHandler($event.value)"
+                        required>
+                        <mat-option disabled *ngIf="!livwellBenefitList || livwellBenefitList?.length <= 0">
+                          <ng-container>Please add livwell benefits to create the reward</ng-container>
+                        </mat-option>
+                        <mat-option *ngFor="let benefit of livwellBenefitList" [value]="benefit?._id">
+                          {{benefit?.name?.en |titlecase}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>{{errMsg.REWARD_CATEGORY}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                    <div class="row">
+                      <div class="col-sm-3" [ngClass]="{'_disabled': rewardDetails?.isDisabled}">
+                        <mat-checkbox color="primary" (change)="onExternalCheck($event.checked)" formControlName="hasExternalLink">External Link</mat-checkbox>
+                      </div>
+                      <div class="col-sm-3" [ngClass]="{'_disabled': rewardDetails?.isDisabled}">
+                        <mat-checkbox color="primary" (change)="onExternalWithCodeCheck($event.checked)" formControlName="hasExternalLinkWithCode">External Link With
+                          Coupon Code</mat-checkbox>
+                      </div>
+                    </div>
+                  </div>
+
+                  <ng-container *ngIf="!f?.hasExternalLink?.value">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 reward-radio"
+                      [ngClass]="{'_disabled': rewardDetails?.isDisabled}">
+                      <mat-radio-group formControlName="couponCodeType" (change)="onChangeCodeType($event.value)">
+                        <mat-radio-button *ngFor="let code of codeType" [value]="code.value" color="primary">
+                          {{code.name}}
+                        </mat-radio-button>
+                      </mat-radio-group>
+                      <span *ngIf="f.couponCodeType.value=='MANUAL'" class="club-anchor customStyle"
+                        (click)="downloadSampleCsv()">
+                        Download Sample Csv
+                      </span>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-12 reward-quantity"
+                      [ngClass]="{'_disabled': rewardDetails?.isDisabled}"
+                      *ngIf="f.couponCodeType.value=='AUTO_GENERATE'">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Enter Quantity</mat-label>
+                        <input matInput number [readonly]="rewardDetails?.isDisabled"
+                          [maxLength]="_limit.MAX_CODE_QUANTITY_LENGTH" formControlName="totalRedemption"
+                          (input)="autoGenerateCouponCode()" autocomplete="off">
+                        <mat-error class="error-message" *ngIf="f['totalRedemption'].hasError('required')">
+                          {{errMsg.REDEMPTION_REQ}}
+                        </mat-error>
+                        <mat-error class="error-message" *ngIf="f['totalRedemption'].hasError('pattern')">
+                          {{errMsg.INVALID_REDEMPTION}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-12" [ngClass]="{'_disabled': rewardDetails?.isDisabled}"
+                    *ngIf="f?.sponsorName?.valid && f?.totalRedemption?.value>0 && f?.couponCodeType?.value=='AUTO_GENERATE'">
+                    <button type="button" class="add-btn-rewards" (click)="showCouponCode('1')">See
+                      {{this.f.totalRedemption.value}} Auto Generated Code</button>
+                  </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="f.couponCodeType.value=='MANUAL'">
+
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-12" [ngClass]="{'_disabled': rewardDetails?.isDisabled}">
+                      <input #csvReader type="file" style="display: none" (change)="fileChange($event)" accept=".csv" />
+                      <button mat-button type="button" color="primary" (click)="csvReader.click()"
+                        color="primary">Choose
+                        CSV File
+                        <mat-icon class="icon-font" title="Note - Duplicate codes will automatically remove">
+                          info</mat-icon>
+                      </button>
+                      <span class="fileNameCss" title="{{codesArray?.fileName}}">{{ codesArray?.fileName }}</span>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-12" [ngClass]="{'_disabled': rewardDetails?.isDisabled}"
+                      *ngIf="codesArray?.manuallyGeneratedCodes?.length">
+                      <button type="button" class="add-btn-rewards"
+                        (click)="openCodeDialog(codesArray?.manuallyGeneratedCodes)">See
+                        {{codesArray?.manuallyGeneratedCodes?.length}} Manually Generated Code</button>
+                    </div>
+
+                  </ng-container>
+
+                  <div class="col-xl-6 col-lg-4 col-md-6 col-12">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Reward Validity Date</mat-label>
+                      <input matInput (click)="picker.open()" [matDatepicker]="picker" formControlName="validity"
+                        placeholder="Choose Class Date" [min]="today" readonly>
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                      <mat-error *ngIf="f['validity'].hasError('required')">{{errMsg.REWARD_DATE}}</mat-error>
+                      <mat-error *ngIf="f['validity'].hasError('invalid')">{{errMsg.INVALID_DATE}}</mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-xl-6 col-lg-4 col-md-6 col-12">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Coupon Validity (In Days)</mat-label>
+                      <input matInput number formControlName="redemptionValidity" [maxlength]="_limit?.MAX_DAYS"
+                        autocomplete="off" required>
+                      <span class="days-badge" matSuffix>{{f['redemptionValidity'].value>1?'Days':'Day'}}</span>
+                      <mat-error *ngIf="f['redemptionValidity'].hasError('required')">{{errMsg.COUPON_VALIDITY}}
+                      </mat-error>
+                      <mat-error *ngIf="f['redemptionValidity'].hasError('pattern')">{{errMsg.INVALID_COUPON_VALIDITY}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xl-6 col-lg-4 col-md-6 col-12">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Enter Total Points</mat-label>
+                      <input matInput number (input)="calculateRewardPoints()" [maxlength]="_limit?.MAX_POINTS_LENGTH"
+                        formControlName="totalPoints" autocomplete="off" required>
+                      <mat-error *ngIf="f['totalPoints'].hasError('required')">{{errMsg.TOTAL_POINT}}</mat-error>
+                      <mat-error *ngIf="f['totalPoints'].hasError('pattern')">{{errMsg.INVALID_TOTAL_POINT}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xl-6 col-lg-4 col-md-6 col-12">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Enter Discount (Optional)</mat-label>
+                      <input matInput number (input)="calculateRewardPoints()" formControlName="discountPercent"
+                        [max]="_limit?.MAX_DISCOUNT_VALUE" [maxlength]="_limit?.MAX_DISCOUNT" autocomplete="off">
+                      <span class="days-badge" matSuffix>%</span>
+                      <mat-error *ngIf="f['discountPercent'].hasError('pattern')">{{errMsg.INVALID_DISCOUNT}}
+                      </mat-error>
+                      <mat-error *ngIf="f['discountPercent'].hasError('max')">{{errMsg.MAX_DISCOUNT}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xl-6 col-lg-4 col-md-6 col-12">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Reward Points (If Discount Applied)</mat-label>
+                      <input matInput number (input)="calculateRewardPoints()" formControlName="points"
+                        autocomplete="off" readonly>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xl-6 col-lg-4 col-md-6 col-12">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Reward Link</mat-label>
+                      <input matInput placeholder="https://reward.web.com" formControlName="sponsorLink" required>
+                      <mat-error *ngIf="f['sponsorLink'].hasError('required')">{{errMsg.REWARD_LINK}}</mat-error>
+                      <mat-error *ngIf="f['sponsorLink'].hasError('pattern')">{{errMsg.INVALID_REWARD_LINK}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xl-6 col-lg-4 col-md-6 col-12" [ngClass]="{'_disabled': rewardDetails?.isDisabled}">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Reward Privacy</mat-label>
+                      <mat-select formControlName="privacy" (selectionChange)="onChangePrivacy()" required>
+                        <mat-option *ngFor="let rPrivacy of rewardPricay" [value]="rPrivacy?.value">
+                          {{rPrivacy?.name}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-hint align="end" class="hint">{{errMsg?.PRIVACY_HINT}}
+                      </mat-hint>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xl-6 col-lg-4 col-md-6 col-12"
+                    [ngClass]="{'_disabled': rewardDetails?.isDisabled || f['privacy'].value==rewardPricay[1].value}">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Reward Type</mat-label>
+                      <mat-select formControlName="type" (selectionChange)="typeSelectionHandler($event.value)"
+                        required>
+                        <mat-option *ngFor="let rType of rewardType" [value]="rType?.value">
+                          {{rType?.name}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>{{errMsg.REWARD_TYPE}}</mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-xl-6 col-lg-4 col-md-6 col-12">
+                    <section class="location-checkbox">
+                      <mat-checkbox color="primary" formControlName="hasLocationCheck">Location</mat-checkbox>
+                    </section>
+                    <!-- <mat-error *ngIf="f['hasLocationCheck'].hasError('required')">{{errMsg.LOCATION_REQ}}</mat-error> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ng-container formGroupName="notes">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label> Reward Note (In English)</mat-label>
+                <textarea type="text" #disc1 matInput formControlName="en"
+                  [maxlength]="_limit?.DESCRIPTION_MAX"></textarea>
+                <mat-hint align="end">{{disc1.value.length}} / {{_limit?.DESCRIPTION_MAX}}
+                </mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label> Reward Note (In Vietnamese)</mat-label>
+                <textarea type="text" #disc2 matInput formControlName="vi"
+                  [maxlength]="_limit?.DESCRIPTION_MAX_VI"></textarea>
+                <mat-hint align="end">{{disc2.value.length}} / {{_limit?.DESCRIPTION_MAX_VI}}
+                </mat-hint>
+              </mat-form-field>
+            </div>
+          </ng-container>
+
+          <ng-container formGroupName="description">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label> Reward Description (In English)</mat-label>
+                <textarea type="text" #disc3 matInput formControlName="en" [maxlength]="_limit?.DESCRIPTION_MAX"
+                  required></textarea>
+                <mat-hint align="end">{{disc3.value.length}} / {{_limit?.DESCRIPTION_MAX}}
+                </mat-hint>
+                <mat-error>{{errMsg.REWARD_DESCRIPTION}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label> Reward Description (In Vietnamese)</mat-label>
+                <textarea type="text" #disc4 matInput formControlName="vi" [maxlength]="_limit?.DESCRIPTION_MAX_VI"
+                  required></textarea>
+                <mat-hint align="end">{{disc4.value.length}} / {{_limit?.DESCRIPTION_MAX_VI}}
+                </mat-hint>
+                <mat-error>{{errMsg.REWARD_DESCRIPTION}}</mat-error>
+              </mat-form-field>
+            </div>
+          </ng-container>
+
+          <ng-container formGroupName="instruction">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label> How to use (In English)</mat-label>
+                <textarea type="text" #disc3 matInput formControlName="en" [maxlength]="_limit?.DESCRIPTION_MAX"
+                  required></textarea>
+                <mat-hint align="end">{{disc3.value.length}} / {{_limit?.DESCRIPTION_MAX}}
+                </mat-hint>
+                <mat-error>{{errMsg.REWARD_INSTRUCTION}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label> How to use (In Vietnamese)</mat-label>
+                <textarea type="text" #disc4 matInput formControlName="vi" [maxlength]="_limit?.DESCRIPTION_MAX_VI"
+                  required></textarea>
+                <mat-hint align="end">{{disc4.value.length}} / {{_limit?.DESCRIPTION_MAX_VI}}
+                </mat-hint>
+                <mat-error>{{errMsg.REWARD_INSTRUCTION}}</mat-error>
+              </mat-form-field>
+            </div>
+          </ng-container>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <mat-checkbox color="primary" formControlName="isFeatured">Mark as Special</mat-checkbox>
+          </div>
+          <div class="col-sm-3" [ngClass]="{'_disabled': rewardDetails?.isDisabled}">
+            <mat-checkbox color="primary" (change)="onChangeScanner()" formControlName="hasScanner">Partner with Scanner
+            </mat-checkbox>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col btn-section">
+            <button type="button" class="cancle-btn" (click)="cancelHandler()">Cancel</button>
+            <button type="submit" class="add-btn">{{rewardId? 'Update':'Add'}}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</mat-card>

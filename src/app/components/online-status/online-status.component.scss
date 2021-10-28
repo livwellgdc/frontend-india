@@ -1,0 +1,67 @@
+.status {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 99;
+  transform: translate(-50%, 10px);
+}
+
+.online {
+  background-color: #007600;
+  color: #ffffff;
+  padding: 10px 40px;
+  text-align: center;
+  animation: network-response 0.5s 1;
+  -webkit-animation: network-response 0.5s 1;
+  animation-fill-mode: forwards;
+  animation-delay: 2s;
+  -webkit-animation-delay: 1s; /* Safari and Chrome */
+  -webkit-animation-fill-mode: forwards;
+}
+
+.offline {
+  background-color: #c40000;
+  color: #ffffff;
+  text-align: center;
+  padding: 10px 40px;
+  animation: network-response 0.5s 1;
+  -webkit-animation: network-response 0.5s 1;
+  animation-fill-mode: forwards;
+  animation-delay: 4s;
+  -webkit-animation-delay: 3s; /*SafariandChrome*/
+  -webkit-animation-fill-mode: forwards;
+}
+
+@keyframes network-response {
+  from {
+    opacity: 1;
+    visibility: visible;
+    width: auto;
+    height: auto;
+    padding: 10px;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    width: 0px;
+    height: 0px;
+    padding: 0;
+  }
+}
+
+@-webkit-keyframes network-response {
+  from {
+    opacity: 1;
+    visibility: visible;
+    width: auto;
+    height: auto;
+    padding: 10px;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    width: 0px;
+    height: 0px;
+    padding: 0;
+  }
+}

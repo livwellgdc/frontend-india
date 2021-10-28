@@ -1,0 +1,42 @@
+@import "var";
+@import "mix";
+@import "grid";
+@include club-anchor;
+
+.panel-wrap {
+  background: white;
+  box-shadow: 0px 0px 5px #00000061;
+  border-radius: 4px;
+  .inner-panel {
+    padding: 15px !important;
+  }
+}
+.sub-admin-header {
+  border-bottom: 1px solid #d2c8c8d6;
+  margin: 0px -15px 15px -16px;
+  .panel-header {
+    font-weight: 500;
+  }
+}
+.icons-section {
+  text-align: right;
+  .edit-icons {
+    position: relative;
+    top: -9px;
+  }
+}
+.details-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 23px;
+  .form-group {
+    flex: 0 0 33%;
+    @media (max-width: 576px) {
+      min-width: 100%;
+    }
+    .name {
+      font-weight: 500;
+      padding-right: 7px;
+    }
+  }
+}

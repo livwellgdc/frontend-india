@@ -1,0 +1,37 @@
+.page-title {
+    margin-bottom: 17px;
+    margin-top: 6px;
+    text-align: left;
+    font-size: 18px;
+    box-shadow: 0px 0px 4px #1513134f;
+    border-radius: 3px;
+    padding: 10px 6px;
+    background: white;
+  }
+
+  .reward-radio {
+    display: flex;
+    align-items: center;
+    height: 57px;
+  }
+
+  .reward-quantity {
+    margin-bottom: 5px;
+  }
+
+  .add-btn{
+    font-size: 13px;
+    padding: 13px;
+    outline: none;
+    border-radius: 7px;
+    border: none;
+    color: white;
+    box-shadow: 0px 0px 10px 0px #00000029;
+    cursor: pointer;
+    background: #900968;
+    height: 53px;
+    width: 206px;
+    @media (max-width: 576px) {
+      width: auto;
+    }
+  }

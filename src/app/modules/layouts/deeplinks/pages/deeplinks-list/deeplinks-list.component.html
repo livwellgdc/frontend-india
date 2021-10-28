@@ -1,0 +1,5 @@
+<mat-table-renderer notFound="Deeplinks not added" placeholder="Search by Name" (status)="changeStatus($event)"
+  cls="{{permissionClass}} removeFilter" [heading]="heading" (add)="addDeeplink($event)"
+   (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  (sort)="sortByListing($event)">
+</mat-table-renderer>

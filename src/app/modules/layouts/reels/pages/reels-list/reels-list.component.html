@@ -1,0 +1,39 @@
+<mat-table-renderer notFound="Challenges not added" placeholder="Search by Reels Name" (status)="changeStatus($event)"
+  cls="{{permissionClass}} removeFilter" [heading]="heading" (add)="addReels($event)"
+   (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  (sort)="sortByListing($event)" (filter)="submitFilter($event)">
+  <div role="filter">
+    <!-- <form [formGroup]="filterForm">
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Challenge Category</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-option disabled *ngIf="!categoryList || categoryList?.length <= 0">
+            <ng-container>Please add challenge category to filter the challenge</ng-container>
+          </mat-option>
+          <mat-option *ngFor="let category of categoryList" [value]="category?._id">{{category?.name?.en |titlecase}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Class Category</mat-label>
+        <mat-select formControlName="classCategoryId">
+          <mat-option disabled *ngIf="!classCategoryList || classCategoryList?.length <= 0">
+            <ng-container>Please add class category to filter the challenge</ng-container>
+          </mat-option>
+          <mat-option *ngFor="let classCat of classCategoryList" [value]="classCat?._id">
+            {{classCat?.name?.en |titlecase}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="search_filter" appearance="outline">
+        <mat-label>Select Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let sta of status" [value]="sta?.value">{{sta?.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form> -->
+  </div>
+</mat-table-renderer>

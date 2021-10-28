@@ -1,0 +1,25 @@
+<div class="panel">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+
+  <ng-template #apiHit>
+    <form [formGroup]="cmsForm" (ngSubmit)="updateContentHandler()">
+
+      <span class="editor_header">
+        <h4 class="label">Page Content (In English)</h4>
+      </span>
+      <quill-editor formControlName="enData"></quill-editor>
+      <div id="ql-editor1" hidden [innerHTML]="f.enData.value | safe:'html'"></div>
+
+      <span class="editor_header1">
+        <h4 class="label">Page Content (In Vietnamese)</h4>
+      </span>
+      <quill-editor formControlName="viData"></quill-editor>
+      <div id="ql-editor2" hidden [innerHTML]="f.viData.value | safe:'html'"></div>
+
+      <div class="form-btn details {{permissionClass}}" [ngClass]="{'_disabled': !cmsForm?.dirty}">
+        <button type="submit" mat-raised-button color="primary">{{contentData?'Update':'Add'}}</button>
+      </div>
+    </form>
+  </ng-template>
+
+</div>

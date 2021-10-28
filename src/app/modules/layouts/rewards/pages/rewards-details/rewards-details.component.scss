@@ -1,0 +1,52 @@
+@import "var";
+@import "mix";
+@import "grid";
+@include status;
+@include details-form-section;
+@include el_description;
+@include el_link;
+@include club-anchor;
+
+/* Comment */
+
+.panel-wrap {
+  @include panel;
+  @include img(180px, 180px, cover, 0%);
+  margin-bottom: 25px;
+  .img {
+    margin: 0 auto;
+  }
+}
+.btn-section {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.detail-links {
+  color: #900968;
+  &:hover {
+    color: #6d6e70;
+  }
+}
+.download-btn-color {
+  position: absolute;
+  top: -11px;
+  left: 100px;
+  .copy-icon {
+    font-size: 18px;
+    color: #2562ea !important;
+  }
+}
+.banner-code {
+  position: relative;
+}
+.reward-coupon{
+  text-overflow: ellipsis;
+  width:108px;
+  white-space: nowrap;
+  overflow: hidden;
+}

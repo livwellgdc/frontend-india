@@ -1,0 +1,324 @@
+<!-------------------------------------------------
+  1=Edit, 2=Block&Unblock, 3=Delete 4= Download 5==view
+-------------------------------------------------->
+<div [ngClass]="cls">
+  <div [ngClass]="{'addCustomCss': isButtonGroup || isCategoryButtonGroup}" class="listing_header"
+    *ngIf="removeId != 1">
+    <div class="row">
+      <div class="col-sm-12 col-xl-5 col-lg-12 col-12 col-md-12">
+        <lv-search-renderer [placeholder]="placeholder" (lvSearch)="searchTable($event)">
+        </lv-search-renderer>
+      </div>
+
+      <div class="col-sm-12 col-xl-7 col-lg-12 col-md-12 col-12 mat-toogle-custom">
+        <ng-container *ngIf="isButtonGroup">
+          <mat-button-toggle-group #group="matButtonToggleGroup" [value]="ButtonGroupRouteStatus" class="cst-scroll">
+            <mat-button-toggle [value]="API_EVENT.all" class="outer-btn active" color="primary"
+              (click)="onClickButtonGroup(API_EVENT.all)">All
+            </mat-button-toggle>
+            <mat-button-toggle [value]="API_EVENT.ongoing" class="outer-btn" color="primary"
+              (click)="onClickButtonGroup(API_EVENT.ongoing)">Ongoing
+            </mat-button-toggle>
+            <mat-button-toggle [value]="API_EVENT.upcoming" class="outer-btn" color="primary"
+              (click)="onClickButtonGroup(API_EVENT.upcoming)">Upcoming
+            </mat-button-toggle>
+            <ng-container *ngIf="isShowEndedButton">
+              <mat-button-toggle [value]="API_EVENT.ended" class="outer-btn" color="primary"
+                (click)="onClickButtonGroup(API_EVENT.ended)">Ended
+              </mat-button-toggle>
+            </ng-container>
+            <mat-button-toggle [value]="API_EVENT.expired" class="outer-btn" color="primary"
+              (click)="onClickButtonGroup(API_EVENT.expired)">Expired
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </ng-container>
+
+        <ng-container *ngIf="isCategoryButtonGroup">
+          <mat-button-toggle-group #group="matButtonToggleGroup" [value]="ButtonGroupRouteStatus" class="cst-scroll">
+            <mat-button-toggle [value]="API_EVENT.all" class="outer-btn active" color="primary"
+              (click)="onClickButtonGroup(API_EVENT.all)">Generic
+            </mat-button-toggle>
+            <mat-button-toggle [value]="API_EVENT.class" class="outer-btn" color="primary"
+              (click)="onClickButtonGroup(API_EVENT.class)">Class
+            </mat-button-toggle>
+            <mat-button-toggle [value]="API_EVENT.challenge" class="outer-btn" color="primary"
+              (click)="onClickButtonGroup(API_EVENT.challenge)">Challenge
+            </mat-button-toggle>
+            <mat-button-toggle [value]="API_EVENT.event" class="outer-btn" color="primary"
+              (click)="onClickButtonGroup(API_EVENT.event)">Event
+            </mat-button-toggle>
+            <mat-button-toggle [value]="API_EVENT.livwellBenifit" class="outer-btn" color="primary"
+              (click)="onClickButtonGroup(API_EVENT.livwellBenifit)">Livwell Benefits
+            </mat-button-toggle>
+            <mat-button-toggle [value]="API_EVENT.fitnessVideo" class="outer-btn" color="primary"
+            (click)="onClickButtonGroup(API_EVENT.fitnessVideo)">Fitness Video
+          </mat-button-toggle>
+          </mat-button-toggle-group>
+        </ng-container>
+
+        <ng-container *ngIf="listType=='LWC_HISTORY'">
+          <div class="equal-sign">
+            Total Points = {{totalPointsOfHistory}}
+          </div>
+        </ng-container>
+
+        <div [ngClass]="{'addfilterbtn': !isButtonGroup && !isCategoryButtonGroup}" class="filter_btn">
+
+          <lv-sendmail *ngIf="length && addSendMailBtn" (sendMail)="sendSelesReport()"></lv-sendmail>
+          <ng-container *ngIf="addUrboxButton && length && (storage?.adminDetail?.userType=='ADMIN')">
+            <lv-urbox-toggle-button></lv-urbox-toggle-button>
+          </ng-container>
+
+          <button mat-fab color="primary" class="addBtn custom-gap" title="Add" (click)="addListing(0)">
+            <mat-icon> add </mat-icon>
+          </button>
+          <button mat-fab color="primary" title="Filter" class="filterBtn custom-gap" (click)="tableFilter(true)">
+            <mat-icon> filter_list </mat-icon>
+          </button>
+        </div>
+
+        <ng-container
+          *ngIf="length && ((storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: permissionId : 'exportReport'))">
+          <div mat-fab color="primary" [class]="addCustomClass" title="Export" [matMenuTriggerFor]="menu">
+            <mat-icon class="archiv-btn"> archive </mat-icon>
+          </div>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="exportList()">as CSV</button>
+          </mat-menu>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="table-container cst-scroll">
+    <table mat-table [dataSource]="dataSource" matSort matSortStart="desc" class="mat-elevation-z1" matSortDisableClear
+      (matSortChange)="sortingData($event)">
+      <!-- Position Column -->
+      <ng-container *ngFor="let row of heading" [matColumnDef]="row.heading">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!row.sort" class="table-header" [ngClass]="{
+            noshort: !row.sort,
+            'table-action': row.type == 'action',
+            'table-center': row.align == 'center',
+            'table-content': row.content == true,
+            'table-faq': row.faqContent == true
+          }">
+          {{ row.heading }}
+        </th>
+        <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{
+            'table-action': row.type == 'action',
+            'table-center': row.align == 'center',
+            'table-content': row.content == true,
+            'table-faq': row.faqContent == true
+          }">
+          <div class="inr" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
+            <ng-container [ngSwitch]="row.type">
+              <ng-container *ngSwitchCase="'img'">
+                <div class="table-image">
+                  <lv-lazy-image [default]="element?.profilePic ? '2' : '1'" [img]="element[row.key]">
+                  </lv-lazy-image>
+                </div>
+              </ng-container>
+              <ng-container *ngSwitchCase="'link'">
+                <a class="table-link" title="{{element[row.key]?element[row.key]:''}}"
+                  routerLink="{{ row.link }}/{{ element?.userId ? element?.userId : element?._id }}">{{ element[row.key]
+                  | emptyValue}}</a>
+              </ng-container>
+              <ng-container *ngSwitchCase="'formatStatus'">
+                <span class="status">
+                  <span [ngClass]="element[row.key]"> {{ element[row.key] | formatStatus:listType}} </span>
+                </span>
+              </ng-container>
+              <ng-container *ngSwitchCase="'showTitle'">
+                <span title="{{element[row.key]?element[row.key]:''}}">
+                  {{ element[row.key] ? element[row.key] : '-'}}
+                </span>
+              </ng-container>
+              <ng-container *ngSwitchCase="'arrayData'">
+                <ng-container [ngSwitch]=" element[row.key]?.length">
+                  <ng-container *ngSwitchCase="0">-</ng-container>
+                  <ng-container *ngSwitchCase="1">
+                    <span *ngIf="(element[row.key][0]|formatMemberShip);else incorrectMembership">
+                      {{(element[row.key][0]|formatMemberShip)}}
+                    </span>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="2">
+                    <span
+                      *ngIf="(element[row.key][0]|formatMemberShip) && (element[row.key][1]|formatMemberShip);else incorrectMembership">
+                      {{((element[row.key][0]|formatMemberShip) +', '+ (element[row.key][1]|formatMemberShip))}}
+                    </span>
+                  </ng-container>
+                  <ng-container *ngSwitchDefault>
+                    <span class="club-anchor" title="Click to see all Membership Type"
+                      *ngIf="(element[row.key][0]|formatMemberShip);else incorrectMembership"
+                      (click)="seeAllMemberShips(element[row.key])">
+                      {{((element[row.key][0]|formatMemberShip) +' ...')}}
+                    </span>
+                  </ng-container>
+                </ng-container>
+                <ng-template #incorrectMembership>-</ng-template>
+              </ng-container>
+              <ng-container *ngSwitchCase="'checkBox'">
+                <mat-checkbox
+                  *ngIf="length && ((storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: permissionId : 'addEdit'))"
+                  (ngModelChange)="switchBooleanValue(element)" [(ngModel)]="element.isDealsOfTheDay"
+                  [ngClass]="{'_disabled': element?.status !== API_EVENT.active  && !element?.isEdited}"
+                  [color]="element?.isDealsOfTheDay ? 'primary' : 'warn'">
+                </mat-checkbox>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'action'">
+                <ng-container *ngIf="!element?.classType || element?.classType=='ADMIN';else flgClasses">
+                  <ng-container *ngFor="let sta of row.action">
+                    <ruby (click)="changeStatus(sta, element, i,listType)" *ngIf="element[row.key] != 'DELETED'">
+                      <ng-container [ngSwitch]="pageType">
+                        <ng-container *ngSwitchCase="'class'">
+                          <button mat-icon-button [ngClass]="{'_disabled': isButtonGroup && !element?.isEdited}"
+                            class="edit-btn-color" matTooltip="Edit" *ngIf="sta == 1">
+                            <mat-icon class="edit-icons">edit</mat-icon>
+                          </button>
+                          <button mat-icon-button [ngClass]="{'_disabled':isButtonGroup && !element?.isEdited}"
+                            [color]="element?.status === API_EVENT.active ? 'primary' : 'warn'"
+                            [matTooltip]="element?.status === API_EVENT.active ? (listType=='User'?'Block':'Inactive') : (listType=='User'?'Unblock':'Active')"
+                            *ngIf="sta == 2">
+                            <mat-icon class="block-icons">block</mat-icon>
+                          </button>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'group'">
+                          <button mat-icon-button [ngClass]="{'_disabled': !element?.isEdited}"
+                            class="edit-btn-color" matTooltip="Edit" *ngIf="sta == 1">
+                            <mat-icon class="edit-icons">edit</mat-icon>
+                          </button>
+                          <button mat-icon-button [ngClass]="{'_disabled': !element?.isEdited}"
+                            [color]="element?.status === API_EVENT.active ? 'primary' : 'warn'"
+                            [matTooltip]="element?.status === API_EVENT.active ? (listType=='User'?'Block':'Inactive') : (listType=='User'?'Unblock':'Active')"
+                            *ngIf="sta == 2">
+                            <mat-icon class="block-icons">block</mat-icon>
+                          </button>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'disableEditIcon'">
+                          <button mat-icon-button [ngClass]="{'_disabled': !element?.isEdited}" class="edit-btn-color"
+                            matTooltip="Edit" *ngIf="sta == 1">
+                            <mat-icon class="edit-icons">edit</mat-icon>
+                          </button>
+                          <button mat-icon-button
+                            [ngClass]="{'_disabled':!element?.isEdited || element?.status === API_EVENT.expired}"
+                            [color]="element?.status === API_EVENT.active ? 'primary' : 'warn'"
+                            [matTooltip]="(element?.status === API_EVENT.active) ? (listType=='User'?'Block':'Inactive') : (listType=='User'?'Unblock':'Active')"
+                            *ngIf="sta == 2">
+                            <mat-icon class="block-icons">block</mat-icon>
+                          </button>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'disableBlockIcon'">
+                          <button mat-icon-button class="edit-btn-color" matTooltip="Edit" *ngIf="sta == 1">
+                            <mat-icon class="edit-icons">edit</mat-icon>
+                          </button>
+                          <button mat-icon-button [ngClass]="{'_disabled':element?.status === API_EVENT.expired}"
+                            [color]="element?.status === API_EVENT.active ? 'primary' : 'warn'"
+                            [matTooltip]="element?.status === API_EVENT.active ? (listType=='User'?'Block':'Inactive') : (listType=='User'?'Unblock':'Active')"
+                            *ngIf="sta == 2">
+                            <mat-icon class="block-icons">block</mat-icon>
+                          </button>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                          <button mat-icon-button class="edit-btn-color" matTooltip="Edit" *ngIf="sta == 1">
+                            <mat-icon class="edit-icons">edit</mat-icon>
+                          </button>
+                          <button mat-icon-button [color]="element?.status === API_EVENT.active ? 'primary' : 'warn'"
+                            [matTooltip]="element?.status === API_EVENT.active ? (listType=='User'?'Block':'Inactive') : (listType=='User'?'Unblock':'Active')"
+                            *ngIf="sta == 2">
+                            <mat-icon class=" block-icons">block</mat-icon>
+                          </button>
+                        </ng-container>
+                      </ng-container>
+                      <button mat-icon-button class="delete-btn-color"  [ngClass]="{  '_disabled': pageType == 'group' && !element?.isEdited}" *ngIf="sta == 3" matTooltip="Delete">
+                        <mat-icon class="delete-icons">delete</mat-icon>
+                      </button>
+                      <button mat-icon-button
+                        [ngClass]="{'_disabled':isButtonGroup && (!element?.isClassEnd || element?.classStatus==API_EVENT.ended || element?.classStatus==API_EVENT.expired)}"
+                        class="delete-btn-color" *ngIf="sta == 4" matTooltip="End Class">
+                        <mat-icon class="delete-icons">work_off</mat-icon>
+                      </button>
+                      <button mat-icon-button class="edit-btn-color" *ngIf="sta == 5" matTooltip="Copy">
+                        <mat-icon class="edit-icons">file_copy</mat-icon>
+                      </button>
+                      <button mat-icon-button class="edit-btn-color" *ngIf="sta == 6" matTooltip="Play">
+                        <mat-icon class="edit-icons">play_circle_outline</mat-icon>
+                      </button>
+                      <button mat-icon-button class="edit-btn-color" *ngIf="sta == 7"
+                        [ngClass]="{'_disabled': element?.status === API_EVENT.approved }"
+                        matTooltip="Approve">
+                        <mat-icon class="edit-icons">check_circle_outline</mat-icon>
+                      </button>
+                      <button mat-icon-button class="edit-btn-color" *ngIf="sta == 8"
+                        [ngClass]="{'_disabled': element?.status === API_EVENT?.rejected }"
+                        matTooltip="Reject">
+                        <mat-icon class="edit-icons">thumb_down_alt</mat-icon>
+                      </button>
+
+                    </ruby>
+                  </ng-container>
+                </ng-container>
+                <ng-template #flgClasses>N / A</ng-template>
+              </ng-container>
+
+              <ng-container *ngSwitchDefault>
+                <ng-container *ngIf="row.type == 'selection'; else numberType">
+                 
+                  <ng-container *ngIf="element.status == 'PENDING'; else categoryName">
+                    <mat-form-field class="search_filter" appearance="outline">
+                      <mat-select required [value] = "element[row.key]" (selectionChange)="categoryHandler($event.value, element._id)">
+                        <mat-option *ngFor="let cType of categoryList" [value]="cType?._id">
+                          {{cType?.name?.en}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </ng-container>
+
+                  <ng-template #categoryName>
+                      {{ element[row.key] ? element?.categoryId?.name?.en : (element[row.key] === 0 ? 0 : "-") }}
+                  </ng-template>
+                </ng-container>
+
+                <ng-template #numberType>
+                <ng-container *ngIf="row.type == 'number'; else date">
+                  {{ element[row.key] ? (element[row.key] | number ) : '-'}}
+                </ng-container>
+              </ng-template>
+
+                <ng-template #date>
+                  <ng-container *ngIf="row.type == 'date'; else time">
+                    {{ element[row.key] ? (element[row.key] | date: dateType.MEDIUM_DATE) : '-'}}
+                  </ng-container>
+                </ng-template>
+
+                <ng-template #time>
+                  <ng-container *ngIf="row.type == 'time'; else normalKeys">
+                    {{ element[row.key] ? (element[row.key] | date: dateType.SHORT_TIME) : '-'}}
+                  </ng-container>
+                  <ng-template #normalKeys>
+                    {{ element[row.key] ? element[row.key] : (element[row.key] === 0 ? 0 : "-") }}
+                  </ng-template>
+
+                </ng-template>
+              </ng-container>
+
+            </ng-container>
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="matHeaderRow"></tr>
+      <tr mat-row *matRowDef="let row; columns: matHeaderRow"></tr>
+    </table>
+
+    <lv-data-loader *ngIf="showLoader"></lv-data-loader>
+    <ng-content></ng-content>
+
+    <lv-result-not-found *ngIf="notData && !showLoader" [msg]="notFound"></lv-result-not-found>
+    <mat-paginator #paginator class="table-pagination" *ngIf="length" [length]="length" [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 25, 100]" (page)="onPageHandler($event)" showFirstLastButtons></mat-paginator>
+  </div>
+
+  <lv-filter [@openClose]="isOpen ? 'open' : 'closed'" (apply)="applyFilter($event)">
+    <ng-content select="[role=filter]"></ng-content>
+  </lv-filter>
+
+</div>

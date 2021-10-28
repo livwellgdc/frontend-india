@@ -1,0 +1,90 @@
+@import "var";
+@import "mix";
+@import "grid";
+
+.top-section {
+  padding: 10px 0px;
+}
+.image-video-section {
+  display: flex;
+  justify-content: center;
+  @media (max-width: 576px) {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+}
+.add-btn {
+  @include btn;
+  background: $primary;
+}
+.cancle-btn {
+  @include btn;
+  background: #868285;
+}
+.btn-section {
+  display: flex;
+  margin-bottom: 20px;
+}
+.custom-checkbox {
+  margin-bottom: 31px;
+  font-size: 17px;
+}
+.upload-header {
+  margin: 13px 0px;
+}
+
+.remove-date {
+  font-size: 15px;
+  color: $red;
+  cursor: pointer;
+}
+
+span.km-badge {
+  position: relative;
+  top: -7px;
+  font-size: 14px;
+  color: $primary;
+}
+
+.uploab-btn {
+  position: absolute;
+  right: -15px;
+  bottom: -15px;
+}
+.file-button {
+  margin: 2px;
+  position: absolute;
+  right: 1px;
+  top: 0px;
+  cursor: pointer;
+  display: none;
+}
+.file-button:hover .delete-icons {
+  color: $red;
+}
+.delete-btn-color {
+  background: white;
+  width: 30px;
+  height: 30px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  .delete-icons {
+    font-size: 20px;
+    margin-top: 3px;
+    margin-left: -3px;
+    color: #913868;
+  }
+}
+.reward-right-section {
+  margin-top: 46px;
+  @media (max-width: 767px) {
+    margin-top: 0px;
+  }
+}
+.error-message {
+  font-size: 12px;
+}

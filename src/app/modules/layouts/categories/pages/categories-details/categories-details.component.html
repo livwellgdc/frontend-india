@@ -1,0 +1,46 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+      <div class="panel-header">Category Details</div>
+      <div class="panel-body">
+        <div class="row align-items-center">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-3">
+            <figure class="img">
+              <lv-lazy-image [default]="'1'" [img]="categoryDetails?.image">
+              </lv-lazy-image>
+            </figure>
+          </div>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-9">
+            <div class="detail-row">
+
+              <div class="form-group">
+                <label class="el_name"> Category Name (In English)</label>
+                <label class="el_value">{{categoryDetails?.name?.en | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name"> Category Name (In Vietnamese)</label>
+                <label class="el_value">{{categoryDetails?.name?.vi | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Created Date</label>
+                <label class="el_value">{{categoryDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Status</label>
+                <label class="el_value status">
+                  <span [ngClass]="categoryDetails?.status">{{categoryDetails?.status | formatStatus}}</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="el_name">Category Description</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Category Description',categoryDetails?.description)">{{categoryDetails?.description | emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

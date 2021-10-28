@@ -1,0 +1,211 @@
+<div class="panel-wrap">
+  <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+  <ng-template #apiHit>
+    <div class="panel">
+
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-sm-10 col-10 panel-header">
+            <div class="heading-cover">Corporate Health Score</div>
+            <div class="text-right">
+              <span
+                class="progress-count">{{corporateDetails?.healthScore ? corporateDetails?.healthScore : 0}}/100</span>
+            </div>
+            <mat-progress-bar [mode]="'determinate'" class="pointer"
+              [title]="corporateDetails?.healthScore ? corporateDetails?.healthScore : 0"
+              [value]="corporateDetails?.healthScore ? corporateDetails?.healthScore : 0"></mat-progress-bar>
+          </div>
+          <div class="col-sm-2 col-2 form-group btn-section">
+            <button title="Edit Corporate" class="edit-fab" mat-icon-button color="primary" (click)="editHandler()">
+              <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-3 col-sm-12 col-md-12">
+            <div class="detail-row">
+              <figure class="img">
+                <lv-lazy-image
+                  [img]="corporateDetails?.logo ? corporateDetails?.logo : 'assets/images/image_placeholder.jpg'">
+                </lv-lazy-image>
+              </figure>
+            </div>
+          </div>
+          <div class="col-lg-9 col-sm-12 col-md-12">
+            <div class="detail-row">
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name"> Corporate Name</label>
+                <label class="el_value">{{corporateDetails?.name | titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name"> Corporate Tax Code</label>
+                <label class="el_value">{{corporateDetails?.taxCode | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Corporate Category</label>
+                <label class="el_value">{{corporateDetails?.categoryName |titlecase | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Corporate Industry</label>
+                <label class="el_value">{{corporateDetails?.industry | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Company Type</label>
+                <label class="el_value">{{corporateDetails?.companyType | formatStatus| emptyValue}}</label>
+              </div>
+
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Employee Range</label>
+                <label class="el_value">{{corporateDetails?.noOfEmployees | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Remaining Coins</label>
+                <label class="el_value"
+                  [ngClass]="{'green': corporateDetails?.pointsRemaining > 0, 'red': corporateDetails?.pointsRemaining==0}">{{corporateDetails?.pointsRemaining ? corporateDetails?.pointsRemaining : 0 }}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Livwell Coins Purchased</label>
+                <label class="el_value">{{corporateDetails?.points ? corporateDetails?.points : 0 }}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Coins Distribution Frequency</label>
+                <label
+                  class="el_value">{{corporateDetails?.frequencyType == 'ONCE' ? 'Once' : 'Once per Month'}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Coins For Distribution</label>
+                <label class="el_value">{{corporateDetails?.allMembers ? corporateDetails?.allMembers : 0 }}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Coins Distribution Start Date</label>
+                <label
+                  class="el_value">{{corporateDetails?.startDate | date:dateType.VALIDITY_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Coins Distribution End Date</label>
+                <label class="el_value">{{corporateDetails?.endDate | date:dateType.VALIDITY_TIME | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">City Name</label>
+                <label class="el_value">{{corporateDetails?.cityName | emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12" [hidden]="!corporateDetails?.description?.en">
+                <label class="el_name">Description (In English)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Description (In English)',corporateDetails?.description?.en)">{{corporateDetails?.description?.en |emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12" [hidden]="!corporateDetails?.description?.vi">
+                <label class="el_name">Description (In Vietnamese)</label>
+                <label class="el_description"
+                  (click)="openDescriptionBox('Description (In Vietnamese)',corporateDetails?.description?.vi)">{{corporateDetails?.description?.vi |emptyValue}}</label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Coins Distribution Status</label>
+                <label class="el_value status">
+                  <span
+                    [ngClass]="corporateDetails?.distributionStatus">{{corporateDetails?.distributionStatus | formatStatus}}</span>
+                </label>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                <label class="el_name">Created Date</label>
+                <label
+                  class="el_value">{{corporateDetails?.created | date:dateType.DATE_WITH_TIME | emptyValue}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12" *ngIf="corporateDetails?.domains?.length>0">
+            <h3 class="title-form">Administrator Info</h3>
+            <div class="chip-container admin-info">
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="mat-chips ">
+                  <label class="el_name">Name</label>
+                  <span class="chips">
+                    {{corporateDetails?.adminName |titlecase | emptyValue}}
+                  </span>
+                </div>
+              </div>
+              <div class=" col-lg-4 col-md-6 col-sm-12">
+                <div class="mat-chips">
+                  <label class="el_name">Email</label>
+                  <span class="chips">
+                    {{corporateDetails?.adminEmail | emptyValue}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="mat-chips ">
+                  <label class="el_name">Phone No.</label>
+                  <span class="chips">
+                    +{{corporateDetails?.countryCode}}
+                    {{corporateDetails?.mobileNo | emptyValue}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-12" *ngIf="corporateDetails?.domains?.length>0">
+            <h3 class="title-form">Corporate Domains</h3>
+            <div class="chip-container domains">
+              <ng-container *ngFor="let item of corporateDetails?.domains">
+                <div class="mat-chips">
+                  <span class="chips">
+                    {{item}}
+                  </span>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="col-sm-12">
+            <h3 class="title-form">Corporate's
+              Location{{corporateDetails?.otherAddresses?.length>0?'s':''}}</h3>
+            <div class="chip-container location">
+              <div class="mat-chips col-md-12">
+                <label class="el_name">Registered Location</label>
+                <span class="chips" title="{{corporateDetails?.registeredAddress?.address |emptyValue}}">
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                    height="24px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <rect x="0" y="0" width="24" height="24"></rect>
+                      <path
+                        d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z"
+                        fill="#900968" fill-rule="nonzero"></path>
+                    </g>
+                  </svg>
+                  <address class="address">
+                    {{corporateDetails?.registeredAddress?.address |emptyValue}}</address>
+
+                </span>
+              </div>
+            </div>
+            <div class="chip-container location" *ngIf="corporateDetails?.otherAddresses?.length>0">
+              <div class="mat-chips col-md-12">
+                <label class="el_name">Other
+                  Location{{corporateDetails?.otherAddresses?.length>0?'s':''}}</label>
+                <ng-container *ngFor="let item of corporateDetails?.otherAddresses">
+                  <span class="chips" title="{{item?.address}}">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                      height="24px" viewBox="0 0 24 24" version="1.1">
+                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24"></rect>
+                        <path
+                          d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z"
+                          fill="#900968" fill-rule="nonzero"></path>
+                      </g>
+                    </svg>
+                    <address class="address"> {{item?.address}}</address>
+                  </span>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

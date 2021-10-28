@@ -1,0 +1,7 @@
+<mat-table-renderer placeholder="Search by Code" cls="removeAddButton" [heading]="heading" 
+[addCustomClass]="''" [permissionId] = "SECTION_ID_OF.REPORTS"
+  (export)="downloadList($event)" [addSendMailBtn] = "_storage?.adminDetail?.userType=='ADMIN'" (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+   (filter)="filterApply($event)" (sendMail) = "sendSelesReport()"
+    (sort)="sortByListing($event)">
+  <lv-report-filter [filter]="filterForm" role="filter"></lv-report-filter>
+</mat-table-renderer>

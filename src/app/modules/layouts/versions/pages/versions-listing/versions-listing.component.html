@@ -1,0 +1,4 @@
+<mat-table-renderer notFound="Versions not added" placeholder="Search by Version Name" cls="removeFilter"
+  [heading]="heading" (add)="addVersions($event)" (find)="paginationWithSearch($event,0)"
+  (page)="paginationWithSearch($event,1)" (status)="changeStatus($event)" (sort)="sortByListing($event)">
+</mat-table-renderer>

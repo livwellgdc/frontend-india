@@ -1,0 +1,7 @@
+<mat-table-renderer notFound="SpinWheel not added" placeholder="Search by spin wheel title" (status)="changeStatus($event)"
+  cls="{{permissionClass}} removeFilter" [heading]="heading" (add)="addSpinWheel($event)"
+   (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  (sort)="sortByListing($event)" (filter)="submitFilter($event)">
+  <div role="filter">
+  </div>
+</mat-table-renderer>

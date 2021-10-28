@@ -1,0 +1,17 @@
+<div class="panel">
+  <form [formGroup]="pointsDistributionForm" (ngSubmit)="updatePointsHandler()">
+
+    <p class="lead">You can set the LWC for the Video Ads</p>
+    <mat-form-field class="m0" appearance="outline">
+      <input [ngClass]="{ hasError: f['adsPoint'].touched && !f['adsPoint'].valid }" number matInput
+        [maxlength]="_limit.MAX_LWC_POINTS" formControlName="adsPoint" autocomplete="off" required />
+      <span class="lwc" matSuffix>LWC</span>
+    </mat-form-field>
+    <span class="equal-sign">
+      {{pointsDistributionForm.value.adsPoint ? pointsDistributionForm.value.adsPoint : 0}} LWC / Livwell Video Ads
+    </span>
+    <div class="form-btn details">
+      <button type="submit" mat-raised-button color="primary">Update LWC</button>
+    </div>
+  </form>
+</div>

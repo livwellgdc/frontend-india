@@ -1,0 +1,66 @@
+@import "var";
+@import "mix";
+@import "grid";
+
+/* Comment */
+@include status;
+@include details-section;
+@include details-form-section;
+@include el_description;
+@include el_link;
+
+.panel-wrap {
+  @include panel;
+  @include img(100%, 320px, cover, 0%);
+  margin-bottom: 25px;
+}
+.image-videos {
+  display: flex;
+  justify-content: center;
+}
+@media (max-width: 767px) {
+  .image-videos {
+    flex-wrap: wrap;
+  }
+}
+.btn-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.detail-links {
+  color: #900968;
+  &:hover {
+    color: #6d6e70;
+  }
+}
+.place-icons {
+  position: relative;
+  top: 7px;
+}
+.button-basic {
+  width: 173px;
+  font-size: 20px;
+  padding: 14px;
+  outline: none;
+  border-radius: 7px;
+  border: none;
+  margin-right: 21px;
+  color: white;
+  font-family: $font;
+  box-shadow: 0px 0px 10px 0px #00000029;
+  cursor: pointer;
+}
+.add-btn {
+  @extend .button-basic;
+  background: #900968;
+}
+.cancle-btn {
+  @extend .button-basic;
+  background: #afacae;
+}
+.span-video,
+.span-images {
+  display: block;
+  margin: 10px 0px;
+}

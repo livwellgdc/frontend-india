@@ -1,0 +1,5 @@
+<mat-table-renderer notFound="QuickLinks not added" placeholder="Search by Name" (status)="changeStatus($event)"
+  cls="{{permissionClass}} removeFilter" [heading]="heading" (add)="addQuiclLink($event)"
+   (find)="paginationWithSearch($event,0)" (page)="paginationWithSearch($event,1)"
+  (sort)="sortByListing($event)" (filter)="submitFilter($event)">
+</mat-table-renderer>

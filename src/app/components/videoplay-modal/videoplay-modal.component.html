@@ -1,0 +1,13 @@
+<div *ngIf="!data.isYoutubeVideo">
+  <video width="320" height="240" controls autoplay>
+    <source [src]="data.video" type="video/mp4">
+    <source [src]="data.video" type=”video/ogg”>
+    <source [src]="data.video" type=”video/webm”>
+    <p>Your browser doesn’t support HTML5 video.</p>
+  </video>
+</div>
+
+
+<div *ngIf="data.isYoutubeVideo">
+  <iframe allow='autoplay' width="320" height="240" [src]="data.video | safe:'resourceUrl'" frameborder="0" allowfullscreen></iframe>
+</div>

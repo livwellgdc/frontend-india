@@ -1,0 +1,38 @@
+<div class="mobile-form" *ngIf  = "!isLoggedIn">
+  <form class="form" [formGroup]="loginForm" (ngSubmit)="loginHandler()">
+    <h3>Login</h3>
+    <p> Please enter your registered Email ID and password in order to continue.</p>
+
+    <mat-form-field appearance="outline" class="mb-2">
+      <mat-label>Email</mat-label>
+      <input #email matInput type="email" (blur)="trimValues()" [prevent-keys]="[32]"
+        [maxlength]="limit?.MAX_EMAIL_LENGTH" formControlName="email" required />
+      <mat-error class="error-message" *ngIf="f.email.hasError('required')">{{errorMsg?.EMAIL_REQ}}</mat-error>
+      <mat-error class="error-message" *ngIf="f.email.hasError('pattern')">{{errorMsg?.INVALID_EMAIL}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="mb-2">
+      <mat-label>Password</mat-label>
+      <input #pass matInput [type]="hide ? 'password' : 'text'" [maxlength]="limit?.MAX_PASSWORD_LENGTH"
+        formControlName="password" (paste)="restrictPaste($event)" required>
+      <mat-icon class="pointer" matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      <mat-error class="error-message" *ngIf="f.password.hasError('required')">{{errorMsg?.PASSWORD_REQ}}</mat-error>
+      <mat-error class="error-message" *ngIf="f.password.hasError('pattern')">{{errorMsg?.INVALID_PASSWORD}}</mat-error>
+      <mat-error class="error-message" *ngIf="f.password.hasError('space')">{{errorMsg?.NO_SPACE_PASSWORD}}</mat-error>
+    </mat-form-field>
+    <div class="form-btn ">
+      <button type="submit" mat-flat-button color="primary"> Login </button>
+      <button type="button" class="forget-btn" mat-button
+        [routerLink]="[ 'ABS_ACCOUNT_FORGOT_PASSWORD' | absolutePath ]"> Forgot Password?
+      </button>
+    </div>
+  </form>
+</div>
+
+<ng-container *ngIf = "isLoggedIn">
+  <lv-send-code></lv-send-code>
+</ng-container>
+
+
+
+

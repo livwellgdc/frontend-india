@@ -1,0 +1,346 @@
+<mat-card class="corporateForm-card">
+  <div class="row">
+    <div class="col-xl-12 col-md-12 col-12 ">
+      <form [formGroup]="corporateForm" (ngSubmit)="corporateHandler()">
+        <div class="row">
+          <div class="col-md-12 mb-2 ">
+            <div class="article-crop-section">
+              <label class="custom-margin span-images">Corporate Logo (Required)</label>
+              <div class="img image_uploader" [ngClass]="{'shakeError': f.logo.hasError('image')}">
+                <lv-lazy-image [img]="cropFile?.cropBase64"></lv-lazy-image>
+                <button type="button" mat-mini-fab color="primary" class="uploab-btn" (click)="onSelectFile()">
+                  <mat-icon>camera_alt</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Corporate Name</mat-label>
+              <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH" formControlName="name" autocomplete="off" required>
+              <mat-error>{{errMsg.CORPORATE_NAME}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Corporate Tax Code</mat-label>
+              <input matInput [maxlength]="_limit?.MAX_TAX_CODE_LENGTH" formControlName="taxCode" autocomplete="off"
+                required>
+              <mat-error>{{errMsg.CORPORATE_TAX}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Category Name</mat-label>
+              <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH" formControlName="categoryName" autocomplete="off"
+                required>
+              <mat-error>{{errMsg.CORPORATE_CATEGORY_REQ}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Select City</mat-label>
+              <mat-select formControlName="cityName" required>
+                <mat-select-search (search)="searchCityByName($event)" placeholder="Search City By Name">
+                </mat-select-search>
+                <mat-option disabled *ngIf="!staticArrays?.searchedCity || staticArrays?.searchedCity?.length <= 0">
+                  <ng-container>City not found</ng-container>
+                </mat-option>
+                <mat-option *ngFor="let city of staticArrays?.searchedCity" [value]="city?.name">{{city?.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.CLASS_CITY}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Administrator Name</mat-label>
+              <input matInput [maxlength]="_limit?.MAX_NAME_LENGTH" formControlName="adminName" autocomplete="off"
+                required>
+              <mat-error>{{errMsg.CORPORATE_ADMINISTRATOR_NAME}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-2 col-lg-2 col-md-6 col-6">
+            <lv-select-country [control]="f['countryCode']"></lv-select-country>
+          </div>
+
+          <div class="col-xl-2 col-lg-2 col-md-6 col-6">
+            <mat-form-field appearance="outline">
+              <mat-label> Phone No.</mat-label>
+              <input matInput number [maxlength]="_limit?.MAX_MOBILE_LENGTH" [minlength]="_limit?.MIN_MOBILE_LENGTH"
+                formControlName="mobileNo" autocomplete="off" required>
+              <mat-error *ngIf="f['mobileNo'].hasError('required')">
+                {{errMsg.CORPORATE_ADMINISTRATOR_PHONE}}
+              </mat-error>
+              <mat-error *ngIf="f['mobileNo'].hasError('minlength')">{{errMsg.MIN_MOB_NO}}</mat-error>
+              <mat-error *ngIf="f['mobileNo'].hasError('pattern') && !f['mobileNo'].hasError('minlength')">
+                {{errMsg.INVALID_MOB_NO}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12" [ngClass]="{'_disabled': corporateId}">
+            <mat-form-field appearance="outline">
+              <mat-label>Administrator Email</mat-label>
+              <input #email matInput type="email" (blur)="trimValues()" [prevent-keys]="[32]"
+                [maxlength]="_limit?.MAX_EMAIL_LENGTH" formControlName="adminEmail" required [readonly]="corporateId" />
+              <mat-error class="error-message" *ngIf="f.adminEmail.hasError('required')">
+                {{errMsg?.CORPORATE_ADMINISTRATOR_EMAIL}}</mat-error>
+              <mat-error class="error-message" *ngIf="f.adminEmail.hasError('pattern')">
+                {{errMsg?.INVALID_EMAIL}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Industry</mat-label>
+              <mat-select formControlName="industry" required>
+                <mat-select-search (search)="searchIndustryByName($event)" placeholder="Search Industry By Name">
+                </mat-select-search>
+                <mat-option disabled
+                  *ngIf="!staticArrays?.searchedIndustries || staticArrays?.searchedIndustries?.length <= 0">
+                  <ng-container>Industry not found</ng-container>
+                </mat-option>
+                <mat-option *ngFor="let iType of staticArrays?.searchedIndustries" [value]="iType?.value">
+                  {{iType?.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.INDUSTRY_REQ}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Company Type</mat-label>
+              <mat-select formControlName="companyType" required>
+                <mat-option *ngFor="let cType of staticArrays?.companyTypes" [value]="cType?.value">
+                  {{cType?.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.COMPANY_TYPE}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Employee Range</mat-label>
+              <mat-select formControlName="noOfEmployees" required>
+                <mat-option *ngFor="let range of staticArrays?.employeeRanges" [value]="range?.value">
+                  {{range?.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.EMPLOYEE_RANGE}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Livwell Coins Purchased</mat-label>
+              <input matInput number [maxlength]="_limit?.MAX_CLIENT_CLUB_POINTS_LENGTH" formControlName="points"
+                autocomplete="off" required>
+              <mat-error *ngIf="f['points'].hasError('required')">{{errMsg.CORPORATE_POINT}}</mat-error>
+              <mat-error *ngIf="f['points'].hasError('pattern')">{{errMsg.INVALID_CORPORATE_POINT}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Coins For Distribution</mat-label>
+              <input #coinsDistribution matInput number [maxlength]="_limit?.MAX_CLIENT_CLUB_POINTS_LENGTH"
+                formControlName="allMembers" autocomplete="off" required>
+              <mat-error *ngIf="f['allMembers'].hasError('required')">{{errMsg.DISTRIBUTED_POINT}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Coins Distribution Frequency</mat-label>
+              <mat-select formControlName="frequencyType" required>
+                <mat-option *ngFor="let freq of staticArrays?.frequencies" [value]="freq?.value">
+                  {{freq?.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.POINTS_FREQUENCY}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Coins Distribution Start Date</mat-label>
+              <input matInput (click)="picker1.open()" [matDatepicker]="picker1" formControlName="startDate"
+                placeholder="Coins Distribution Start Date" [min]="today" (dateChange)="startDateChange()" readonly>
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+              <mat-error *ngIf="f['startDate'].hasError('required')">{{errMsg.POINT_START_DATE}}
+              </mat-error>
+              <mat-error *ngIf="f['startDate'].hasError('invalid')">{{errMsg.INVALID_DATE}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Coins Distribution End Date</mat-label>
+              <input matInput (click)="picker2.open()" [matDatepicker]="picker2" formControlName="endDate"
+                placeholder="Coins Distribution End Date" [min]="f['startDate'].value" readonly>
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+              <mat-error *ngIf="f['endDate'].hasError('required')">{{errMsg.POINT_END_DATE}}</mat-error>
+              <mat-error *ngIf="f['endDate'].hasError('invalid')">{{errMsg.INVALID_DATE}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+            <mat-form-field appearance="outline" (click)="setRegisterLocation()">
+              <mat-label>Registered Location</mat-label>
+              <input matInput placeholder="Select Location" formControlName="address" readonly />
+              <button matSuffix mat-icon-button type="button">
+                <mat-icon color="primary">place</mat-icon>
+              </button>
+              <mat-error>{{errMsg.REGISTERED_LOCATION}}</mat-error>
+            </mat-form-field>
+
+            <div class="add_dynamic">
+              <div class="" formArrayName="otherAddresses">
+                <div *ngFor="let loc of locations.controls; let catIndex = index" [formGroupName]="catIndex">
+                  <div class="panel">
+                    <div class="row">
+                      <div class="col-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label> Select Location </mat-label>
+                          <input matInput placeholder="Select Location"
+                            (click)="addMoreLocGoogleMap(loc?.value,catIndex)" formControlName="address" readonly />
+                          <mat-error *ngIf="loc['controls'].address.hasError('required')">
+                            {{errMsg.REGISTERED_LOCATION}}
+                          </mat-error>
+                          <button [ngClass]="{ _disabled: loc.disabled }" matSuffix type="button"
+                            (click)="removeLocation(loc?.value,catIndex)" class="btn-circle" mat-icon-button>
+                            <mat-icon>
+                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                  <rect x="0" y="0" width="24" height="24"></rect>
+                                  <circle fill="#900968" opacity="0.3" cx="12" cy="12" r="10">
+                                  </circle>
+                                  <rect fill="#900968" x="6" y="11" width="12" height="2" rx="1"></rect>
+                                </g>
+                              </svg>
+                            </mat-icon>
+                          </button>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-wrap">
+              <button type="button" (click)="addLocation()" class="add" mat-button>
+                <mat-icon>
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                    height="24px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <rect x="0" y="0" width="24" height="24"></rect>
+                      <circle fill="#900968" opacity="0.3" cx="12" cy="12" r="10"></circle>
+                      <path
+                        d="M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z"
+                        fill="#900968"></path>
+                    </g>
+                  </svg>
+                </mat-icon> Add More Locations
+              </button>
+            </div>
+
+          </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+            <div formArrayName="domains">
+              <div class="bed_wrapper" *ngFor="let dom of domains.controls; let i = index" [formGroupName]="i">
+                <div class="row">
+                  <div class="input-wrap col-md-12">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Domain Name</mat-label>
+                      <input matInput [isPasteAllowed]="false" [prevent-keys]="[32,49,50,51,52,53,54,55,56,188,191,192]"
+                        [maxlength]="_limit?.MAX_DOMAIN_LENGTH" formControlName="domain" autocomplete="off"
+                        [readonly]="dom?.value?.isDisableField?true:false">
+                      <mat-error *ngIf="dom['controls'].domain.hasError('required')">
+                        {{errMsg.CORPORATE_DOMAIN}}
+                      </mat-error>
+                      <button [ngClass]="{ _disabled: dom.disabled }" matSuffix type="button"
+                        (click)="removeDomain(dom?.value,i)" class="btn-circle" mat-icon-button *ngIf="i>0">
+                        <mat-icon>
+                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <rect x="0" y="0" width="24" height="24"></rect>
+                              <circle fill="#900968" opacity="0.3" cx="12" cy="12" r="10">
+                              </circle>
+                              <rect fill="#900968" x="6" y="11" width="12" height="2" rx="1">
+                              </rect>
+                            </g>
+                          </svg>
+                        </mat-icon>
+                      </button>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="btn-wrap">
+              <button type="button" (click)="addDomain()" class="add" mat-button>
+                <mat-icon>
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                    height="24px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <rect x="0" y="0" width="24" height="24"></rect>
+                      <circle fill="#900968" opacity="0.3" cx="12" cy="12" r="10"></circle>
+                      <path
+                        d="M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z"
+                        fill="#900968"></path>
+                    </g>
+                  </svg>
+                </mat-icon> Add More Domains
+              </button>
+            </div>
+          </div>
+
+
+          <ng-container formGroupName="description">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label> Description (In English)</mat-label>
+                <textarea type="text" #disc1 matInput formControlName="en"
+                  [maxlength]="_limit?.DESCRIPTION_MAX"></textarea>
+                <mat-hint align="end">{{disc1.value.length}} / {{_limit?.DESCRIPTION_MAX}}
+                </mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label> Description (In Vietnamese)</mat-label>
+                <textarea type="text" #disc2 matInput formControlName="vi"
+                  [maxlength]="_limit?.DESCRIPTION_MAX_VI"></textarea>
+                <mat-hint align="end">{{disc2.value.length}} / {{_limit?.DESCRIPTION_MAX_VI}}
+                </mat-hint>
+              </mat-form-field>
+            </div>
+          </ng-container>
+
+        </div>
+        <div class="row">
+          <div class="col btn-section">
+            <button type="button" class="cancle-btn" (click)="cancelHandler()">Cancel</button>
+            <button type="submit" class="add-btn">{{corporateId? 'Update':'Add'}}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</mat-card>
