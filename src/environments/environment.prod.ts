@@ -5,7 +5,7 @@
 export const environment = {
   production: true,
 
-  API_BASE_PATH: "https://api.livwell.asia/livwell/api/v1/",
+  API_BASE_PATH: "https://in.api.livwell.asia/livwell/api/v1/",
   API_KEY: '1234',
   FINGER_PRINT: "Basic bGl2d2VsbDpsaXZ3ZWxsQDEyMw==",
   MAP_API_KEY: "AIzaSyCjREPYRmK1X1YWJDSonExO_pnmsLw617k"
