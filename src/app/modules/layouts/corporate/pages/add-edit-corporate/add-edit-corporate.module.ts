@@ -12,6 +12,7 @@ import { CropperModule } from '../../../../../components/cropper/cropper.module'
 import { SelectCountryModule } from '../../../../../components/select-country/select-country.module';
 import { SelectSearchModule } from '../../../../../components/select-search/select-search.module';
 import { SuccessPopupModule } from '../../../../../components/success-popup/success-popup.module';
+import { ShowCouponCodesModule } from 'src/app/components/show-coupon-codes/show-coupon-codes.module';
 
 const inrRoutes: Routes = [
   {
@@ -39,7 +40,8 @@ const inrRoutes: Routes = [
     MatNativeDateModule,
     MatDatepickerModule,
     SelectSearchModule,
-    SuccessPopupModule
+    SuccessPopupModule,
+    ShowCouponCodesModule
   ]
 })
 export class AddEditCorporateModule { }

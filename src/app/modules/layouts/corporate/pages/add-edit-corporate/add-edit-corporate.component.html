@@ -270,9 +270,9 @@
                       <input matInput [isPasteAllowed]="false" [prevent-keys]="[32,49,50,51,52,53,54,55,56,188,191,192]"
                         [maxlength]="_limit?.MAX_DOMAIN_LENGTH" formControlName="domain" autocomplete="off"
                         [readonly]="dom?.value?.isDisableField?true:false">
-                      <mat-error *ngIf="dom['controls'].domain.hasError('required')">
+                      <!-- <mat-error *ngIf="dom['controls'].domain.hasError('required')">
                         {{errMsg.CORPORATE_DOMAIN}}
-                      </mat-error>
+                      </mat-error> -->
                       <button [ngClass]="{ _disabled: dom.disabled }" matSuffix type="button"
                         (click)="removeDomain(dom?.value,i)" class="btn-circle" mat-icon-button *ngIf="i>0">
                         <mat-icon>
@@ -311,6 +311,27 @@
             </div>
           </div>
 
+          <div class="col-xl-12 col-lg-12 col-md-12 col-12 border">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+              <input #csvReader type="file" style="display: none" (change)="fileChange($event)" accept=".csv" />
+              Upload Employee ID's from File:<button mat-button type="button" color="primary"
+                (click)="csvReader.click()" color="primary">Choose
+                CSV File
+                <mat-icon class="icon-font" title="Note - Duplicate codes will automatically remove">
+                  info</mat-icon>
+              </button>
+              <span class="club-anchor customStyle"
+              (click)="downloadSampleCsv()">
+              Download Sample Csv
+            </span>
+              <span class="fileNameCss" title="{{employeeIdArray?.fileName}}">{{ employeeIdArray?.fileName }}</span>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-6 col-12" *ngIf="employeeIdArray?.employeeId?.length">
+              <button type="button" class="add-employee" (click)="openCodeDialog(employeeIdArray?.employeeId)">See
+                {{employeeIdArray?.employeeId?.length}} employee Id's</button>
+            </div>
+          </div>
 
           <ng-container formGroupName="description">
             <div class="col-xl-6 col-lg-6 col-md-6 col-12">
@@ -332,7 +353,6 @@
               </mat-form-field>
             </div>
           </ng-container>
-
         </div>
         <div class="row">
           <div class="col btn-section">

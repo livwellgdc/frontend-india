@@ -4,6 +4,12 @@
 
 export const environment = {
   production: true,
+  s3: {
+    AWS_ACCESS_KEY: 'AKIASNBEQLTCOKURDA2M',
+    AWS_SECRET_KEY: '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',
+    REGION: 'AP_SOUTHEAST_1',
+    BUCKET_NAME: 'livwell/web'
+  },
 
   API_BASE_PATH: "https://in.api.livwell.asia/livwell/api/v1/",
   API_KEY: '1234',

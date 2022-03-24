@@ -3,7 +3,7 @@ import { S3BucketService } from '../../../../../services/s3-bucket/s3-bucket.ser
 import { CorporateService } from '../../_service/corporate.service';
 import { LIMIT, REGEX } from '../../../../../constants/validator';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
-import { CORPORATE_ERROR_MESSAGES, POINTS_DISTRIBUTION_FREQUENCY, DATA_NOT_FOUND, COMPANY_TYPE, INVALID_DATE_TIME_ERROR, EMPLOYEE_RANGE, ALL_INDUSTRIES, CORPORATE_CREATED_MSG } from '../../../../../constants/messages';
+import { CORPORATE_ERROR_MESSAGES, POINTS_DISTRIBUTION_FREQUENCY, DATA_NOT_FOUND, COMPANY_TYPE, INVALID_DATE_TIME_ERROR, EMPLOYEE_RANGE, ALL_INDUSTRIES, CORPORATE_CREATED_MSG, VALID_CSV_FILE_SIZE, SELECT_VALID_FILE, SOMETHING_WRONG, VALID_CSV_FILE_HEADER } from '../../../../../constants/messages';
 import { GoogleMapComponent } from '../../../../../components/google-map/google-map.component';
 import { MatDialog } from '@angular/material';
 import { ToastService } from '../../../../../components/toast-notification/toast.service';
@@ -15,8 +15,9 @@ import { BreadcrumbService } from '../../../../../components/breadcrumb/breadcru
 import { CommonService } from '../../../../../services/common/common.service';
 import { BC_CORPORATES_ADD, BC_CORPORATES_EDIT } from '../../../../../constants/breadcrumb-routes';
 import { Pagination } from '../../../../../constants/paginator';
-import { dateToMs, isDuplicate } from '../../../../../constants/helper';
+import { dateToMs, isDuplicate, removeDuplicates } from '../../../../../constants/helper';
 import { SuccessPopupService } from '../../../../../components/success-popup/success-popup.service';
+import { ShowCouponCodesComponent } from '../../../../../components/show-coupon-codes/show-coupon-codes.component';
 
 @Component({
   selector: 'lv-add-edit-corporate',
@@ -39,9 +40,13 @@ export class AddEditCorporateComponent extends Pagination implements OnInit {
     searchedIndustries: [],
     cityList: [],
     searchedCity: []
+  };
+  employeeIdArray = {
+    employeeId: [],
+    fileName: ''
   }
   @ViewChild('coinsDistribution', { static: true }) coinsDistribution: ElementRef;
-
+  @ViewChild('csvReader', null) csvReader: ElementRef;
   constructor(
     private _fb: FormBuilder,
     private _bc: BreadcrumbService,
@@ -102,6 +107,7 @@ export class AddEditCorporateComponent extends Pagination implements OnInit {
       address: [''],
       coordinates: [[]],
       domains: this._fb.array([]),
+      employeeId: this._fb.array([]),
       otherAddresses: this._fb.array([]),
       description: this._fb.group({
         en: [''],
@@ -289,7 +295,7 @@ export class AddEditCorporateComponent extends Pagination implements OnInit {
         //   });
         // }
 
-        //disabled domain box
+        // disabled domain box
         if (this.domains.controls.length > 0) {
           this.domains.controls.forEach(control => {
             if (control.value.isDisableField) {
@@ -358,6 +364,9 @@ export class AddEditCorporateComponent extends Pagination implements OnInit {
       if (this.cropFile && this.f.logo.dirty) {
         await this.uploadImage(finalFormBody);
       }
+      if (this.employeeIdArray.employeeId.length) {
+        finalFormBody.employeeId = this.employeeIdArray.employeeId;
+      }
 
       if (this.corporateId) {
         if (this.corporateForm.dirty) {
@@ -366,6 +375,12 @@ export class AddEditCorporateComponent extends Pagination implements OnInit {
           this.navigate();
         }
       } else {
+        if(finalFormBody.domains[0]===""){
+          finalFormBody.domains = finalFormBody.domains.join('').split('');
+        }
+        if(finalFormBody.employeeId[0]===""){
+          finalFormBody.employeeId = finalFormBody.employeeId.join('').split('');
+        }
         this.addNewCorporate(finalFormBody);
       }
     }
@@ -417,12 +432,12 @@ export class AddEditCorporateComponent extends Pagination implements OnInit {
       }
     });
 
-    this.corporateForm.value["domains"].forEach((control, index) => {
-      Object.keys(control).map(k => (control[k] = typeof control[k] == "string" ? control[k].trim() : control[k]));
-      if (!control.domain) {
-        this.domains["controls"][index]["controls"].domain.setErrors({ required: true });
-      }
-    });
+    // this.corporateForm.value["domains"].forEach((control, index) => {
+    //   Object.keys(control).map(k => (control[k] = typeof control[k] == "string" ? control[k].trim() : control[k]));
+    //   if (!control.domain) {
+    //     this.domains["controls"][index]["controls"].domain.setErrors({ required: false });
+    //   }
+    // });
 
     if (!this.f.address.value) {
       this.f.address.setErrors({ required: true });
@@ -453,6 +468,73 @@ export class AddEditCorporateComponent extends Pagination implements OnInit {
         this.f[key].setValue(this.f[key].value.trim());
       }
     }
+  }
+
+  downloadSampleCsv() {
+    this._common.downloadInCsvFormat(['ABCD1234'], ['Employee ID'], true, 'sample_employee');
+  }
+
+  fileChange($event: any) {
+    let files = $event.srcElement.files;
+    this.employeeIdArray.fileName = files[0].name;
+
+    if (this._common.isValidCSVFile(files[0])) {
+
+      if (files[0].size > 5000000) {
+        this._toast.info(VALID_CSV_FILE_SIZE);
+        this.resetSelectedFile();
+        return;
+      }
+
+      let input = $event.target;
+      let reader = new FileReader();
+      reader.readAsText(input.files[0]);
+
+      reader.onload = () => {
+        let csvData = reader.result;
+        let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
+
+        let headersRow = this._common.getHeaderArray(csvRecordsArray);
+
+        if (headersRow[1] !== 'Employee ID' || headersRow[0] !== 'S.No.') {
+          this._toast.error(VALID_CSV_FILE_HEADER);
+          this.resetSelectedFile();
+          return;
+        }
+        this.employeeIdArray.employeeId = removeDuplicates(this._common.getDataRecordsArrayFromCSVFile(csvRecordsArray));
+        if (!this.employeeIdArray.employeeId.length) {
+          this.resetSelectedFile();
+          return
+        }
+      };
+
+      reader.onerror = () => {
+        this._toast.error(SOMETHING_WRONG);
+        this.resetSelectedFile();
+      };
+    } else {
+      this._toast.error(SELECT_VALID_FILE);
+      this.resetSelectedFile();
+    }
+  }
+
+  openCodeDialog(arrayOfCode) {
+    if (arrayOfCode.length > 0) {
+      this._dialog.open(ShowCouponCodesComponent, {
+        data: {
+          couponCodeArray: arrayOfCode,
+          title: "Employee ID's"
+        }
+      });
+    }
+  }
+
+  resetSelectedFile() {
+    if (this.csvReader && this.csvReader.nativeElement) {
+      this.csvReader.nativeElement.value = "";
+    }
+    this.employeeIdArray.fileName = '';
+    this.employeeIdArray.employeeId = [];
   }
 
 
