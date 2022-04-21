@@ -66,6 +66,7 @@ export class LoginComponent implements OnInit {
   }
 
   confirmLogIn() {
+    debugger
     this._account.logIn(this.loginForm.value).subscribe(response => {
       // this._storage.loginSuccessfully(response);
       this.isLoggedIn = true;

@@ -46,6 +46,7 @@ export class InterceptorService implements HttpInterceptor {
     }
 
     return next.handle(authReq).pipe(retryWithBackOff(), timeout(timeoutValue), map((event: HttpEvent<any>) => {
+      debugger
       if (event instanceof HttpResponse) {
         this._ls.hide();
         if (event.body && event.body.data) {

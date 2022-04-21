@@ -710,13 +710,13 @@ export const ACCESS_TYPE = [
 
 export const CHALLENGE_ACCESS_TYPE = [
   { name: "All Users", value: "ALL" },
-  { name: "CFYC Users", value: "FLG" }
+  // { name: "Pebble Users", value: "PEBBLE" }
 ];
 
 export const CATEGORY_ACCESS_TYPE = [
   { name: "LivWell Users", value: "LW" },
-  { name: "CFYC Users", value: "FLG" },
-  { name: "Premium Users", value: "ACTIVE" }
+  { name: "Premium Users", value: "ACTIVE" },
+  { name: "Pebble Users", value: "PEBBLE"}
 ];
 
 export const CHALLENGE_CATEGORY_TYPES = [

@@ -68,6 +68,10 @@ export class AddEditChallengesComponent extends Pagination implements OnInit {
   }
 
   ngOnInit() {
+
+
+
+
     this.challengeId = this._actRoute.snapshot.params['challengeId'];
     this.copyChallengeId = this._actRoute.snapshot.queryParams['copyChallenge'];
     this.createForm();
