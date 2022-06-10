@@ -5,12 +5,12 @@
   <div [ngClass]="{'addCustomCss': isButtonGroup || isCategoryButtonGroup}" class="listing_header"
     *ngIf="removeId != 1">
     <div class="row">
-      <div class="col-sm-12 col-xl-5 col-lg-12 col-12 col-md-12">
+      <div class="col-sm-12 col-xl-4 col-lg-12 col-12 col-md-12">
         <lv-search-renderer [placeholder]="placeholder" (lvSearch)="searchTable($event)">
         </lv-search-renderer>
       </div>
 
-      <div class="col-sm-12 col-xl-7 col-lg-12 col-md-12 col-12 mat-toogle-custom">
+      <div class="col-sm-12 col-xl-8 col-lg-12 col-md-12 col-12 mat-toogle-custom">
         <ng-container *ngIf="isButtonGroup">
           <mat-button-toggle-group #group="matButtonToggleGroup" [value]="ButtonGroupRouteStatus" class="cst-scroll">
             <mat-button-toggle [value]="API_EVENT.all" class="outer-btn active" color="primary"
@@ -51,7 +51,10 @@
               (click)="onClickButtonGroup(API_EVENT.livwellBenifit)">Livwell Benefits
             </mat-button-toggle>
             <mat-button-toggle [value]="API_EVENT.fitnessVideo" class="outer-btn" color="primary"
-            (click)="onClickButtonGroup(API_EVENT.fitnessVideo)">Fitness Video
+              (click)="onClickButtonGroup(API_EVENT.fitnessVideo)">Fitness Video
+            </mat-button-toggle>
+            <mat-button-toggle [value]="API_EVENT.quickLinks" class="outer-btn" color="primary"
+            (click)="onClickButtonGroup(API_EVENT.quickLinks)">Quick Links
           </mat-button-toggle>
           </mat-button-toggle-group>
         </ng-container>
@@ -244,15 +247,25 @@
                         <mat-icon class="edit-icons">play_circle_outline</mat-icon>
                       </button>
                       <button mat-icon-button class="edit-btn-color" *ngIf="sta == 7"
-                        [ngClass]="{'_disabled': element?.status === API_EVENT.approved }"
+                        [ngClass]="{'_disabled': element?.status === API_EVENT.approved || element?.status === API_EVENT?.approved }"
                         matTooltip="Approve">
                         <mat-icon class="edit-icons">check_circle_outline</mat-icon>
                       </button>
                       <button mat-icon-button class="edit-btn-color" *ngIf="sta == 8"
-                        [ngClass]="{'_disabled': element?.status === API_EVENT?.rejected }"
+                        [ngClass]="{'_disabled': element?.status === API_EVENT?.rejected || element?.status === API_EVENT?.rejected }"
                         matTooltip="Reject">
                         <mat-icon class="edit-icons">thumb_down_alt</mat-icon>
                       </button>
+
+                      <!-- <button mat-icon-button class="edit-btn-color" *ngIf="sta == 9"
+                        [ngClass]="{'_disabled': element?.status === API_EVENT?.paid }" matTooltip="Paid">
+                        <mat-icon class="edit-icons">paid</mat-icon>
+                      </button>
+
+                      <button mat-icon-button class="edit-btn-color" *ngIf="sta == 10"
+                        [ngClass]="{'_disabled': element?.status === API_EVENT?.paid }" matTooltip="Bank Details">
+                        <mat-icon class="edit-icons">info</mat-icon>
+                      </button> -->
 
                     </ruby>
                   </ng-container>
@@ -262,10 +275,11 @@
 
               <ng-container *ngSwitchDefault>
                 <ng-container *ngIf="row.type == 'selection'; else numberType">
-                 
+
                   <ng-container *ngIf="element.status == 'PENDING'; else categoryName">
                     <mat-form-field class="search_filter" appearance="outline">
-                      <mat-select required [value] = "element[row.key]" (selectionChange)="categoryHandler($event.value, element._id)">
+                      <mat-select required [value]="element[row.key]"
+                        (selectionChange)="categoryHandler($event.value, element._id)">
                         <mat-option *ngFor="let cType of categoryList" [value]="cType?._id">
                           {{cType?.name?.en}}
                         </mat-option>
@@ -274,15 +288,15 @@
                   </ng-container>
 
                   <ng-template #categoryName>
-                      {{ element[row.key] ? element?.categoryId?.name?.en : (element[row.key] === 0 ? 0 : "-") }}
+                    {{ element[row.key] ? element?.categoryId?.name?.en : (element[row.key] === 0 ? 0 : "-") }}
                   </ng-template>
                 </ng-container>
 
                 <ng-template #numberType>
-                <ng-container *ngIf="row.type == 'number'; else date">
-                  {{ element[row.key] ? (element[row.key] | number ) : '-'}}
-                </ng-container>
-              </ng-template>
+                  <ng-container *ngIf="row.type == 'number'; else date">
+                    {{ element[row.key] ? (element[row.key] | number ) : '-'}}
+                  </ng-container>
+                </ng-template>
 
                 <ng-template #date>
                   <ng-container *ngIf="row.type == 'date'; else time">

@@ -15,6 +15,7 @@ import { DEEPLINK_URLS, INVALID_DATE_TIME_ERROR, DEEPLINK_TYPES, NO_EDIT_ACTION,
 import { QuicklinksService } from '../../_services/quicklinks.service';
 import { Subscription } from 'rxjs';
 import { DeeplinksService } from '../../../deeplinks/_services/deeplinks.service';
+import { Pagination } from 'src/app/constants/paginator';
 
 @Component({
   selector: 'lv-add-edit-quicklinks',
@@ -22,8 +23,8 @@ import { DeeplinksService } from '../../../deeplinks/_services/deeplinks.service
   styleUrls: ['./add-edit-quicklinks.component.scss'],
   providers: [S3BucketService, QuicklinksService, DeeplinksService]
 })
-export class 
-AddEditQuicklinksComponent implements OnInit {
+export class
+  AddEditQuicklinksComponent extends Pagination implements OnInit {
 
   public quickLinkForm: FormGroup;
   public quickLinkId: string;
@@ -35,6 +36,7 @@ AddEditQuicklinksComponent implements OnInit {
   public isApiCallInProgress: boolean = false;
   private subscriptions: Subscription[] = [];
   public deepLinkList = [];
+  public categoryList = [];
   public deeplinkTypes = DEEPLINK_TYPES;
 
   constructor(
@@ -49,12 +51,13 @@ AddEditQuicklinksComponent implements OnInit {
     private _actRoute: ActivatedRoute,
     private _dialog: MatDialog,
     private _deepLink: DeeplinksService,
-  ) { }
+  ) { super() }
 
   ngOnInit() {
     this.quickLinkId = this._actRoute.snapshot.params['quickLinkId'];
     this.createForm();
     this.getDeeplinkListing();
+    this.getCategoryList()
     if (this.quickLinkId) {
       this._bc.setBreadcrumb(BC_QUICK_LINKS_EDIT);
       if (this._common.isValidId(this.quickLinkId)) {
@@ -71,10 +74,24 @@ AddEditQuicklinksComponent implements OnInit {
         en: [''],
         vi: ['']
       }),
+      description: this._fb.group({
+        en: [''],
+      }),
       icon: [''],
       priority: [''],
       deeplinkType: [''],
-      deepLink: ['']
+      deepLink: [''],
+      colorCode: [''],
+      categoryId: this._fb.group({
+        _id: [''],
+        name: this._fb.group({
+          en: [''],
+        }),
+        image: [''],
+        status: [''],
+        accessType: [''],
+        categoryType: ['']
+      }),
     })
   }
 
@@ -94,7 +111,26 @@ AddEditQuicklinksComponent implements OnInit {
   get f() { return this.quickLinkForm.controls } //return form controls
 
   public onDeeplinkTypeChange() {
-      this.f.deepLink.reset();
+    this.f.deepLink.reset();
+  }
+
+  getCategoryList() {
+    let queryObj = {
+      pageNo: 1,
+      limit: 100,
+      categoryType:this.API_EVENT.quickLinks,
+      status: this.API_EVENT.active
+    }
+    this._common.getCategories(queryObj).subscribe(res => {
+      this.isApiCallInProgress = false;
+      if (res.statusCode === 200) {
+        this.categoryList = res.data;
+        console.log("======>", this.categoryList);
+        // this.categorySelectionHandler(this.challengeDetails.categoryId._id);
+      }
+    }, () => {
+      this.isApiCallInProgress = false;
+    })
   }
 
   public getQuickLinkDetails() {
@@ -182,8 +218,16 @@ AddEditQuicklinksComponent implements OnInit {
       }
     })
   }
-
+   categorySelectionHandler(categoryId) {
+    for (let find = 0; find < this.categoryList.length; find++) {
+      if (categoryId == this.categoryList[find]._id) {
+        this.f.categoryId.patchValue(this.categoryList[find]);
+        break;
+      }
+    }
+  }
   private updateQuickLink(formBody: any): void {
+    console.log("============>", formBody)
     formBody['quickLinkId'] = this.quickLinkId;
     this._quickLinks.updateQuickLink(formBody).subscribe(res => {
       if (res.statusCode === 201) {
@@ -217,11 +261,11 @@ AddEditQuicklinksComponent implements OnInit {
     this._router.navigate([QUICK_LINKS]);
   }
 
-  
+
   /**
    * @UNSUBSCRIPTION Unsubscribe all subscriptions to avoid memory leak
    */
-   ngOnDestroy() {
+  ngOnDestroy() {
     if (this.subscriptions.length > 0) {
       this._common.unsubscribe(this.subscriptions);
     }

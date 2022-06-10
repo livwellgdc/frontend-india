@@ -17,6 +17,7 @@ export class Pagination {
     incomplete: 'INCOMPLETE',
     cancelled: 'CANCELLED',
     pending: 'PENDING',
+    quickLinks:'QUICK_LINKS',
     generic: 'GENERIC_CATEGORIES',
     class: 'CLASS',
     event: 'EVENT',
@@ -33,7 +34,8 @@ export class Pagination {
     badgeHistory: 'BADGE_HISTORY',
     challengeHistory: 'CHALANGE_HISTORY',
     approved: 'APPROVED',
-    rejected: "REJECTED"
+    rejected: "REJECTED",
+
   }
   today: Date = new Date();
   total: number;

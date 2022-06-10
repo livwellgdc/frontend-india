@@ -408,6 +408,9 @@ export const QUICK_lINK_ERROR_MESSAGES = {
   PRIORITY_REQ: 'Please enter priority',
   DEEP_LINK: "Please select deep link URL",
   DEEP_LINK_TYPE: "Please enter deep link type",
+  CATEGORY_REQ: "Please select category",
+  COLOR_CODE: "Please enter color code",
+  QUICK_LINK_DESCRIPTION: "Please enter quick link description",
 };
 
 export const DEEP_LINK_ERROR_MESSAGES = {

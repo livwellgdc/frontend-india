@@ -115,10 +115,14 @@ export class CategoriesListingComponent extends Pagination implements OnInit, On
               this._bc.setBreadcrumb(BC_CATEGORIES_FILTER_STATUS('Livwell Benefit Categories'));
               this.getCategoryListing();
               break;
-              case this.API_EVENT.fitnessVideo:
-                this._bc.setBreadcrumb(BC_CATEGORIES_FILTER_STATUS('Fitness Video Categories'));
-                this.getCategoryListing();
-                break;
+            case this.API_EVENT.fitnessVideo:
+              this._bc.setBreadcrumb(BC_CATEGORIES_FILTER_STATUS('Fitness Video Categories'));
+              this.getCategoryListing();
+              break;
+            case this.API_EVENT.quickLinks:
+              this._bc.setBreadcrumb(BC_CATEGORIES_FILTER_STATUS('Quick Links'));
+              this.getCategoryListing();
+              break;
             default:
               this._router.navigate([CATEGORY]);
               break;
