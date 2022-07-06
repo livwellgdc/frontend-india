@@ -14,7 +14,6 @@ export class HttpService {
   constructor(private _http: HttpClient, private _toast: ToastService) { }
 
   post(url: string, body: any): Observable<any> {
-    debugger
     return this._http.post(environment.API_BASE_PATH + url, body)
       .pipe(map((data: any) => {
         return data.data;

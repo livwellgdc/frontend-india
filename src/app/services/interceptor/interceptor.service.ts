@@ -46,7 +46,6 @@ export class InterceptorService implements HttpInterceptor {
     }
 
     return next.handle(authReq).pipe(retryWithBackOff(), timeout(timeoutValue), map((event: HttpEvent<any>) => {
-      debugger
       if (event instanceof HttpResponse) {
         this._ls.hide();
         if (event.body && event.body.data) {
@@ -58,7 +57,10 @@ export class InterceptorService implements HttpInterceptor {
       }
     }), catchError((error: HttpErrorResponse) => {
       if (error.error && error.error.data) {
-        let decipher = this.decrypt(error.error.data);
+        let decipher1 = this.decrypt(error.error.data)
+        let formatData1 = JSON.parse(decipher1.toString(CryptoJS.enc.Utf8)) ;
+        // doube time decrypt the data
+        let decipher = this.decrypt(formatData1.data)
         let formatData = { body: { data: JSON.parse(decipher.toString(CryptoJS.enc.Utf8)) } };
         this.errorState(error, formatData.body.data);
         return throwError(formatData.body.data);
