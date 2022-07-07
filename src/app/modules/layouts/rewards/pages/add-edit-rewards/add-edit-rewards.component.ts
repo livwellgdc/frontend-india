@@ -110,6 +110,7 @@ export class AddEditRewardsComponent extends Pagination implements OnInit {
         created: []
       }),
       type: [''],
+      colorCode:[],
       sponsorLink: ['', [Validators.pattern(REGEX.URL)]],
       sponsorName: [''],
       isFeatured: [false],

@@ -159,6 +159,7 @@ export const EVENT_ERROR_MESSAGES = {
 
 export const REWARD_ERROR_MESSAGES = {
   REWARD_NAME_REQ: 'Please enter reward name',
+  COLOR_CODE_REQ:"Please enter color code",
   SPONSOR_NAME_REQ: 'Please enter sponsor name',
   SPONSOR_NAME_MIN_LENGTH: 'Sponsor name should be atleast of 3 letters',
   REWARD_DATE: "Please select reward validity date",
