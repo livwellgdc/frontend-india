@@ -1,0 +1,320 @@
+@import "var";
+@import "mix";
+@import "grid";
+
+.bottom-custom {
+  margin-bottom: 50px;
+}
+
+.add-button-custom {
+  text-align: center;
+}
+
+.spec-minus {
+  text-align: center;
+}
+
+.margin-class {
+  margin-top: 10px;
+}
+
+.image-video-section {
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 576px) {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+}
+
+.custom-checkbox {
+  margin-bottom: 31px;
+  font-size: 17px;
+}
+
+.upload-header {
+  margin: 13px 0px;
+}
+
+.remove-date {
+  font-size: 15px;
+  color: $red;
+  cursor: pointer;
+}
+
+span.km-badge {
+  position: relative;
+  top: -7px;
+  font-size: 14px;
+  color: $primary;
+}
+
+.reward-right-section {
+  margin-top: 46px;
+
+  @media (max-width: 767px) {
+    margin-top: 0px;
+  }
+}
+
+.top-section {
+  padding: 10px 0px;
+}
+
+.classes-images {
+  max-width: 300px;
+  margin: auto;
+}
+
+.btn-section {
+  display: flex;
+  justify-content: flex-start;
+
+  .add-btn {
+    @include btn;
+    background: #900968;
+  }
+
+  .cancle-btn {
+    @include btn;
+    background: #868285;
+  }
+}
+
+.custom-margin {
+  margin: 10px 0px;
+}
+
+.image_uploader {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  margin: auto;
+  margin-bottom: 51px;
+  cursor: pointer;
+  float: right;
+
+  &:hover {
+    .file-button {
+      display: block;
+    }
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+    // height: 120px;
+  }
+
+  .file-button {
+    margin: 2px;
+    position: absolute;
+    right: 1px;
+    top: 56px;
+    cursor: pointer;
+    display: none;
+  }
+
+  .file-button:hover .delete-icons {
+    color: $red;
+  }
+
+  .delete-btn-color {
+    background: white;
+    width: 30px;
+    height: 30px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    outline: none;
+    border: none;
+    cursor: pointer;
+
+    .delete-icons {
+      font-size: 20px;
+      margin-top: 3px;
+      margin-left: -3px;
+      color: #913868;
+    }
+  }
+
+  .uploab-btn {
+    position: absolute;
+    right: -15px;
+    bottom: -59px;
+  }
+}
+
+.classes-video {
+  width: 300px;
+  height: 300px;
+
+  @media (max-width: 576px) {
+    width: 100%;
+    margin-bottom: 65px;
+  }
+}
+
+::ng-deep {
+  .csv-btn {
+    transform-origin: left top;
+    min-width: 13px !important;
+    min-height: 47px !important;
+
+    .csv-btn-text {
+      height: 30px;
+      line-height: 20px;
+    }
+  }
+
+  .mat-menu-panel {
+    min-width: 112px;
+    max-width: 280px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    // max-height: 30px;
+    border-radius: 4px;
+    // min-height: 160px;
+  }
+}
+
+.form-cst-margin {
+  margin-top: 40px;
+}
+
+.customCss {
+  background-color: rgba(0, 0, 0, 0.02);
+  border: 1px dashed rgba(144, 9, 104, 0.39);
+  min-width: 100%;
+  max-width: -webkit-fit-content;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  margin-bottom: 20px;
+  min-height: 308px !important;
+}
+
+.upload-csv-section {
+  text-align: right;
+  margin-bottom: 10px;
+
+  .dummy-csv {
+    margin-right: 10px;
+  }
+
+  .bulk-upload {
+    font-size: 13px;
+    padding-top: 7px;
+
+    .click_here {
+      color: #900968;
+      cursor: pointer;
+    }
+  }
+
+  .upload-csv {
+    width: 199px;
+    padding: 2px;
+    font-size: 19px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    background-color: #900968;
+    color: white;
+    box-shadow: 0px 0px 10px 0px #0000004f;
+    cursor: pointer;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+
+  .upload-csv,
+  .bulk-upload {
+    float: left;
+    transition: all 0.5s;
+  }
+}
+
+.mb-2 {
+  margin-bottom: 10px;
+
+  @media (max-width: 576px) {
+    margin-bottom: 30px;
+  }
+}
+
+.error-message {
+  font-size: 12px;
+}
+
+.btn-class {
+  position: relative;
+  top: 10px;
+}
+
+.upload-seta-map-image {
+  margin-left: 54px;
+
+  @media(max-width:576px) {
+    margin-left: 0px;
+    margin-bottom: 13px;
+    margin-top: 7px;
+  }
+}
+
+.save-seat {
+  margin-left: -15px;
+
+  @media(max-width:576px) {
+    margin-left: 0px;
+    margin-top: -31px;
+  }
+}
+
+.view-seat {
+  margin-left: 10px;
+
+  @media(max-width:576px) {
+    margin-left: 0px;
+    margin-top: -31px;
+  }
+}
+
+.view-image {
+  margin-left: 17px;
+
+  @media(max-width:576px) {
+    margin-bottom: 23px;
+    margin-left: 0px;
+  }
+}
+
+.custom-border {
+  border: 1px dotted #900968;
+  margin: 0px 0px;
+  margin-bottom: 21px;
+  padding-top: 10px;
+}
+
+.btn-section .add-upload-btn {
+  outline: none;
+  border-radius: 7px;
+  border: none;
+  margin-right: 21px;
+  color: white;
+  box-shadow: 0px 0px 10px 0px #00000029;
+  cursor: pointer;
+  background: #900968;
+}
+
+.hide {
+  display: none;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.uploab-btn {
+  z-index: 999;
+}

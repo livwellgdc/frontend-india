@@ -1,0 +1,440 @@
+<mat-card>
+  <div class="row">
+    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+      <h4 class="top-section">Add New Product </h4>
+      <!-- <div class="col-xl-12 col-12 mb-2 "> -->
+      <div class="article-crop-section">
+        <label class="custom-margin span-images">Product Image (Required)</label>
+        <div class="img image_uploader" [ngClass]="{'shakeError': f.image.hasError('image')}">
+          <lv-lazy-image [img]="cropFile?.cropBase64"></lv-lazy-image>
+          <button type="button" mat-mini-fab color="primary" class="uploab-btn" (click)="onSelectFile(1,0,'IMAGE')">
+            <mat-icon>camera_alt</mat-icon>
+          </button>
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+    <!-- </div> -->
+    <div class="col-xl-12 col-md-12 col-12 ">
+      <form [formGroup]="productForm" (ngSubmit)="productHandler()">
+        <div class="row">
+          <ng-container formGroupName="name">
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Product Name (In English)</mat-label>
+                <input matInput formControlName="en" autocomplete="off" required>
+                <mat-error>{{errMsg.PRODUCT_NAME_REQ}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Product Name (In Vietnamese)</mat-label>
+                <input matInput formControlName="vi" autocomplete="off"
+                  required>
+                <mat-error>{{errMsg.PRODUCT_NAME_REQ}}</mat-error>
+              </mat-form-field>
+            </div>
+          </ng-container>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Product Price</mat-label>
+              <input matInput number formControlName="price" autocomplete="off"
+                required>
+              <mat-error>{{errMsg.PRODUCT_PRICE}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <ng-container formGroupName="description">
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Product Description (In English)</mat-label>
+                <input matInput formControlName="en" autocomplete="off" required>
+                <mat-error>{{errMsg.PRODUCT_DESCRIPTION}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Product Description (In Vietnamese)</mat-label>
+                <input matInput formControlName="vi" autocomplete="off"
+                  required>
+                <mat-error>{{errMsg.PRODUCT_DESCRIPTION}}</mat-error>
+              </mat-form-field>
+            </div>
+          </ng-container>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Product Discount</mat-label>
+              <input matInput number formControlName="discount" autocomplete="off"
+                required>
+            </mat-form-field>
+          </div>
+
+          <ng-container formGroupName="offers">
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Product Offers (In English)</mat-label>
+                <input matInput formControlName="en" autocomplete="off" required>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Product Offers (In Vietnamese)</mat-label>
+                <input matInput formControlName="vi" autocomplete="off"
+                  required>
+              </mat-form-field>
+            </div>
+          </ng-container>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Product Code</mat-label>
+              <input matInput formControlName="code" autocomplete="off" required>
+            </mat-form-field>
+          </div>
+
+          <ng-container formGroupName="returnAndExchange">
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Product Return And Exchange (In English)</mat-label>
+                <input matInput formControlName="en" autocomplete="off" required>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Product Return And Exchange (In Vietnamese)</mat-label>
+                <input matInput formControlName="vi" autocomplete="off"
+                  required>
+              </mat-form-field>
+            </div>
+          </ng-container>
+
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Product Manufacturer</mat-label>
+              <input matInput formControlName="manufacturer" autocomplete="off"
+                required>
+              <mat-error>{{errMsg.PRODUCT_MANUFACTURER}}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <ng-container formGroupName="warranty">
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Product Warranty (In English)</mat-label>
+                <input matInput formControlName="en" autocomplete="off" required>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Product Warranty (In Vietnamese)</mat-label>
+                <input matInput formControlName="vi" autocomplete="off"
+                  required>
+              </mat-form-field>
+            </div>
+          </ng-container>
+
+          <ng-container formGroupName="fetures">
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Product Fetures (In English)</mat-label>
+                <input matInput formControlName="en" autocomplete="off" required>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Product Fetures (In Vietnamese)</mat-label>
+                <input matInput formControlName="vi" autocomplete="off"
+                  required>
+              </mat-form-field>
+            </div>
+          </ng-container>
+
+          <ng-container formGroupName="benifits">
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Product Benifits (In Vietnamese)</mat-label>
+                <input matInput formControlName="vi" autocomplete="off"
+                  required>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Product Benifits (In English)</mat-label>
+                <input matInput formControlName="en" autocomplete="off" required>
+              </mat-form-field>
+            </div>
+          </ng-container>
+
+          <div class="col-xl-6 col-lg-6 col-md-6 col-12 reward-radio">
+            <mat-radio-group formControlName="isLWCApplicable" (change)="onChangeLWC($event.value)">
+              <mat-radio-button [value]="true" color="primary">
+                LWC Applicable
+              </mat-radio-button>
+              <mat-radio-button [value]="false" color="primary">
+                LWC Not Applicable
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+        </div>
+
+        <div *ngIf="addLWC" class="row">
+          <ng-container formArrayName="lwcOfferList">
+            <ng-container *ngFor="let lwcOffer of lwcOfferList.controls; let i = index" [formGroupName]="i">
+              <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Product LWC Offer List Title</mat-label>
+                  <input matInput number formControlName="lwc"
+                    autocomplete="off" required>
+                </mat-form-field>
+              </div>
+              <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Product LWC Offer List Price</mat-label>
+                  <input matInput number formControlName="price"
+                    autocomplete="off" required>
+                </mat-form-field>
+              </div>
+
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12 spec-minus">
+                <button matSuffix type="button" (click)="removeLwcOfferList(i)" class="btn-circle" mat-icon-button
+                  *ngIf="i>0">
+                  <mat-icon>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                      height="24px" viewBox="0 0 24 24" version="1.1">
+                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24"></rect>
+                        <circle fill="#900968" opacity="0.3" cx="12" cy="12" r="10">
+                        </circle>
+                        <rect fill="#900968" x="6" y="11" width="12" height="2" rx="1">
+                        </rect>
+                      </g>
+                    </svg>
+                  </mat-icon>
+                </button>
+              </div>
+            </ng-container>
+          </ng-container>
+          <div class="col-xl-10 col-lg-10 col-md-10 col-12 btn-wrap add-button-custom">
+            <button type="button" (click)="addLwcOfferList()" class="add" mat-button>
+              <mat-icon>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                  height="24px" viewBox="0 0 24 24" version="1.1">
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <rect x="0" y="0" width="24" height="24"></rect>
+                    <circle fill="#900968" opacity="0.3" cx="12" cy="12" r="10"></circle>
+                    <path
+                      d="M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z"
+                      fill="#900968"></path>
+                  </g>
+                </svg>
+              </mat-icon> Add More LWC Offer List
+            </button>
+          </div>
+
+        </div>
+
+        <div class="row">
+
+          <ng-container formArrayName="specifications">
+            <ng-container *ngFor="let specification of specifications.controls; let i = index" [formGroupName]="i">
+              <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Product Specification Title</mat-label>
+                  <input matInput formControlName="title" autocomplete="off"
+                    required>
+                </mat-form-field>
+              </div>
+              <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Product Specification value</mat-label>
+                  <input matInput formControlName="value" autocomplete="off"
+                    required>
+                </mat-form-field>
+              </div>
+
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12 spec-minus">
+                <button matSuffix type="button" (click)="removeSpecification(i)" class="btn-circle" mat-icon-button
+                  *ngIf="i>0">
+                  <mat-icon>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                      height="24px" viewBox="0 0 24 24" version="1.1">
+                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24"></rect>
+                        <circle fill="#900968" opacity="0.3" cx="12" cy="12" r="10">
+                        </circle>
+                        <rect fill="#900968" x="6" y="11" width="12" height="2" rx="1">
+                        </rect>
+                      </g>
+                    </svg>
+                  </mat-icon>
+                </button>
+              </div>
+            </ng-container>
+          </ng-container>
+          <div class="col-xl-10 col-lg-10 col-md-10 col-12 btn-wrap add-button-custom">
+            <button type="button" (click)="addSpecification()" class="add" mat-button>
+              <mat-icon>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                  height="24px" viewBox="0 0 24 24" version="1.1">
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <rect x="0" y="0" width="24" height="24"></rect>
+                    <circle fill="#900968" opacity="0.3" cx="12" cy="12" r="10"></circle>
+                    <path
+                      d="M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z"
+                      fill="#900968"></path>
+                  </g>
+                </svg>
+              </mat-icon> Add More Specification
+            </button>
+          </div>
+
+        </div>
+
+        <ng-container formArrayName="variants">
+          <ng-container *ngFor="let variant of variants.controls; let i = index" [formGroupName]="i">
+
+            <div class="row">
+              <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Product Variant Color</mat-label>
+                  <input matInput formControlName="color" autocomplete="off"
+                    required>
+                </mat-form-field>
+              </div>
+              <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Product Variant Quantity</mat-label>
+                  <input matInput number formControlName="quantity"
+                    autocomplete="off" required>
+                </mat-form-field>
+              </div>
+
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12 spec-minus">
+                <button matSuffix type="button" (click)="removeVariantsList(i)" class="btn-circle margin-class"
+                  mat-icon-button *ngIf="i>0">
+                  <mat-icon>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                      height="24px" viewBox="0 0 24 24" version="1.1">
+                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24"></rect>
+                        <circle fill="#900968" opacity="0.3" cx="12" cy="12" r="10">
+                        </circle>
+                        <rect fill="#900968" x="6" y="11" width="12" height="2" rx="1">
+                        </rect>
+                      </g>
+                    </svg>
+                  </mat-icon>
+                </button>
+              </div>
+
+            </div>
+
+            <ng-container formArrayName="assets">
+              <ng-container *ngFor="let asset of variantAssets(i).controls; let ai = index" [formGroupName]="ai">
+                <div class="row bottom-custom">
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-12 custom-hover classes-image row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Select Variant Asset Type </mat-label>
+                        <mat-select formControlName="type" (selectionChange)="assetSelectionHandler($event.value,i,ai)"
+                          required>
+                          <mat-option *ngFor="let assetValue of assetList" [value]="assetValue">
+                            {{assetValue}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div *ngIf="asset.value.type == 'IMAGE' || asset.value.type == 'VIDEO'"
+                      class="col-xl-6 col-lg-6 col-md-6 col-12 img image_uploader">
+                      <label class="custom-margin span-images text-12">Product Image</label>
+                      <lv-lazy-image [img]="variantAssetCropFile[i] && variantAssetCropFile[i][ai]?.cropBase64">
+                      </lv-lazy-image>
+                      <button type="button" mat-mini-fab color="primary" class="uploab-btn"
+                        (click)="onSelectFile(i, ai)">
+                        <mat-icon>camera_alt</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-12 row">
+                    <div *ngIf="asset.value.type == 'VIDEO'"
+                      class="col-xl-6 col-lg-6 col-md-6 col-12 mb-2 mr-5 custom-hover ">
+                      <lv-files-upload class="classes-video" [overlayText]="'Choose Video File'" [addCustomCss]="true"
+                        (stateChange)="onChangeFilesHandler($event, i,ai)" [errorMessage]="postMediaError"
+                        label="Product Video (Optional)" [accept]="fileFormat">
+                      </lv-files-upload>
+                      <!-- <div class="btn-section"><button (click)="uploadVideo(i, ai)" class="add-upload-btn">Upload Video</button></div> -->
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                      <button matSuffix type="button" (click)="removeAssetsList(i, ai)" class="btn-circle margin-class"
+                        mat-icon-button *ngIf="ai>0">
+                        <mat-icon>
+                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <rect x="0" y="0" width="24" height="24"></rect>
+                              <circle fill="#900968" opacity="0.3" cx="12" cy="12" r="10">
+                              </circle>
+                              <rect fill="#900968" x="6" y="11" width="12" height="2" rx="1">
+                              </rect>
+                            </g>
+                          </svg>
+                        </mat-icon>
+                      </button>
+                      <div *ngIf="ai==0">
+                        <button type="button" (click)="addAssetsList(i)" class="add margin-class" mat-button>
+                          <mat-icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                              width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24"></rect>
+                                <circle fill="#900968" opacity="0.3" cx="12" cy="12" r="10">
+                                </circle>
+                                <path
+                                  d="M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z"
+                                  fill="#900968"></path>
+                              </g>
+                            </svg>
+                          </mat-icon> Add More Assets
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+
+            <div *ngIf="i == variants.controls.length-1"
+              class="col-xl-10 col-lg-10 col-md-10 col-12 btn-wrap add-button-custom margin-class">
+              <button type="button" (click)="addVariantsList(i+1)" class="add" mat-button>
+                <mat-icon>
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                    height="24px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <rect x="0" y="0" width="24" height="24"></rect>
+                      <circle fill="#900968" opacity="0.3" cx="12" cy="12" r="10"></circle>
+                      <path
+                        d="M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z"
+                        fill="#900968"></path>
+                    </g>
+                  </svg>
+                </mat-icon> Add More Variant
+              </button>
+            </div>
+
+          </ng-container>
+        </ng-container>
+
+        <div class="row">
+          <div class="col btn-section">
+            <button type="button" class="cancle-btn" (click)="cancelHandler()">Cancel</button>
+            <button type="submit" class="add-btn">{{productId? 'Update':(copyProductId ? 'Copy' :
+                        'Add')}}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</mat-card>

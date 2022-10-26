@@ -1,0 +1,6 @@
+<mat-table-renderer notFound="Products not added" placeholder="Search by Product Name"
+  [pageType]="'disableBlockIcon'" [heading]="heading" (add)="addProducts($event)"
+  [addCustomClass]="''" (find)="paginationWithSearch($event,0)"
+  (page)="paginationWithSearch($event,1)" (sort)="sortByListing($event)" (status)="changeStatus($event)"
+  (filter)="submitFilter($event)">
+</mat-table-renderer>

@@ -68,6 +68,14 @@ export const PROFILE_INTEREST_ERROR_MESSAGES = {
   INTEREST_CATEGORY: "Please select interest category",
 };
 
+export const PRODUCT_ERROR_MESSAGES = {
+  PRODUCT_NAME_REQ: 'Please enter product name',
+  PRODUCT_DESCRIPTION: "Please enter product description",
+  PRODUCT_PRICE: "Please enter product price",
+  PRODUCT_MANUFACTURER: "Please enter product manufacturer",
+  PRODUCT_STATUS: "Please enter product status"
+};
+
 export const CLASS_ERROR_MESSAGES = {
   CLASS_NAME_REQ: 'Please enter class name',
   CLASS_TYPE: "Please select class type",
@@ -943,7 +951,8 @@ export const SECTION_ID_OF = {
   DEEP_LINKS: '27',
   LWC_CM: '28',
   SUBSCRIPTION_FEATURES: '29',
-  SPIN_WHEEL: "30"
+  SPIN_WHEEL: "30",
+  PRODUCTS: "31"
 }
 
 export const HTTP_STATUS_CODE = {

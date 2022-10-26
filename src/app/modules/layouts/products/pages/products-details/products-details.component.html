@@ -1,0 +1,108 @@
+<div class="panel-wrap">
+    <lv-data-loader *ngIf="isApiCallInProgress;else apiHit"></lv-data-loader>
+    <ng-template #apiHit>
+        <div class="panel">
+            <div class="col-xl-12">
+                <div class="row">
+                    <div class="col-sm-6 col-6 panel-header"> Product Details</div>
+                    <div class="col-sm-6 col-6 form-group btn-section {{permissionClass}}">
+                        <button title="Edit Product" mat-icon-button (click)="editHandler()">
+                            <mat-icon class="edit-icons" color="primary">edit</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row ">
+                    <div class="col-12 col-sm-5 col-md-4 col-lg-3 detils-sections-image">
+                        <div class="detail-image">
+                            <figure class="img">
+                                <lv-lazy-image [img]="productDetails?.image">
+                                </lv-lazy-image>
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-7 col-md-8 col-xl-9">
+                        <div class="detail-row challenges-details-right">
+                            <div class="form-group">
+                                <label class="el_name">Product Manufacturer </label>
+                                <label class="el_value">{{productDetails?.manufacturer |titlecase |emptyValue}}</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="el_name">Product Code</label>
+                                <label class="el_value">{{productDetails?.code |titlecase |emptyValue}}</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="el_name">Product Discount</label>
+                                <label class="el_value">{{productDetails?.discount |emptyValue}}</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="el_name">Product FinalPrice</label>
+                                <label class="el_value">{{productDetails?.finalPrice |emptyValue}}</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="el_name">Product Price</label>
+                                <label class="el_value">{{productDetails?.price |emptyValue}}</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="el_name">Available LWC</label>
+                                <label class="el_value">{{productDetails?.availableLWC}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-6 panel-inner-header"> LWC Offers </div>
+                        <div class="detail-row challenges-details-right">
+                            <ng-container *ngFor="let lwcOffer of productDetails.lwcOfferList">
+                                <div class="form-group">
+                                    <label class="el_name">Title / Price</label>
+                                    <label class="el_value">{{lwcOffer?.lwc}} / {{lwcOffer?.price}}</label>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <div class="col-sm-6 col-6 panel-inner-header"> Payment Methods </div>
+                        <div class="detail-row challenges-details-right">
+                            <ng-container *ngFor="let paymentDetails of productDetails.paymentMethods">
+                                <div class="form-group">
+                                    <label class="el_name">Title</label>
+                                    <label class="el_value">{{paymentDetails?.title}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="el_name">Note</label>
+                                    <label class="el_value">{{paymentDetails?.note}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="el_name">Value</label>
+                                    <label class="el_value">{{paymentDetails?.VALUE}}</label>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <div class="col-sm-6 col-6 panel-inner-header"> Specifications </div>
+                        <div class="detail-row challenges-details-right">
+                            <ng-container *ngFor="let specification of productDetails.specifications">
+                                <div class="form-group">
+                                    <label class="el_name">Title / Value</label>
+                                    <label class="el_value">{{specification?.title}} / {{specification?.value}}</label>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <div class="col-sm-6 col-6 panel-inner-header"> Variants </div>
+                        <ng-container *ngFor="let variant of productDetails.variants">
+                            <div class="detail-row challenges-details-right">
+                                <div class="form-group">
+                                    <label class="el_name">Title / Quantity</label>
+                                    <label class="el_value">{{variant?.color}} / {{variant?.quantity}}</label>
+                                </div>
+                                <ng-container *ngFor="let asset of variant.assets">
+                                    <figure class="img-inner">
+                                        <label class="el_name">Type {{asset.type}}</label>
+                                        <lv-lazy-image [img]="asset?.url">
+                                        </lv-lazy-image>
+                                    </figure>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>

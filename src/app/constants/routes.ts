@@ -139,6 +139,8 @@ export const SPIN_WHEEL = 'spin_wheel';
 
 export const SUBSCRIPTION_FETURES = 'subscription-fetures';
 
+export const PRODUCTS = 'products';
+
 
 
 

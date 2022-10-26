@@ -605,6 +605,25 @@ export const BC_SUBSCRIPTION_FEATURE_DETAILS = [
 ];
 
 
-
+/**
+ * @PRODUCTS_MODULE_BREADCRUMB_ROUTE
+ */
+ export const BC_PRODUCTS = [{ path: route.ABS_PRODUCTS, label: 'products' }];
+ export const BC_PRODUCTS_COPY = [
+   ...BC_PRODUCTS,
+   { path: route.ABS_PRODUCTS_COPY, label: 'Copy' }
+ ];
+ export const BC_PRODUCTS_ADD = [
+   ...BC_PRODUCTS,
+   { path: route.ABS_PRODUCTS_ADD, label: 'Add' }
+ ];
+ export const BC_PRODUCTS_EDIT = [
+   ...BC_PRODUCTS,
+   { path: route.ABS_PRODUCTS_EDIT, label: 'Edit' }
+ ];
+ export const BC_PRODUCTS_DETAILS = [
+   ...BC_PRODUCTS,
+   { path: route.ABS_PRODUCTS_DETAILS, label: 'Details' },
+ ];
 
 

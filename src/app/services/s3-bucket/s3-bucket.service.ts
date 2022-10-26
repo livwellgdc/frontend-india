@@ -28,11 +28,11 @@ export class S3BucketService {
     return await deleteRequest.promise();
   }
 
-  async uploadFile(fileToUpload: File) {
+  async uploadFile(fileToUpload: File, type?) {
     try {
       const params = {
         Bucket: environment.s3.BUCKET_NAME,
-        Key: fileToUpload.name || new Date().getTime() + '.png',
+        Key: fileToUpload.name || new Date().getTime() + `.${type}`|| '.png',
         Body: fileToUpload,
         ACL: 'public-read',
         ContentType: fileToUpload.type   //To prevent download

@@ -39,6 +39,8 @@ const FITNESS_REELS_BASE: string = 'fitness/reels';
 const REFERRER_TRACK_BASE: string = 'referrer';
 const SPIN_WHEEL_BASE: string = 'spin/wheel';
 const SUBSCRIPTION_FETURES_BASE: string = 'subscription/feature';
+const PRODUCT_BASE: string = 'products';
+
 
 
 /**
@@ -356,3 +358,9 @@ export const REFERRER_TRACK_MAIL_LIST_API = `${REFERRER_TRACK_BASE}/reportmails`
  */
  export const SUBSCRIPTION_FETURES_API = `${SUBSCRIPTION_FETURES_BASE}`;
  export const SUBSCRIPTION_FETURES_DETAIL_API = `${SUBSCRIPTION_FETURES_BASE}/details`;
+
+ /**
+ * @PRODUCTS_RELATED_END_POINTS
+ */
+  export const PRODUCT_API = `${PRODUCT_BASE}`;
+  export const PRODUCT_DETAIL_API = `${PRODUCT_BASE}/details`;

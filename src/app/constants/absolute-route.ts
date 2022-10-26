@@ -192,5 +192,8 @@ export const ABS_SUBSCRIPTION_FETURES_DETAILS = `/${routes.PAYMENTS}/${routes.DE
 
 
 
-
-
+export const ABS_PRODUCTS = `/${routes.PRODUCTS}`;
+export const ABS_PRODUCTS_ADD = `/${routes.PRODUCTS}/${routes.ADD}`;
+export const ABS_PRODUCTS_COPY = `/${routes.PRODUCTS}/${routes.COPY}`;
+export const ABS_PRODUCTS_EDIT = `/${routes.PRODUCTS}/${routes.EDIT}`;
+export const ABS_PRODUCTS_DETAILS = `/${routes.PRODUCTS}/${routes.DETAILS}`;
