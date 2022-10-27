@@ -73,7 +73,8 @@ export const PRODUCT_ERROR_MESSAGES = {
   PRODUCT_DESCRIPTION: "Please enter product description",
   PRODUCT_PRICE: "Please enter product price",
   PRODUCT_MANUFACTURER: "Please enter product manufacturer",
-  PRODUCT_STATUS: "Please enter product status"
+  PRODUCT_STATUS: "Please enter product status",
+  PRODUCT_CATEGORY:"Please select product category"
 };
 
 export const CLASS_ERROR_MESSAGES = {
