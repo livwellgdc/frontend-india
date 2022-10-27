@@ -246,6 +246,7 @@ export const BANNER_ERROR_MESSAGES = {
   BANNER_LINK: "Please enter banner link",
   BANNER_TYPE_REQ: "Please select banner type",
   INVALID_BANNER_LINK: "Please enter valid banner link",
+  DEEP_LINK_TYPE:"Please enter deep link "
 };
 
 export const CORPORATE_ERROR_MESSAGES = {
