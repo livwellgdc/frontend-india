@@ -5,12 +5,12 @@
   <div [ngClass]="{'addCustomCss': isButtonGroup || isCategoryButtonGroup}" class="listing_header"
     *ngIf="removeId != 1">
     <div class="row">
-      <div class="col-sm-12 col-xl-4 col-lg-12 col-12 col-md-12">
+      <div class="col-sm-12 col-xl-3 col-lg-12 col-12 col-md-12">
         <lv-search-renderer [placeholder]="placeholder" (lvSearch)="searchTable($event)">
         </lv-search-renderer>
       </div>
 
-      <div class="col-sm-12 col-xl-8 col-lg-12 col-md-12 col-12 mat-toogle-custom">
+      <div class="col-sm-12 col-xl-9 col-lg-12 col-md-12 col-12 mat-toogle-custom">
         <ng-container *ngIf="isButtonGroup">
           <mat-button-toggle-group #group="matButtonToggleGroup" [value]="ButtonGroupRouteStatus" class="cst-scroll">
             <mat-button-toggle [value]="API_EVENT.all" class="outer-btn active" color="primary"
@@ -56,6 +56,9 @@
             <mat-button-toggle [value]="API_EVENT.quickLinks" class="outer-btn" color="primary"
             (click)="onClickButtonGroup(API_EVENT.quickLinks)">Quick Links
           </mat-button-toggle>
+          <mat-button-toggle [value]="API_EVENT.producstStore" class="outer-btn" color="primary"
+          (click)="onClickButtonGroup(API_EVENT.producstStore)">Products Store
+        </mat-button-toggle>
           </mat-button-toggle-group>
         </ng-container>
 

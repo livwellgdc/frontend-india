@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material';
 import { Location } from '@angular/common';
 import { BannerService } from '../../_service/banner.service';
 import { BC_BANNERS_EDIT, BC_BANNERS_ADD } from '../../../../../constants/breadcrumb-routes';
-import { BANNER_ERROR_MESSAGES, BANNER_TYPES } from '../../../../../constants/messages';
+import { BANNER_ERROR_MESSAGES, BANNER_TYPES, DEEPLINK_TYPES } from '../../../../../constants/messages';
 import { UploadPopupComponent } from '../../../../../components/cropper/upload-popup/upload-popup.component';
 import { BANNERS } from '../../../../../constants/routes';
 
@@ -28,6 +28,7 @@ export class AddEditBannersComponent implements OnInit {
   _limit = LIMIT;
   errMsg = BANNER_ERROR_MESSAGES;
   public bannersTypes = BANNER_TYPES;
+  public deeplinkTypes = DEEPLINK_TYPES;
 
   constructor(
     private _fb: FormBuilder,
@@ -60,7 +61,8 @@ export class AddEditBannersComponent implements OnInit {
       image: [''],
       title: [''],
       type: [''],
-      bannerLink: ['', [Validators.pattern(REGEX.URL)]]
+      bannerLink: [''],
+      linkType:[]
     })
   }
 
@@ -114,6 +116,9 @@ export class AddEditBannersComponent implements OnInit {
         this.addNewBanner(formValue);
       }
     }
+  }
+  public onDeeplinkTypeChange() {
+    this.f.bannerLink.reset();
   }
 
   uploadImage(formValue) {

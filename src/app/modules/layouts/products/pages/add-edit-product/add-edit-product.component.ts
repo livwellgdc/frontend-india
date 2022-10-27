@@ -29,17 +29,27 @@ export class AddEditProductComponent extends Pagination implements OnInit {
   productForm: FormGroup;
   productId: string;
   copyProductId: string;
+  copyChallengeId: string;
+  challengeDetails: Challenge.ChallengeData;
   productDetails: any;
   cropFile: any;
   productImage: any;
+  categoryList = [];
+  challengeId: string;
   variantAssetCropFile: any = [];
+  benefitCategoryList = [];
   _limit = LIMIT;
   errMsg = { ...PRODUCT_ERROR_MESSAGES, ...INVALID_DATE_TIME_ERROR };
   productVariant: number;
   addLWC: boolean = true;
+  public seelctedCategoryDetails: any;
   fileFormat = IMAGE_FORMAT + ',' + VIDEO_FORMAT + ',' + DOC_FORMAT;
   postMediaError = ALL_MEDIA_ERROR;
   assetList = ['IMAGE', 'VIDEO'];
+  isApiCallInProgress = {
+    ofCategory: true,
+    ofBadge: true
+  }
 
   constructor(
     private _fb: FormBuilder,
@@ -59,6 +69,7 @@ export class AddEditProductComponent extends Pagination implements OnInit {
     this.productId = this._actRoute.snapshot.params['productId'];
     this.copyProductId = this._actRoute.snapshot.queryParams['copyProduct'];
     this.createForm();
+    this.getCategoryList(this.API_EVENT.producstStore)
     if (this.productId) {
       this._bc.setBreadcrumb(BC_PRODUCTS_EDIT);
       this._createMultipleLwcOfferList()
@@ -112,6 +123,17 @@ export class AddEditProductComponent extends Pagination implements OnInit {
       benifits: this._fb.group({
         en: [''],
         vi: ['']
+      }),
+
+      categoryId: this._fb.group({
+        _id: [''],
+        name: this._fb.group({
+          en: [''],
+          vi: ['']
+        }),
+        image: [''],
+        status: [''],
+        categoryType: ['']
       }),
       specifications: this._fb.array([]),
       lwcOfferList: this._fb.array([]),
@@ -379,6 +401,46 @@ export class AddEditProductComponent extends Pagination implements OnInit {
         });
         console.log(this.productForm)
       }
+    })
+  }
+
+  categorySelectionHandler(categoryId: string) {
+    for (let find = 0; find < this.categoryList.length; find++) {
+      if (categoryId == this.categoryList[find]._id) {
+        this.seelctedCategoryDetails = this.categoryList[find];
+
+       
+
+        console.log("this.seelctedCategoryDetails==============", this.seelctedCategoryDetails);
+        this.f.categoryId.patchValue(this.seelctedCategoryDetails);
+        console.log("this.seelctedCategoryDetails==============", this.productForm.value);
+        break;
+      }
+    }
+  }
+
+  
+
+  getCategoryList(categoryType: string) {
+    let queryObj = {
+      pageNo: 1,
+      limit: 100,
+      categoryType: categoryType,
+      status: this.API_EVENT.active
+    }
+    this._common.getCategories(queryObj).subscribe(res => {
+      this.isApiCallInProgress.ofCategory = false;
+      console.log("=============<<<", res)
+      if (res.statusCode === 200) {
+          this.categoryList = res.data;
+          if (this.challengeId || this.copyChallengeId) {
+            this.categorySelectionHandler(this.challengeDetails.categoryId._id);
+          }
+        }  else {
+          this.benefitCategoryList = res.data;
+        }
+    }, () => {
+      this.isApiCallInProgress.ofCategory = false;
     })
   }
 

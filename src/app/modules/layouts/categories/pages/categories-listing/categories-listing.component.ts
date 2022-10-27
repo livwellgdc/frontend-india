@@ -123,6 +123,10 @@ export class CategoriesListingComponent extends Pagination implements OnInit, On
               this._bc.setBreadcrumb(BC_CATEGORIES_FILTER_STATUS('Quick Links'));
               this.getCategoryListing();
               break;
+              case this.API_EVENT.producstStore:
+                this._bc.setBreadcrumb(BC_CATEGORIES_FILTER_STATUS('Product Store'));
+                this.getCategoryListing();
+                break;
             default:
               this._router.navigate([CATEGORY]);
               break;

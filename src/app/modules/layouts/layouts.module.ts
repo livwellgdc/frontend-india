@@ -9,7 +9,7 @@ import { HeaderComponent } from '../layout-parts/_components/header/header.compo
 import { ConfirmationModalModule } from '../../components/confirmation-modal/confirmation-modal.module';
 import { httpInterceptorProviders } from '../../services/interceptor/index';
 import { MatToolbarModule, MatSidenavModule, MatMenuModule, MatButtonModule, MatListModule, MatIconModule, MatExpansionModule } from '@angular/material';
-import { ADMIN, USERS, DASHBOARD, CLASSES, EVENTS, CATEGORY, ARTICLES, REWARDS, CHALLENGES, BADGES, CMS, FAQ, BANNERS, PROFILE_INTERESTS, LIVWELL_VIDEOS, CLUBS, CLIENT_CLUBS, SUB_ADMINS, VERSIONS, POINTS_DISTRIBUTION, POINTS_DISTRIBUTION_HISTORY, PROMO_MGMT, CORPORATES, GROUPS, SPECIAL_OFFERS, AGE_CALCULATOR, PER_STEP_LWC, BOARDS, POSTS, MANAGE_HEALTH_SCORE, SELES_TRACKER, STORIES, AUDIT_LOG, REPORTS, PAYMENTS, CHARITY, REELS, QUICK_LINKS, DEEP_LINKS, FITNESS_REELS, SUBSCRIPTION_FETURES, SPIN_WHEEL } from '../../constants/routes';
+import { ADMIN, USERS, DASHBOARD, CLASSES, EVENTS, CATEGORY, ARTICLES, REWARDS, CHALLENGES, BADGES, CMS, FAQ, BANNERS, PROFILE_INTERESTS, LIVWELL_VIDEOS, CLUBS, CLIENT_CLUBS, SUB_ADMINS, VERSIONS, POINTS_DISTRIBUTION, POINTS_DISTRIBUTION_HISTORY, PROMO_MGMT, CORPORATES, GROUPS, SPECIAL_OFFERS, AGE_CALCULATOR, PER_STEP_LWC, BOARDS, POSTS, MANAGE_HEALTH_SCORE, SELES_TRACKER, STORIES, AUDIT_LOG, REPORTS, PAYMENTS, CHARITY, REELS, QUICK_LINKS, DEEP_LINKS, FITNESS_REELS, SUBSCRIPTION_FETURES, SPIN_WHEEL, PRODUCTS } from '../../constants/routes';
 import { ViewPermissionGuard } from '../../services/guards/view-permission/view-permission.guard';
 import { PreventSubAdminGuard } from '../../services/guards/prevent-sub-admin/prevent-sub-admin.guard';
 import { SECTION_ID_OF } from '../../constants/messages';
@@ -231,6 +231,12 @@ const inrRoutes: Routes = [
         loadChildren: () => import('./quicklinks/quicklinks.module').then(m => m.QuicklinksModule),
         canActivate: [ViewPermissionGuard],
         data: { roles: SECTION_ID_OF.QUICK_LINKS }
+      },
+      {
+        path: PRODUCTS,
+        loadChildren: () => import('./products/products.module').then(m => m.ProductsModule),
+        canActivate: [ViewPermissionGuard],
+        data: { roles: SECTION_ID_OF.PRODUCTS }
       },
       {
         path: DEEP_LINKS,

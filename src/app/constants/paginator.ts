@@ -18,6 +18,7 @@ export class Pagination {
     cancelled: 'CANCELLED',
     pending: 'PENDING',
     quickLinks:'QUICK_LINKS',
+    producstStore:"PRODUCTS_STORE",
     generic: 'GENERIC_CATEGORIES',
     class: 'CLASS',
     event: 'EVENT',

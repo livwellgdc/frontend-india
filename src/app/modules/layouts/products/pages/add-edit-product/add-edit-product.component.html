@@ -45,6 +45,23 @@
             </mat-form-field>
           </div>
 
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12" formGroupName="categoryId">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Challenge Category</mat-label>
+              <mat-select formControlName="_id" (selectionChange)="categorySelectionHandler($event.value)" required>
+                <mat-option disabled *ngIf="!categoryList || categoryList?.length <= 0">
+                  <ng-container>
+                    {{isApiCallInProgress?.ofCategory ? 'Loading...':'Please add product categories to create the product'}}
+                  </ng-container>
+                </mat-option>
+                <mat-option *ngFor="let category of categoryList" [value]="category?._id">
+                  {{category?.name?.en |titlecase}}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{errMsg.CHALLENGE_CATEGORY}}</mat-error>
+            </mat-form-field>
+          </div>
+
           <ng-container formGroupName="description">
             <div class="col-xl-4 col-lg-4 col-md-6 col-12">
               <mat-form-field appearance="outline">
@@ -197,6 +214,8 @@
                     autocomplete="off" required>
                 </mat-form-field>
               </div>
+
+              
 
               <div class="col-xl-2 col-lg-2 col-md-2 col-12 spec-minus">
                 <button matSuffix type="button" (click)="removeLwcOfferList(i)" class="btn-circle" mat-icon-button

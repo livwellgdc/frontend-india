@@ -80,6 +80,13 @@
   </ng-container>
 
   <ng-container
+    *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.PRODUCTS)">
+    <a mat-list-item color="primary" [routerLink]="['ABS_PRODUCTS' | absolutePath]" routerLinkActive="active">
+      <mat-icon svgIcon="challenges" class="sidenav-icons"></mat-icon> Products
+    </a>
+  </ng-container>
+
+  <ng-container
     *ngIf="(storage?.adminDetail?.userType=='ADMIN') || (storage?.adminDetail?.permission | permission: SECTION_ID_OF.CHARITY)">
     <a mat-list-item color="primary" [routerLink]="['ABS_CHARITY' | absolutePath]" routerLinkActive="active">
       <mat-icon svgIcon="challenges" class="sidenav-icons"></mat-icon> Charity

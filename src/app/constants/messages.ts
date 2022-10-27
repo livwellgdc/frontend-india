@@ -748,7 +748,8 @@ export const CATEGORY_TYPE = {
   GENERIC_CATEGORIES: "GENERIC_CATEGORIES",
   CLASS: "CLASS",
   EVENT: "EVENT",
-  CHALLENGE: "CHALLENGE"
+  CHALLENGE: "CHALLENGE",
+  PRODUCTS_STORE:"PRODUCTS_STORE"
 };
 
 export const STORY_ACCESS_TYPE = [
@@ -768,8 +769,12 @@ export const DEEPLINK_TYPES = [
 
 export const BANNER_TYPES = [
   { name: "HOME", value: "HOME" },
-  { name: "REWARD", value: "REWARD" }
+  { name: "REWARD", value: "REWARD" },
+  {name:"PRODUCT STORE", value:"PRODUCTS_STORE"}
 ];
+
+
+
 
 export const DEEPLINK_URLS = [
   { name: "CLASSES", value: "open://livwell/classScreen" },
