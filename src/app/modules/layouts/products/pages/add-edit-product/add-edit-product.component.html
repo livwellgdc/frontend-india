@@ -47,7 +47,7 @@
 
           <div class="col-xl-4 col-lg-4 col-md-6 col-12" formGroupName="categoryId">
             <mat-form-field appearance="outline">
-              <mat-label>Select Challenge Category</mat-label>
+              <mat-label>Select Product Category</mat-label>
               <mat-select formControlName="_id" (selectionChange)="categorySelectionHandler($event.value)" required>
                 <mat-option disabled *ngIf="!categoryList || categoryList?.length <= 0">
                   <ng-container>
@@ -184,7 +184,7 @@
             </div>
           </ng-container>
 
-          <div class="col-xl-6 col-lg-6 col-md-6 col-12 reward-radio">
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12 reward-radio">
             <mat-radio-group formControlName="isLWCApplicable" (change)="onChangeLWC($event.value)">
               <mat-radio-button [value]="true" color="primary">
                 LWC Applicable
@@ -193,6 +193,9 @@
                 LWC Not Applicable
               </mat-radio-button>
             </mat-radio-group>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+              <mat-checkbox color="primary" formControlName="isFeatured">Featured</mat-checkbox>
           </div>
 
         </div>

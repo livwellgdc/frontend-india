@@ -4,7 +4,7 @@ import { AddEditProductComponent } from './add-edit-product.component';
 import { Routes, RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FilesUploadModule } from '../../../../../components/files-upload/files-upload.module';
-import { MatCardModule, MatIconModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatNativeDateModule, MatDatepickerModule, MatRadioModule } from '@angular/material';
+import { MatCardModule, MatIconModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatNativeDateModule, MatDatepickerModule, MatRadioModule, MatCheckboxModule } from '@angular/material';
 import { LazyImageModule } from './../../../../../components/lazy-image/lazy-image.module';
 import { CropperModule } from '../../../../../components/cropper/cropper.module';
 import { NumberModule } from '../../../../../directives/number/number.module';
@@ -36,6 +36,7 @@ const inrRoute: Routes = [
     CropperModule,
     MatNativeDateModule,
     MatDatepickerModule,
+    MatCheckboxModule,
     NumberModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
