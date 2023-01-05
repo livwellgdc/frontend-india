@@ -190,6 +190,7 @@ export class AddEditProductComponent extends Pagination implements OnInit {
   private _createMultipleVariantsList(data?: any): FormGroup {
     return this._fb.group({
       color: [data ? data.color : ''],
+      colorCode: [data ? data.quantity : ''],
       quantity: [data ? data.quantity : ''],
       assets: this._fb.array([])
     });
@@ -304,6 +305,7 @@ export class AddEditProductComponent extends Pagination implements OnInit {
       formValue.discount = Number(formValue.discount);
       formValue.variants.forEach((value: any) => {
         value.quantity = Number(value.quantity);
+        value.color = value.color.toUpperCase();
       });
       formValue.lwcOfferList.forEach((value: any) => {
         value.lwc = Number(value.lwc);
