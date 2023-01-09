@@ -772,7 +772,8 @@ export const DEEPLINK_TYPES = [
 export const BANNER_TYPES = [
   { name: "HOME", value: "HOME" },
   { name: "REWARD", value: "REWARD" },
-  {name:"PRODUCT STORE", value:"PRODUCTS_STORE"}
+  {name:"PRODUCTS", value:"PRODUCTS"},
+  {name:"PRODUCT STORE", value:"PRODUCTS_STORE"},
 ];
 
 
