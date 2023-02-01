@@ -136,6 +136,7 @@ export class AddEditProductComponent extends Pagination implements OnInit {
         categoryType: ['']
       }),
       isFeatured: [false],
+      isNewProduct: [false],
       specifications: this._fb.array([]),
       lwcOfferList: this._fb.array([]),
       variants: this._fb.array([])
