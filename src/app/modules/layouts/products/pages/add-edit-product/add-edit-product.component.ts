@@ -253,7 +253,7 @@ export class AddEditProductComponent extends Pagination implements OnInit {
     const dialogRef = this._dialog.open(UploadPopupComponent, {
       width: '1150px',
       panelClass: 'cropper_dialog',
-      data: { inputRatio: 10 / 7.5, inputWidth: 400, type: 'PRODUCT' }
+      data: { inputRatio: 5 / 5.0001, inputWidth: 300, type: 'PRODUCT' }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
