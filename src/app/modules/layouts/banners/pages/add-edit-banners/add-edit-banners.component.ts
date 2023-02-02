@@ -88,7 +88,7 @@ export class AddEditBannersComponent implements OnInit {
     const dialogRef = this._dialog.open(UploadPopupComponent, {
       width: '1150px',
       panelClass: 'cropper_dialog',
-      data: { inputRatio: 10 / 6.67, inputWidth: 300, type: 'BANNER' }
+      data: { inputRatio: 10 / 5, inputWidth: 400, type: 'BANNER' }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

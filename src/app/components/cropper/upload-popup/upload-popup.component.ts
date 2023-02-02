@@ -83,7 +83,7 @@ export class UploadPopupComponent implements OnInit {
             }
             break;
           case 'BANNER':
-            if (img.width >= 300 && img.height >= 200) {
+            if (img.width >= 400 && img.height >= 200) {
               res(true);
             } else {
               res(false);
