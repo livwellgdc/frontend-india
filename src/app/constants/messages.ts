@@ -774,7 +774,8 @@ export const BANNER_TYPES = [
   { name: "REWARD", value: "REWARD" },
   {name:"PRODUCTS", value:"PRODUCTS"},
   {name:"PRODUCT STORE", value:"PRODUCTS_STORE"},
-  {name:"HEALTH RESOURCE",value:"HEALTH_RESOURCE"}
+  {name:"HEALTH RESOURCE",value:"HEALTH_RESOURCE"},
+  {name:"PROMOTIONAL",value:"PROMOTIONAL"}
 ];
 
 
