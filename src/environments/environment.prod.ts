@@ -16,3 +16,5 @@ export const environment = {
   FINGER_PRINT: "Basic bGl2d2VsbDpsaXZ3ZWxsQDEyMw==",
   MAP_API_KEY: "AIzaSyCjREPYRmK1X1YWJDSonExO_pnmsLw617k"
 };
+
+

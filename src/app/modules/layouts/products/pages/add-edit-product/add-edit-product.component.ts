@@ -69,7 +69,7 @@ export class AddEditProductComponent extends Pagination implements OnInit {
     this.productId = this._actRoute.snapshot.params['productId'];
     this.copyProductId = this._actRoute.snapshot.queryParams['copyProduct'];
     this.createForm();
-    this.getCategoryList(this.API_EVENT.producstStore)
+    this.getCategoryList();
     if (this.productId) {
       this._bc.setBreadcrumb(BC_PRODUCTS_EDIT);
       this._createMultipleLwcOfferList()
@@ -192,7 +192,7 @@ export class AddEditProductComponent extends Pagination implements OnInit {
   private _createMultipleVariantsList(data?: any): FormGroup {
     return this._fb.group({
       color: [data ? data.color : ''],
-      colorCode: [data ? data.quantity : ''],
+      colorCode: [data ? data.colorCode : ''],
       quantity: [data ? data.quantity : ''],
       assets: this._fb.array([])
     });
@@ -367,7 +367,7 @@ export class AddEditProductComponent extends Pagination implements OnInit {
 
   assetSelectionHandler(type, variantIndex, assetsIndex) {
     if (type == 'IMAGE') {
-      // this.variantAssets(variantIndex).controls[assetsIndex].value.url = 
+      // this.variantAssets(variantIndex).controls[assetsIndex].value.url =
     }
   }
 
@@ -386,6 +386,11 @@ export class AddEditProductComponent extends Pagination implements OnInit {
     this._product.getProductDetail({ productId: this.productId ? this.productId : this.copyProductId }).subscribe((res: Challenge.ChallengeDetail) => {
       if (res.statusCode == 200) {
         this.productDetails = res.data;
+        if(this.productDetails.categoryId) {
+          this.categoryList = this.productDetails.categoryId;
+        }else{
+          this.getCategoryList();
+        }
         console.log(res.data)
         this.cropFile = {
           cropBase64: this.productDetails.image,
@@ -412,9 +417,6 @@ export class AddEditProductComponent extends Pagination implements OnInit {
     for (let find = 0; find < this.categoryList.length; find++) {
       if (categoryId == this.categoryList[find]._id) {
         this.seelctedCategoryDetails = this.categoryList[find];
-
-       
-
         console.log("this.seelctedCategoryDetails==============", this.seelctedCategoryDetails);
         this.f.categoryId.patchValue(this.seelctedCategoryDetails);
         console.log("this.seelctedCategoryDetails==============", this.productForm.value);
@@ -423,13 +425,13 @@ export class AddEditProductComponent extends Pagination implements OnInit {
     }
   }
 
-  
 
-  getCategoryList(categoryType: string) {
+
+  getCategoryList() {
     let queryObj = {
       pageNo: 1,
       limit: 100,
-      categoryType: categoryType,
+      categoryType: this.API_EVENT.producstStore,
       status: this.API_EVENT.active
     }
     this._common.getCategories(queryObj).subscribe(res => {

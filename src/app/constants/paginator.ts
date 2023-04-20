@@ -36,6 +36,7 @@ export class Pagination {
     challengeHistory: 'CHALANGE_HISTORY',
     approved: 'APPROVED',
     rejected: "REJECTED",
+    productsStore: 'PRODUCTS_STORE',
 
   }
   today: Date = new Date();

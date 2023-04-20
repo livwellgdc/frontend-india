@@ -65,6 +65,7 @@ export class AddEditCategoryComponent implements OnInit {
       }),
       accessType: [''],
       description: [''],
+      colorCode: [''],
     })
 
     if (this.data.categoryType == this.categoryTypes.CHALLENGE) {
@@ -207,7 +208,7 @@ export class AddEditCategoryComponent implements OnInit {
     }
     let body = this.categoryForm.value;
     const reqData = this.removeUnwantedField(body);
-
+    console.log("resqqq",reqData);
     this._category.addCategory(reqData).subscribe((response: any) => {
       this.closePopup(response);
     }, (error) => {

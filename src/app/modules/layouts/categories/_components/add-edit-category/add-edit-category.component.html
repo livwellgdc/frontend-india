@@ -28,12 +28,20 @@
         </mat-form-field>
       </ng-container>
 
+      <ng-container>
+        <mat-form-field class="search_filter" appearance="outline">
+          <mat-label>Category Color Code</mat-label>
+          <input type="text" matInput formControlName="colorCode" [maxlength]="limit?.MAX_NAME_LENGTH_VI" autocomplete="off" />
+          <mat-error>{{errMsg?.CATEGORY_NAME_REQ}}</mat-error>
+        </mat-form-field>
+      </ng-container>
+
       <ng-container *ngIf="data.categoryType == 'CHALLENGE'">
         <mat-form-field class="search_filter" appearance="outline" >
           <mat-label>Challenge Category Type</mat-label>
           <mat-select formControlName="type" required (selectionChange)="categoryTypeHandler($event.value)">
             <mat-option *ngFor="let cType of challengeCategoryTypes" [value]="cType?.value">
-              {{cType?.name}} 
+              {{cType?.name}}
             </mat-option>
           </mat-select>
           <mat-error>{{errMsg.CHALLENGE_CATEGORY_TYPE}}</mat-error>
@@ -71,8 +79,8 @@
         </ng-container>
       </ng-container>
 
-      <ng-container *ngIf="data.categoryType == categoryTypes.CHALLENGE 
-        || data.categoryType == categoryTypes.LIVWELL_BENEFITS 
+      <ng-container *ngIf="data.categoryType == categoryTypes.CHALLENGE
+        || data.categoryType == categoryTypes.LIVWELL_BENEFITS
         || data.categoryType == categoryTypes.GENERIC_CATEGORIES">
         <mat-form-field class="search_filter" appearance="outline">
           <mat-label>Category Access Type</mat-label>
