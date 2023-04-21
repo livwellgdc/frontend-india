@@ -135,6 +135,7 @@ export class AddEditProductComponent extends Pagination implements OnInit {
         status: [''],
         categoryType: ['']
       }),
+      redirectUrl: [''],
       isFeatured: [false],
       isNewProduct: [false],
       specifications: this._fb.array([]),
@@ -193,6 +194,7 @@ export class AddEditProductComponent extends Pagination implements OnInit {
     return this._fb.group({
       color: [data ? data.color : ''],
       colorCode: [data ? data.colorCode : ''],
+      backgroundColorCode: [ data ? data.backgroundColorCode : ''],
       quantity: [data ? data.quantity : ''],
       assets: this._fb.array([])
     });
@@ -314,6 +316,8 @@ export class AddEditProductComponent extends Pagination implements OnInit {
         value.price = Number(value.price);
       });
       formValue.image = this.productImage;
+      console.log("formValue", formValue);
+
       if (this.productId) {
         if (this.productForm.dirty) {
           this.updateProduct(formValue);
@@ -386,7 +390,8 @@ export class AddEditProductComponent extends Pagination implements OnInit {
     this._product.getProductDetail({ productId: this.productId ? this.productId : this.copyProductId }).subscribe((res: Challenge.ChallengeDetail) => {
       if (res.statusCode == 200) {
         this.productDetails = res.data;
-        if(this.productDetails.categoryId) {
+        console.log("res.data", this.productDetails);
+        if(!this.productDetails.categoryId) {
           this.categoryList = this.productDetails.categoryId;
         }else{
           this.getCategoryList();

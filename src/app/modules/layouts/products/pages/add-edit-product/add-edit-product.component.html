@@ -136,6 +136,15 @@
             </mat-form-field>
           </div>
 
+          <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Product RedirectUrl</mat-label>
+              <input matInput formControlName="redirectUrl" autocomplete="off"
+                required>
+              <mat-error>{{errMsg.PRODUCT_MANUFACTURER}}</mat-error>
+            </mat-form-field>
+          </div>
+
           <ng-container formGroupName="warranty">
             <div class="col-xl-4 col-lg-4 col-md-6 col-12">
               <mat-form-field appearance="outline">
@@ -334,6 +343,13 @@
                 <mat-form-field appearance="outline">
                   <mat-label>Product Variant Color Code</mat-label>
                   <input matInput formControlName="colorCode" autocomplete="off"
+                    required>
+                </mat-form-field>
+              </div>
+              <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Product Variant Background Color Code</mat-label>
+                  <input matInput formControlName="backgroundColorCode" autocomplete="off"
                     required>
                 </mat-form-field>
               </div>
