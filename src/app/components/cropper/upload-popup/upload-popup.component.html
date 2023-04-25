@@ -9,7 +9,7 @@
   (Image Dimension should be atleast:
   <ng-container [ngSwitch]="true">
     <ng-container
-      *ngSwitchCase="(data?.type=='CLASS') || (data?.type=='CHALLENGE') || (data?.type=='EVENT') ||( data?.type=='REWARD')">
+      *ngSwitchCase="(data?.type=='CLASS') ||  (data?.type=='CHALLENGE') || (data?.type=='EVENT') ||( data?.type=='REWARD')">
       400 X 300</ng-container>
     <ng-container *ngSwitchCase="(data?.type=='BANNER')">400 X 200</ng-container>
     <ng-container *ngSwitchCase="(data?.type=='STORIES')">1080 X 1920</ng-container>
