@@ -44,6 +44,7 @@
                         pre['controls'].manageType.value != manageTypeValue.USERS &&
                         pre['controls'].manageType.value != manageTypeValue.INTERESTS &&
                         pre['controls'].manageType.value != manageTypeValue.BADGES &&
+                        pre['controls'].manageType.value != manageTypeValue.PRODUCTS &&
                         pre['controls'].manageType.value != manageTypeValue.CMS
                       " color="primary"
                       (change)="allPermissionCheckBoxListener($event, preIndex,pre['controls'].manageType.value)"
@@ -55,6 +56,7 @@
                     pre['controls'].manageType.value == manageTypeValue.CATEGORIES ||
                     pre['controls'].manageType.value == manageTypeValue.REWARDS ||
                     pre['controls'].manageType.value == manageTypeValue.BADGES ||
+                    pre['controls'].manageType.value == manageTypeValue.PRODUCTS ||
                     pre['controls'].manageType.value == manageTypeValue.CLIENTS ||
                     pre['controls'].manageType.value == manageTypeValue.CLUBS
                   }" color="primary" (change)="CheckBoxListener($event, preIndex,pre['controls'].manageType.value)"
@@ -73,6 +75,7 @@
                     <mat-checkbox *ngIf="
                         pre['controls'].manageType.value != manageTypeValue.INTERESTS &&
                         pre['controls'].manageType.value != manageTypeValue.BADGES &&
+                        pre['controls'].manageType.value != manageTypeValue.PRODUCTS &&
                         pre['controls'].manageType.value != manageTypeValue.CMS
                       " color="primary" (change)="CheckBoxListener($event, preIndex)" formControlName="deleteBlock">
                       Delete / Block</mat-checkbox>

@@ -201,6 +201,8 @@ export class AddEditSubAdminsComponent implements OnInit {
           element['exportReport'] = false;
         }
       });
+      console.log("formData", formValue);
+
       if (this.subAdminId) {
         if (this.subAdminForm.dirty) {
           this.updateSubAdminDetails(formValue);

@@ -962,7 +962,7 @@ export const SECTION_ID_OF = {
   LWC_CM: '28',
   SUBSCRIPTION_FEATURES: '29',
   SPIN_WHEEL: "30",
-  PRODUCTS: "31"
+  PRODUCTS: "32"
 }
 
 export const HTTP_STATUS_CODE = {
@@ -1014,6 +1014,7 @@ export const MANAGE_TYPE_OF = {
   ARTICLES: 'Manage Articles',
   REWARDS: 'Manage Rewards',
   BADGES: 'Manage Badges',
+  PRODUCTS: 'Manage Products',
   BANNERS: 'Manage Banners',
   CLIENTS: 'Manage Clients',
   CLUBS: 'Manage Clubs',
@@ -1047,6 +1048,7 @@ export const PERMISSION = [
   { manageType: MANAGE_TYPE_OF.ARTICLES, sectionId: SECTION_ID_OF.ARTICLES },
   { manageType: MANAGE_TYPE_OF.REWARDS, sectionId: SECTION_ID_OF.REWARDS },
   { manageType: MANAGE_TYPE_OF.BADGES, sectionId: SECTION_ID_OF.BADGES },
+  { manageType: MANAGE_TYPE_OF.PRODUCTS, sectionId: SECTION_ID_OF.PRODUCTS },
   { manageType: MANAGE_TYPE_OF.BANNERS, sectionId: SECTION_ID_OF.BANNERS },
   { manageType: MANAGE_TYPE_OF.CLIENTS, sectionId: SECTION_ID_OF.CLIENTS },
   { manageType: MANAGE_TYPE_OF.CLUBS, sectionId: SECTION_ID_OF.CLUBS },
