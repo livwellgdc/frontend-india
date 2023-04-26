@@ -83,6 +83,7 @@ export class UploadPopupComponent implements OnInit {
             }
             break;
           case 'BANNER':
+
             if (img.width >= 400 && img.height >= 200) {
               res(true);
             } else {
@@ -156,7 +157,7 @@ export class UploadPopupComponent implements OnInit {
       case 'REWARD':
         return '400 X 300';
       case 'BANNER':
-        return '300 X 200';
+        return '400 X 200';
       case 'STORIES':
         return '1080 X 1920';
       default:
