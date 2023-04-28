@@ -9,7 +9,7 @@ import { ToastService } from '../../toast-notification/toast.service';
   styleUrls: ['./upload-popup.component.scss']
 })
 
-export class UploadPopupComponent implements OnInit {
+export class  UploadPopupComponent implements OnInit {
   @Output() myEvent = new EventEmitter();
   croppedImageFile: any;
   aspectRatio: any = 4 / 4;
@@ -83,8 +83,7 @@ export class UploadPopupComponent implements OnInit {
             }
             break;
           case 'BANNER':
-
-            if (img.width >= 400 && img.height >= 200) {
+            if (img.width >= 1080 && img.height >= 720) {
               res(true);
             } else {
               res(false);
@@ -157,7 +156,7 @@ export class UploadPopupComponent implements OnInit {
       case 'REWARD':
         return '400 X 300';
       case 'BANNER':
-        return '400 X 200';
+        return '1080 X 720';
       case 'STORIES':
         return '1080 X 1920';
       default:
