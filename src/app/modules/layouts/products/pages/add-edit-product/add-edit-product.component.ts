@@ -316,7 +316,7 @@ export class AddEditProductComponent extends Pagination implements OnInit {
         value.price = Number(value.price);
       });
       formValue.image = this.productImage;
-      console.log("formValue", formValue);
+      console.log("formValue======>>", formValue);
 
       if (this.productId) {
         if (this.productForm.dirty) {

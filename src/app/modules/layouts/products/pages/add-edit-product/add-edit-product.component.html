@@ -83,7 +83,7 @@
           <div class="col-xl-4 col-lg-4 col-md-6 col-12">
             <mat-form-field appearance="outline">
               <mat-label>Product Discount</mat-label>
-              <input matInput number formControlName="discount" autocomplete="off"
+              <input matInput double formControlName="discount" step="0.01" min="0" max="100" autocomplete="off"
                 required>
             </mat-form-field>
           </div>
